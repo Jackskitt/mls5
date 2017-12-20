@@ -1,74 +1,105 @@
-var scale = 2;
+var scale = 4;
 
 window.onload = function() {
 	
-	var game = new Phaser.Game(256 * scale, 128 * scale, Phaser.AUTO, '', { preload: preload, create: create }, false, false);
+	var game = new Phaser.Game(256 * scale, 128 * scale, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render}, false, false);
     
-	game.antialias = false;
-        
+	/*
+	game.stage = new Phaser.Stage(game);
+	game.stage.disableVisibilityChange = true; //this doesn't work for some reason
+	*/
+
 	/* GLOBALS */
 	
-    //Objects
-    
+	//Scenery & Objects
 	var ship = {
 		sprite: null,
-		posX: 8,
+		posX: 28,
 		posY: 60
-	}
+	};
 	
 	var bg = {
 		sprite0: null,
 		sprite1: null,
 		posX: 0
-    }
+    };
+	
+	var groupPlanets;
+	var groupBackground;
+	var groupShip;
     
-    //Groups
-    
-    var allSprites;
-    
-    
+	//UI
+	var statusBar = {
+		bgSprite: null
+	};
+	
 	function preload () {
-		
-		//TODO: Figure out how to scale up without filtering.
-		//game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		//game.scale.setMinMax(1024, 512, 1024, 512);
         
+		/* SPRITES */
 		
+		//Scenery & Objects
 		game.load.image('bg_starField', 'res/scenery/bg_starField.png');
-		game.load.spritesheet('sheetPlanets', 'res/scenery/sheetPlanets5x5.png', 5, 5, 5);
-		game.load.spritesheet('sheetShips', 'res/ships/sheetShips32x16.png', 32, 16, 6);
-        game.load.image('img_ship', 'res/ships/img_ship.png');
+		game.load.image('img_ship', 'res/ships/img_ship.png');
         game.load.image('img_planet', 'res/scenery/img_planet.png');
         
-        allSprites = game.add.group();
+		groupBackground = game.add.group();
+		groupPlanets = game.add.group();
+        groupShip = game.add.group();
 		
+		//UI
+		game.load.image('ui_statusBar', 'res/ui/ui_statusBar.png');
+		game.load.bitmapFont('font_start', 'res/ui/font_start.png', 'assets/font/font.fnt');
+		groupUI = game.add.group();
 	}
 
 	function create () {
 		
-		bg.sprite0 = allSprites.create(bg.posX, 0, 'bg_starField');
-		bg.sprite1 = allSprites.create(bg.posX + bg.sprite0.width, 0, 'bg_starField');
+		//Initialise scenery & objects
+		bg.sprite0 = groupBackground.create(bg.posX, 0, 'bg_starField');
+		bg.sprite1 = groupBackground.create(bg.posX + bg.sprite0.width, 0, 'bg_starField');
 		
-		//ship.sprite = game.add.sprite(ship.posX, ship.posY, 'sheetShips');
-        ship.sprite = allSprites.create(ship.posX, ship.posY, 'img_ship');
+        ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
         
 		for (i = 0; i < 5; i++) {
 			var newPlanet;
-			newPlanet = allSprites.create(15 + i*50, Math.random() * 150, 'img_planet');
-			newPlanet.frame = Math.floor(Math.random() * 5);
+			newPlanet = groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
 		}
 		
-        
-        allSprites.scale.set(scale, scale);
-        
-        //game.world.bringToTop(allSprites);
+        groupPlanets.scale.set(scale);
+        groupBackground.scale.set(scale);
+        groupShip.scale.set(scale);
+		groupUI.scale.set(scale);
+		
+		//Initialise UI
+		statusBar.bgSprite = groupUI.create(0, 99, 'ui_statusBar');
+		
 	}
 	
 	function update() {
-		bg.posX -= game.time.elapsed;
 		
-		if (bg.posX < bg.sprite0.width)
+		scrollBackground();
+		
+	}
+	
+	function render() {
+		
+	}
+	
+	function scrollBackground() {
+		
+		var backgroundMovement = 0.005 * game.time.elapsed;
+		
+		bg.posX -= backgroundMovement;
+		
+		if (bg.posX < 0 - bg.sprite0.width)
 			bg.posX = 0;
 		
+		bg.sprite0.x = bg.posX;
+		bg.sprite1.x = bg.posX + bg.sprite0.width;
+		
+		groupPlanets.x -= backgroundMovement * 45;
+		
+		if (groupPlanets.x < - 1500)
+			groupPlanets.x = 1000;
 	}
 };
