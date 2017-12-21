@@ -1,10 +1,8 @@
-var scale = 2;
+var scale = 3;
 
 window.onload = function() {
 	
 	var game = new Phaser.Game(256 * scale, 128 * scale, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render}, false, false);
-    
-    
     
 	/* GLOBALS */
 	
@@ -17,7 +15,7 @@ window.onload = function() {
         fuel: 50,
         passengers: 129,
         oxygen: 100,
-        sector: "Sol"
+        comms: "OPERATIONAL"
 	};
 	
 	var bg = {
@@ -34,6 +32,19 @@ window.onload = function() {
 	var statusBar = {
 		bgSprite: null
 	};
+    var messageBox = {
+        title: "MESSAGETITLE",
+        content: "MESSAGECONTENT",
+        optionA: "OPTIONA",
+        optionB: "OPTIONB"
+    };
+    var slickUI;
+    
+    //State Information
+    
+    var states = {menu:0, flying:1, map:2};
+    var currentState = states.flying;
+    var ui_displayingBox = true;
 	
 	function preload () {
         
@@ -49,8 +60,10 @@ window.onload = function() {
         groupShip = game.add.group();
 		
 		//UI
-		game.load.image('ui_statusBar', 'res/ui/ui_statusBar.png');
-		groupUI = game.add.group();
+        
+        //SLICK UI LIBRARY
+        slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+        slickUI.load('res/ui/kenney/kenney.json');
 	}
 
 	function create () {
@@ -69,18 +82,21 @@ window.onload = function() {
         groupPlanets.scale.set(scale);
         groupBackground.scale.set(scale);
         groupShip.scale.set(scale);
-		groupUI.scale.set(scale);
-		
-		//Initialise UI
-		statusBar.bgSprite = groupUI.create(0, 99, 'ui_statusBar');
-        var barX = statusBar.bgSprite.x;
-        var barY = statusBar.bgSprite.y;
-        game.add.text(barX + 4, barY + 4, "DAY " + ship.day, {font: "12px Courier New", fill: "#fff"}, groupUI);
-        game.add.text(barX + 54, barY + 3, "Fuel: " + ship.fuel + "kt", {font: "10px Courier New", fill: "#fff"}, groupUI);
-        game.add.text(barX + 54, barY + 14, "Passengers: " + ship.passengers, {font: "10px Courier New", fill: "#fff"}, groupUI);
-        game.add.text(barX + 160, barY + 3, "Oxygen: " + ship.oxygen + "%", {font: "10px Courier New", fill: "#fff"}, groupUI);
-        game.add.text(barX + 160, barY + 14, "Sector: " + ship.sector, {font: "10px Courier New", fill: "#fff"}, groupUI);
         
+		//Initialise UI
+        var statusPanel;
+        var barX = 0;
+        var barY = 99 * scale;
+        slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
+        statusPanel.add(new SlickUI.Element.Text(4 * scale, 8 * scale, "DAY " + ship.day));
+        statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
+        statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.passengers));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Comms: " + ship.comms));        
+        
+        if (ui_displayingBox) {
+            displayMessage("DONK", "You received a donk. Nice.", "Return donk", "Accept donk");
+        }
 		
 	}
 	
@@ -111,4 +127,81 @@ window.onload = function() {
 		if (groupPlanets.x < - 1500 * scale)
 			groupPlanets.x = 1000 * scale;
 	}
+    
+    function displayMessage(title, content, optionA, optionB) {
+        
+        ui_displayingBox = true;
+        
+        messageBox.title = title;
+        messageBox.content = content;
+        messageBox.optionA = optionA;
+        messageBox.optionB = optionB;
+        
+        createMessageBox();
+    }
+    
+    function createMessageBox() {
+
+        var x = 128 * scale;
+        var y = 7 * scale;
+        var panel;
+        slickUI.add(panel = new SlickUI.Element.Panel(x, y, 120 * scale, 84 * scale));
+        panel.add(new SlickUI.Element.Text(2 * scale, 0, messageBox.title, 24));
+        panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content));
+
+        var buttonA;
+        panel.add(buttonA = new SlickUI.Element.Button(0, 50 * scale, 120 * scale, 14 * scale));
+        buttonA.events.onInputUp.add(function () {ui_displayingBox = false;panel.destroy();});
+        buttonA.add(new SlickUI.Element.Text(0,0, messageBox.optionA)).center();
+
+        var buttonB;
+        panel.add(buttonB = new SlickUI.Element.Button(0, 66 * scale, 120 * scale, 14 * scale));
+        buttonB.events.onInputUp.add(function () {ui_displayingBox = false; panel.destroy(); changeState(2)});
+        buttonB.add(new SlickUI.Element.Text(0,0, messageBox.optionB)).center();
+    }
+    
+    function changeState(newState) {
+        switch (newState) {
+            case 0:
+                
+                break;
+            case 1:
+                initFlying();
+                break;
+            case 2:
+                initMap();
+                break;
+            default:
+                break;
+        }
+    }
+    
+    
+    function initFlying() {   
+        displayMessage("nice", "nice", "nice", "nice");
+    }
+    
+    function initMap() {
+        
+        var map;
+        slickUI.add(map = new SlickUI.Element.Panel(0, 0, game.width, game.height));
+        map.add(new SlickUI.Element.Text(4 * scale, 0, "GALACTIC MAP", 24));
+
+        var buttonA;
+        map.add(buttonA = new SlickUI.Element.Button(game.width - 48 * scale, game.height-24*scale, 40 * scale, 14 * scale));
+        buttonA.events.onInputUp.add(function () {map.destroy(); changeState(1);});
+        buttonA.add(new SlickUI.Element.Text(0,0, "Close map")).center();
+
+    }
 };
+
+
+
+
+
+
+
+
+
+
+
