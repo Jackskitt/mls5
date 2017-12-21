@@ -1,21 +1,23 @@
-var scale = 4;
+var scale = 2;
 
 window.onload = function() {
 	
 	var game = new Phaser.Game(256 * scale, 128 * scale, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render}, false, false);
     
-	/*
-	game.stage = new Phaser.Stage(game);
-	game.stage.disableVisibilityChange = true; //this doesn't work for some reason
-	*/
-
+    
+    
 	/* GLOBALS */
 	
 	//Scenery & Objects
 	var ship = {
 		sprite: null,
 		posX: 28,
-		posY: 60
+		posY: 48,
+        day: 1,
+        fuel: 50,
+        passengers: 129,
+        oxygen: 100,
+        sector: "Sol"
 	};
 	
 	var bg = {
@@ -48,7 +50,6 @@ window.onload = function() {
 		
 		//UI
 		game.load.image('ui_statusBar', 'res/ui/ui_statusBar.png');
-		game.load.bitmapFont('font_start', 'res/ui/font_start.png', 'assets/font/font.fnt');
 		groupUI = game.add.group();
 	}
 
@@ -72,6 +73,14 @@ window.onload = function() {
 		
 		//Initialise UI
 		statusBar.bgSprite = groupUI.create(0, 99, 'ui_statusBar');
+        var barX = statusBar.bgSprite.x;
+        var barY = statusBar.bgSprite.y;
+        game.add.text(barX + 4, barY + 4, "DAY " + ship.day, {font: "12px Courier New", fill: "#fff"}, groupUI);
+        game.add.text(barX + 54, barY + 3, "Fuel: " + ship.fuel + "kt", {font: "10px Courier New", fill: "#fff"}, groupUI);
+        game.add.text(barX + 54, barY + 14, "Passengers: " + ship.passengers, {font: "10px Courier New", fill: "#fff"}, groupUI);
+        game.add.text(barX + 160, barY + 3, "Oxygen: " + ship.oxygen + "%", {font: "10px Courier New", fill: "#fff"}, groupUI);
+        game.add.text(barX + 160, barY + 14, "Sector: " + ship.sector, {font: "10px Courier New", fill: "#fff"}, groupUI);
+        
 		
 	}
 	
@@ -87,7 +96,7 @@ window.onload = function() {
 	
 	function scrollBackground() {
 		
-		var backgroundMovement = 0.005 * game.time.elapsed;
+		var backgroundMovement = 0.001 * game.time.elapsed * scale;
 		
 		bg.posX -= backgroundMovement;
 		
@@ -99,7 +108,7 @@ window.onload = function() {
 		
 		groupPlanets.x -= backgroundMovement * 45;
 		
-		if (groupPlanets.x < - 1500)
-			groupPlanets.x = 1000;
+		if (groupPlanets.x < - 1500 * scale)
+			groupPlanets.x = 1000 * scale;
 	}
 };
