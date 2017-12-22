@@ -1,0 +1,46 @@
+[{
+	"name": "encounter_asteroids",
+	"title": "ASTEROID FIELD DETECTED",
+	"content": "Our short-range sensors have picked up an asteroid field nearby. Might be some useful minerals in there.",
+	"options":
+	[{
+		"choice": "Attempt mining",
+		"diceRoll": true,
+		"winChance": 0.5,
+		"win": {
+			"response": "You send a scout ship with utility lasers to carve out some ore. Once they're done you process it into fuel!",
+			"effect" : {"resource_fuel" : 5}
+		},
+		"fail": {
+			"response": "You send a scout ship to carve out some ore. A micrometeorite swipes it out of existence, taking the crew with it.",
+			"effect" : {"resource_crew" : -4}
+		}
+	}, {
+		"choice": "Leave it, too dangerous",
+		"diceRoll": false,
+		"response": "You leave the asteroids where they are. Can't risk damage to the ship."
+	}]
+},
+{
+	"name": "encounter_radiation",
+	"title": "ABNORMAL RADIATION READINGS",
+	"content": "Science department is reporting unusual radiation levels on the planet below.",
+	"options":
+	[{
+		"choice": "Send scouting party",
+		"diceRoll": true,
+		"winChance": 0.25,
+		"win": {
+			"response": "The scouts are gone for a long time. When they return, exhausted, they bring fifteen canisters of starship fuel!",
+			"effect" : {"resource_fuel" : 15}
+		},
+		"fail": {
+			"response": "The landing craft enters the ionosphere and immediately loses contact. You wait for hours, but they don't return.",
+			"effect" : {"resource_crew" : 8}
+		}
+	}, {
+		"choice": "Report to command",
+		"diceRoll": false,
+		"response": "You send a data packet back home so they can look into it. Time to move on."
+	}]
+}]
