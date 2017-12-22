@@ -35,8 +35,7 @@ window.onload = function() {
     var messageBox = {
         title: "MESSAGETITLE",
         content: "MESSAGECONTENT",
-        optionA: "OPTIONA",
-        optionB: "OPTIONB"
+        options: null
     };
     var slickUI;
     
@@ -44,7 +43,6 @@ window.onload = function() {
     
     var states = {menu:0, flying:1, map:2};
     var currentState = states.flying;
-    var ui_displayingBox = true;
 	
 	function preload () {
         
@@ -61,9 +59,13 @@ window.onload = function() {
 		
 		//UI
         
-        //SLICK UI LIBRARY
+        //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
         slickUI.load('res/ui/kenney/kenney.json');
+		
+		//Data
+		
+		game.load.json("encounters", "res/data/encounters.json");
 	}
 
 	function create () {
@@ -94,10 +96,7 @@ window.onload = function() {
         statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
         statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Comms: " + ship.comms));        
         
-        if (ui_displayingBox) {
-            displayMessage("DONK", "You received a donk. Nice.", "Return donk", "Accept donk");
-        }
-		
+		initFlying();
 	}
 	
 	function update() {
@@ -124,46 +123,97 @@ window.onload = function() {
 		
 		groupPlanets.x -= backgroundMovement * 45;
 		
-		if (groupPlanets.x < - 1500 * scale)
-			groupPlanets.x = 1000 * scale;
+		if (groupPlanets.x < - 250 * scale)
+			groupPlanets.x = 250 * scale;
 	}
     
-    function displayMessage(title, content, optionA, optionB) {
+    function displayMessage(title, content, options) {
+		messageBox.title = title;
+        messageBox.content = content;
+		messageBox.options = options;
         
-        ui_displayingBox = true;
+        createMessageBox();
+    }
+    
+    function displayMessageNoChoice(title, content) {
+        
+		var continueJourney = [{choice: "Continue the journey", diceRoll: false, final: true}];
         
         messageBox.title = title;
         messageBox.content = content;
-        messageBox.optionA = optionA;
-        messageBox.optionB = optionB;
+		messageBox.options = continueJourney;
         
         createMessageBox();
     }
     
     function createMessageBox() {
-
+		
+		//Set bounds and instantiate panel
         var x = 128 * scale;
         var y = 7 * scale;
         var panel;
         slickUI.add(panel = new SlickUI.Element.Panel(x, y, 120 * scale, 84 * scale));
-        panel.add(new SlickUI.Element.Text(2 * scale, 0, messageBox.title, 24));
+		
+		//Add title and content
+        panel.add(new SlickUI.Element.Text(2 * scale, 0, messageBox.title)).centerHorizontally();
         panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content));
-
-        var buttonA;
-        panel.add(buttonA = new SlickUI.Element.Button(0, 50 * scale, 120 * scale, 14 * scale));
-        buttonA.events.onInputUp.add(function () {ui_displayingBox = false;panel.destroy();});
-        buttonA.add(new SlickUI.Element.Text(0,0, messageBox.optionA)).center();
-
-        var buttonB;
-        panel.add(buttonB = new SlickUI.Element.Button(0, 66 * scale, 120 * scale, 14 * scale));
-        buttonB.events.onInputUp.add(function () {ui_displayingBox = false; panel.destroy(); changeState(2)});
-        buttonB.add(new SlickUI.Element.Text(0,0, messageBox.optionB)).center();
+		
+		//Add buttons
+		for (i = 0; i < messageBox.options.length; i++) {
+			var button;
+			var option = messageBox.options[i];
+			
+			panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale, 120 * scale, 14 * scale));
+			button.add(new SlickUI.Element.Text(0,0, option.choice)).center();
+			
+			//Make the buttons do different stuff depending on what the JSON data says.
+			
+			if (option.diceRoll) {
+				
+				//Save the option for use in the callback later.
+				var selectedOption = option;
+				
+				button.events.onInputUp.add(function () {
+					//This event requires a roll of the dice to see the outcome.
+					//We grab the probability and the win/lose responses from the JSON data.
+					
+					var response = "response not set!";
+					
+					if (Math.random() < selectedOption.winChance) {
+						//win! :)
+						response = selectedOption.win.response;
+						console.log(selectedOption.win.effect);
+						
+					} else {
+						//fail! :(
+						response = selectedOption.fail.response;
+						console.log(selectedOption.fail.effect);
+					}
+					
+					panel.destroy();
+					displayMessageNoChoice(messageBox.title, response);
+				});
+				
+			} else {
+				
+				button.events.onInputUp.add(function () {
+					
+					//There's no dice roll needed here. 
+					
+					panel.destroy();
+					
+					if (!option.final) {
+						//option.final is just a flag to note whether this is the last dialog box.
+						displayMessageNoChoice(messageBox.title, option.response);
+					}
+				});
+			}
+		}
     }
     
     function changeState(newState) {
         switch (newState) {
             case 0:
-                
                 break;
             case 1:
                 initFlying();
@@ -177,12 +227,20 @@ window.onload = function() {
     }
     
     
-    function initFlying() {   
-        displayMessage("nice", "nice", "nice", "nice");
+    function initFlying() {
+		JSONtest();
     }
+	
+	function JSONtest() {
+		var data_encounters = game.cache.getJSON('encounters');
+		var selector = Math.floor(Math.random() * data_encounters.length);
+		var encounter = data_encounters[selector];
+		console.log("Encounter: " + encounter.name);
+		
+		displayMessage(encounter.title, encounter.content, encounter.options);
+	}
     
     function initMap() {
-        
         var map;
         slickUI.add(map = new SlickUI.Element.Panel(0, 0, game.width, game.height));
         map.add(new SlickUI.Element.Text(4 * scale, 0, "GALACTIC MAP", 24));
