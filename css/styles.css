@@ -1,8 +1,10 @@
 body {
-	background-color: #fff;
+	background-color: #1c1c1c;
 	margin: auto;
 }
 
-.game {
+.gameWrapper {
 	margin: auto;
+	width: 768px;
+	height: 384px;
 }

@@ -3,7 +3,9 @@ var scale = 3;
 window.onload = function() {
 	
 	var game = new Phaser.Game(256 * scale, 128 * scale, Phaser.AUTO, 'game', { preload: preload, create: create, update: update, render: render}, false, false);
-    
+	
+	window.resizeTo(256*scale, 128*scale);
+	
 	/* GLOBALS */
 	
 	//Scenery & Objects
@@ -42,7 +44,6 @@ window.onload = function() {
     //State Information
     
     var states = {menu:0, flying:1, map:2};
-    var currentState = states.flying;
 	
 	function preload () {
         
@@ -69,34 +70,7 @@ window.onload = function() {
 	}
 
 	function create () {
-		
-		//Initialise scenery & objects
-		bg.sprite0 = groupBackground.create(bg.posX, 0, 'bg_starField');
-		bg.sprite1 = groupBackground.create(bg.posX + bg.sprite0.width, 0, 'bg_starField');
-		
-        ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
-        
-		for (i = 0; i < 5; i++) {
-			var newPlanet;
-			newPlanet = groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
-		}
-		
-        groupPlanets.scale.set(scale);
-        groupBackground.scale.set(scale);
-        groupShip.scale.set(scale);
-        
-		//Initialise UI
-        var statusPanel;
-        var barX = 0;
-        var barY = 99 * scale;
-        slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
-        statusPanel.add(new SlickUI.Element.Text(4 * scale, 8 * scale, "DAY " + ship.day));
-        statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
-        statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.passengers));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Comms: " + ship.comms));        
-        
-		initFlying();
+		changeState(states.flying);
 	}
 	
 	function update() {
@@ -108,6 +82,8 @@ window.onload = function() {
 	function render() {
 		
 	}
+	
+	/* SCENERY MANAGEMENT */
 	
 	function scrollBackground() {
 		
@@ -126,8 +102,14 @@ window.onload = function() {
 		if (groupPlanets.x < - 250 * scale)
 			groupPlanets.x = 250 * scale;
 	}
+	
+	/* UI MANAGEMENT */
     
     function displayMessage(title, content, options) {
+		
+		if (currentState != states.flying)
+			return;
+		
 		messageBox.title = title;
         messageBox.content = content;
 		messageBox.options = options;
@@ -211,14 +193,20 @@ window.onload = function() {
 		}
     }
     
+	/* STATE MACHINE */
+	
     function changeState(newState) {
         switch (newState) {
             case 0:
+				currentState = states.menu;
+                initMenu();
                 break;
             case 1:
+				currentState = states.flying;
                 initFlying();
                 break;
             case 2:
+				currentState = states.map;
                 initMap();
                 break;
             default:
@@ -226,10 +214,56 @@ window.onload = function() {
         }
     }
     
-    
+    function initMenu() {
+		
+    }
+	
     function initFlying() {
+		
+		//Initialise scenery & objects
+		bg.sprite0 = groupBackground.create(bg.posX, 0, 'bg_starField');
+		bg.sprite1 = groupBackground.create(bg.posX + bg.sprite0.width, 0, 'bg_starField');
+		
+        ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
+        
+		for (i = 0; i < 5; i++) {
+			var newPlanet;
+			newPlanet = groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
+		}
+		
+        groupPlanets.scale.set(scale);
+        groupBackground.scale.set(scale);
+        groupShip.scale.set(scale);
+        
+		//Initialise UI
+        var statusPanel;
+        var barX = 0;
+        var barY = 99 * scale;
+        slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
+        statusPanel.add(new SlickUI.Element.Text(4 * scale, 2 * scale, "DAY " + ship.day));
+        var mapButton = statusPanel.add(new SlickUI.Element.Button(2 * scale, 12 * scale, 24 * scale, 10 * scale));
+		mapButton.add(new SlickUI.Element.Text(0, 0, "Map")).center();
+        mapButton.events.onInputUp.add(function () {initMap();});
+        statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
+        statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.passengers));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Comms: " + ship.comms));
+		
 		JSONtest();
     }
+    
+    function initMap() {
+        var map;
+        slickUI.add(map = new SlickUI.Element.Panel(0, 0, game.width, game.height));
+        map.add(new SlickUI.Element.Text(4 * scale, 0, "GALACTIC MAP", 24));
+		
+        var closeButton;
+        map.add(closeButton = new SlickUI.Element.Button(game.width - 48 * scale, game.height-24*scale, 40 * scale, 14 * scale));
+        closeButton.events.onInputUp.add(function () {map.destroy(); changeState(1);});
+        closeButton.add(new SlickUI.Element.Text(0,0, "Close map")).center();
+    }
+	
+	/* TESTING FOR THE JSON INTERPRETER */
 	
 	function JSONtest() {
 		var data_encounters = game.cache.getJSON('encounters');
@@ -239,18 +273,7 @@ window.onload = function() {
 		
 		displayMessage(encounter.title, encounter.content, encounter.options);
 	}
-    
-    function initMap() {
-        var map;
-        slickUI.add(map = new SlickUI.Element.Panel(0, 0, game.width, game.height));
-        map.add(new SlickUI.Element.Text(4 * scale, 0, "GALACTIC MAP", 24));
-
-        var buttonA;
-        map.add(buttonA = new SlickUI.Element.Button(game.width - 48 * scale, game.height-24*scale, 40 * scale, 14 * scale));
-        buttonA.events.onInputUp.add(function () {map.destroy(); changeState(1);});
-        buttonA.add(new SlickUI.Element.Text(0,0, "Close map")).center();
-
-    }
+	
 };
 
 
