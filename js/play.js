@@ -167,7 +167,7 @@ var playState = {
 					//This event requires a roll of the dice to see the outcome.
 					//We grab the probability and the win/lose responses from the JSON data.
 					
-					var response = "response not set!";
+					var response = "Response not set!";
 					
 					if (Math.random() < selectedOption.winChance) {
 						//win! :)
