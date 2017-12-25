@@ -1,3 +1,7 @@
+var welcomePanel;
+var settingsPanel;
+var creditsPanel;
+
 var menuState = {
 	
 	create: function() {
@@ -29,14 +33,13 @@ var menuState = {
 		var settingsButton;
 		panel.add(settingsButton = new SlickUI.Element.Button(4, 88 + 48, 300, 44));
 		settingsButton.add(new SlickUI.Element.Text(0,0, "Settings")).center();
-        settingsButton.events.onInputUp.add(this.start);
+        settingsButton.events.onInputUp.add(this.settings);
 		
 		var creditsButton;
 		panel.add(creditsButton = new SlickUI.Element.Button(4, 88 + 48 + 48, 300, 44));
 		creditsButton.add(new SlickUI.Element.Text(0,0, "Credits")).center();
-        creditsButton.events.onInputUp.add(this.start);
+        creditsButton.events.onInputUp.add(this.credits);
         
-        var welcomePanel;
         
         slickUI.add(welcomePanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 240));
         
@@ -48,6 +51,64 @@ var menuState = {
 	
 	start: function() {
 		game.state.start('play');
-	}
+	},
 	
+    settings: function() {
+        slickUI.add(settingsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 280));
+        
+        var closeButton;
+        settingsPanel.add(closeButton = new SlickUI.Element.Button(320-32, 0, 16, 16));
+        closeButton.events.onInputUp.add(function () {settingsPanel.destroy();});
+        closeButton.add(new SlickUI.Element.Text(0,0, "x", 8)).center();
+        
+        var nameField_PilotF;
+        var nameField_PilotS;
+        var label_Pilot;
+        settingsPanel.add(label_Pilot = new SlickUI.Element.Text(8, 2, "Pilot name:", 12));
+		settingsPanel.add(nameField_PilotF = new SlickUI.Element.TextField(4, 24, 140, 44, 14));
+        nameField_PilotF.events.onOK.add(function() {ship.fname_Pilot = nameField_PilotF.value;});
+		settingsPanel.add(nameField_PilotS = new SlickUI.Element.TextField(140 + 4, 24, 159, 44, 14));
+        nameField_PilotS.events.onOK.add(function() {ship.sname_Pilot = nameField_PilotS.value;});
+        
+        var nameField_EngineerF;
+        var nameField_EngineerS;
+        var label_Engineer;
+        settingsPanel.add(label_Engineer = new SlickUI.Element.Text(8, 2 + 64, "Engineer name:", 12));
+		settingsPanel.add(nameField_EngineerF = new SlickUI.Element.TextField(4, 24 + 64, 140, 44, 14));
+        nameField_EngineerF.events.onOK.add(function() {ship.fname_Engineer = nameField_EngineerF.value;});
+		settingsPanel.add(nameField_EngineerS = new SlickUI.Element.TextField(140 + 4, 24 + 64, 159, 44, 14));
+        nameField_EngineerS.events.onOK.add(function() {ship.sname_Engineer = nameField_EngineerS.value;});
+        
+        var nameField_NavigatorF;
+        var nameField_NavigatorS;
+        var label_Navigator;
+        settingsPanel.add(label_Navigator = new SlickUI.Element.Text(8, 2 + 64 + 64, "Navigator name:", 12));
+		settingsPanel.add(nameField_NavigatorF = new SlickUI.Element.TextField(4, 24 + 64 + 64, 140, 44, 14));
+        nameField_NavigatorF.events.onOK.add(function() {ship.fname_Navigator = nameField_NavigatorF.value;});
+		settingsPanel.add(nameField_NavigatorS = new SlickUI.Element.TextField(140 + 4, 24 + 64 + 64, 159, 44, 14));
+        nameField_NavigatorS.events.onOK.add(function() {ship.sname_Navigator = nameField_NavigatorS.value;});
+        
+        var nameField_EngineerF;
+        var nameField_EngineerS;
+        var label_Engineer;
+        settingsPanel.add(label_Engineer = new SlickUI.Element.Text(8, 2 + 64 + 64 + 64, "Engineer name:", 12));
+		settingsPanel.add(nameField_EngineerF = new SlickUI.Element.TextField(4, 24 + 64 + 64 + 64, 140, 44, 14));
+        nameField_EngineerF.events.onOK.add(function() {ship.fname_Engineer = nameField_EngineerF.value;});
+		settingsPanel.add(nameField_EngineerS = new SlickUI.Element.TextField(140 + 4, 24 + 64 + 64 + 64, 159, 44, 14));
+        nameField_EngineerS.events.onOK.add(function() {ship.sname_Engineer = nameField_EngineerS.value;});
+    },
+    
+    closeSettings: function() {
+        settingsPanel.destroy();
+    },
+    
+    credits: function() {
+        var creditsPanel;
+        slickUI.add(creditsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 240));
+    },
+    
+    closeCredits: function() {
+        creditsPanel.destroy();
+    }
+    
 };

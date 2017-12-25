@@ -15,7 +15,7 @@ var mapState = {
         
         var jumpButton;
         map.add(jumpButton = new SlickUI.Element.Button(game.width/2 - 60, game.height/2-40, 120, 80));
-        jumpButton.events.onInputUp.add(function () {ship.day++ ; game.state.start('play'); playState.JSONtest();});
+        jumpButton.events.onInputUp.add(function () {ship.day++; ship.fuel--; game.state.start('play'); playState.JSONtest();});
         jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
 		
         var closeButton;

@@ -11,7 +11,15 @@ var ship = {
 	fuel: 50,
 	crew: 129,
 	oxygen: 100,
-	comms: "OPERATIONAL",
+	hull: 100,
+    fname_Pilot: "Sasha",
+    sname_Pilot: "Walker",
+    fname_Engineer: "Frank",
+    sname_Engineer: "Nemo",
+    fname_Navigator: "Nasir",
+    sname_Navigator: "Magellan",
+    fname_Security: "Danai",
+    sname_Security: "Michigan",
     
     //Parse a JSON object to change some ship data.
     effectChange: function(effect) {
@@ -20,6 +28,7 @@ var ship = {
         resource_fuel +-
         resource_crew +-
         resource_oxygen +-
+        resource_hull +=
         */
         
         if (effect.resource_fuel != null) {
@@ -30,6 +39,9 @@ var ship = {
         }
         if (effect.resource_oxygen != null) {
             ship.oxygen += effect.resource_oxygen;
+        }
+        if (effect.resource_hull != null) {
+            ship.hull += effect.resource_hull;
         }
     }
 };
@@ -149,21 +161,27 @@ var playState = {
     createMessageBox: function() {
 		
 		//Set bounds and instantiate panel
-        var x = 128 * scale;
+        var x = 84 * scale;
         var y = 7 * scale;
         var panel;
-        slickUI.add(panel = new SlickUI.Element.Panel(x, y, 120 * scale, 84 * scale));
+        slickUI.add(panel = new SlickUI.Element.Panel(x, y, 164 * scale, 84 * scale));
 		
+        messageBox.content = playState.swapNames(messageBox.content);
+        
 		//Add title and content
         panel.add(new SlickUI.Element.Text(2 * scale, 0, messageBox.title)).centerHorizontally();
         panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content));
-		
+        
 		//Add buttons
 		for (i = 0; i < messageBox.options.length; i++) {
 			var button;
 			var option = messageBox.options[i];
 			
-			panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale, 120 * scale, 14 * scale));
+            if (messageBox.options.length == 1) {
+                panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));
+            } else {
+                panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale, 164 * scale, 14 * scale));
+            }
 			button.add(new SlickUI.Element.Text(0,0, option.choice)).center();
 			
 			//Make the buttons do different stuff depending on what the JSON data says.
@@ -194,6 +212,8 @@ var playState = {
 					}
 					
 					panel.destroy();
+                    
+                    response = playState.swapNames(response);
                     
 					playState.displayMessageNoChoice(messageBox.title, response);
                     
@@ -233,6 +253,26 @@ var playState = {
 		this.displayMessage(encounter.title, encounter.content, encounter.options);
 	},
     
+    swapNames: function(text) {
+        
+        //Swap out the nametags in a string with the player-set character names (or defaults)
+        //Positions are in the format FNAME_JOBTITLE and SNAME_JOBTITLE
+        //Jobtitles are PILOT, NAVIGATOR, ENGINEER, SECURITY
+        
+        var result = text;
+        
+        result = result.replace("[FNAME_PILOT]", ship.fname_Pilot);
+        result = result.replace("[SNAME_PILOT]", ship.sname_Pilot);
+        result = result.replace("[FNAME_ENGINEER]", ship.fname_Engineer);
+        result = result.replace("[SNAME_ENGINEER]", ship.sname_Engineer);
+        result = result.replace("[FNAME_NAVIGATOR]", ship.fname_Navigator);
+        result = result.replace("[SNAME_NAVIGATOR]", ship.sname_Navigator);
+        result = result.replace("[FNAME_SECURITY]", ship.fname_Security);
+        result = result.replace("[SNAME_SECURITY]", ship.sname_Security);
+        
+        return result;
+    },
+    
     initUI: function() {
         
         var statusPanel;
@@ -247,7 +287,7 @@ var playState = {
         statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
         statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.crew));
         statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Comms: " + ship.comms));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Hull integrity: " + ship.hull + "%"));
     }
 	
 };

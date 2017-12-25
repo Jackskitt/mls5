@@ -1,4 +1,5 @@
-[{
+[
+{
 	"name": "encounter_asteroids",
 	"title": "ASTEROID FIELD DETECTED",
 	"content": "Our short-range sensors have picked up an asteroid field nearby. Might be some useful minerals in there.",
@@ -39,8 +40,32 @@
 			"effect" : {"resource_crew" : 8}
 		}
 	}, {
-		"choice": "Report to command",
+		"choice": "Ignore the readings",
 		"diceRoll": false,
-		"response": "You send a data packet back home so they can look into it. Time to move on."
+		"response": "You broadcast a data packet in case it's of use to someone else. Time to move on."
 	}]
-}]
+},
+{
+	"name": "encounter_micrometeorites",
+	"title": "MICROMETEORITE BARRAGE",
+	"content": "You can make out a sound like hail falling on a metal roof. Navigation Officer [SNAME_NAVIGATOR] says you've jumped right into a debris field.",
+	"options":
+	[{
+		"choice": "Trust your pilot",
+		"diceRoll": true,
+		"winChance": 0.8,
+		"win": {
+			"response": "[FNAME_PILOT] threads the needle, pulling you out of the path of the bigger fragments. You take a few hits, but the ship survives.",
+			"effect" : {"resource_hull" : -4}
+		},
+		"fail": {
+			"response": "[FNAME_PILOT] opens the throttle and tries to power through the field. A metal shard looms out of the darkness. [FNAME_PILOT] is fast, but not fast enough. You pull through. Barely.",
+			"effect" : {"resource_hull" : -25, "resource_fuel" : -5}
+		}
+	}, {
+		"choice": "(-25 FUEL) Raise emergency shield",
+		"diceRoll": false,
+		"response": "Chief Engineer [SNAME_ENGINEER] diverts power to the emergency shield. It screeches into life and drains the fuel cells. The storm continues, but the hull holds."
+	}]
+}
+]
