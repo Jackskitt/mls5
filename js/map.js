@@ -12,6 +12,11 @@ var mapState = {
         var map;
         slickUI.add(map = new SlickUI.Element.Panel(0, 0, game.width, game.height));
         map.add(new SlickUI.Element.Text(4 * scale, 0, "GALACTIC MAP", 24));
+        
+        var jumpButton;
+        map.add(jumpButton = new SlickUI.Element.Button(game.width/2 - 60, game.height/2-40, 120, 80));
+        jumpButton.events.onInputUp.add(function () {ship.day++ ; game.state.start('play'); playState.JSONtest();});
+        jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
 		
         var closeButton;
         map.add(closeButton = new SlickUI.Element.Button(game.width - 48 * scale, game.height-24*scale, 40 * scale, 14 * scale));

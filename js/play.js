@@ -9,9 +9,29 @@ var ship = {
 	posY: 48,
 	day: 1,
 	fuel: 50,
-	passengers: 129,
+	crew: 129,
 	oxygen: 100,
-	comms: "OPERATIONAL"
+	comms: "OPERATIONAL",
+    
+    //Parse a JSON object to change some ship data.
+    effectChange: function(effect) {
+        /*
+        The possible effects are:
+        resource_fuel +-
+        resource_crew +-
+        resource_oxygen +-
+        */
+        
+        if (effect.resource_fuel != null) {
+            ship.fuel += effect.resource_fuel;
+        }
+        if (effect.resource_crew != null) {
+            ship.crew += effect.resource_crew;
+        }
+        if (effect.resource_oxygen != null) {
+            ship.oxygen += effect.resource_oxygen;
+        }
+    }
 };
 
 var bg = {
@@ -69,21 +89,11 @@ var playState = {
         groupBackground.scale.set(scale);
         groupShip.scale.set(scale);
 		
-		//Initialise UI
-        var statusPanel;
-        var barX = 0;
-        var barY = 99 * scale;
-        slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
-        statusPanel.add(new SlickUI.Element.Text(4 * scale, 2 * scale, "DAY " + ship.day));
-        var mapButton = statusPanel.add(new SlickUI.Element.Button(2 * scale, 12 * scale, 24 * scale, 10 * scale));
-		mapButton.add(new SlickUI.Element.Text(0, 0, "Map")).center();
-        mapButton.events.onInputUp.add(function () {game.state.start('map');});
-        statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
-        statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.passengers));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Comms: " + ship.comms));
-		
-		this.JSONtest();
+        this.initUI();
+        
+        if (ship.day > 1) {
+            this.JSONtest();
+        }
 	},
 	
 	update: function() {
@@ -168,20 +178,27 @@ var playState = {
 					//We grab the probability and the win/lose responses from the JSON data.
 					
 					var response = "Response not set!";
+                    var effect = "Effect not set!";
 					
 					if (Math.random() < selectedOption.winChance) {
 						//win! :)
 						response = selectedOption.win.response;
-						console.log(selectedOption.win.effect);
+						effect = selectedOption.win.effect;
+                        ship.effectChange(effect);
 						
 					} else {
 						//fail! :(
 						response = selectedOption.fail.response;
-						console.log(selectedOption.fail.effect);
+						effect = selectedOption.fail.effect;
+                        ship.effectChange(effect);
 					}
 					
 					panel.destroy();
+                    
 					playState.displayMessageNoChoice(messageBox.title, response);
+                    
+                    //Update the UI with the changes
+                    playState.initUI();
 				});
 				
 			} else {
@@ -196,6 +213,10 @@ var playState = {
 						//option.final is just a flag to note whether this is the last dialog box.
 						playState.displayMessageNoChoice(messageBox.title, option.response);
 					}
+                    
+                    //Update the UI with the changes
+                    playState.initUI();
+                    
 				});
 			}
 		}
@@ -210,6 +231,23 @@ var playState = {
 		console.log("Encounter: " + encounter.name);
 		
 		this.displayMessage(encounter.title, encounter.content, encounter.options);
-	}
+	},
+    
+    initUI: function() {
+        
+        var statusPanel;
+        var barX = 0;
+        var barY = 99 * scale;
+        slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
+        
+        statusPanel.add(new SlickUI.Element.Text(4 * scale, 2 * scale, "DAY " + ship.day));
+        var mapButton = statusPanel.add(new SlickUI.Element.Button(2 * scale, 12 * scale, 24 * scale, 10 * scale));
+		mapButton.add(new SlickUI.Element.Text(0, 0, "Map")).center();
+        mapButton.events.onInputUp.add(function () {game.state.start('map');});
+        statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
+        statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.crew));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Comms: " + ship.comms));
+    }
 	
 };
