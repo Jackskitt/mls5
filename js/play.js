@@ -10,7 +10,7 @@ var ship = {
 	day: 1,
 	fuel: 50,
 	crew: 129,
-	oxygen: 100,
+	happiness: 100,
 	hull: 100,
     fname_Pilot: "Sasha",
     sname_Pilot: "Walker",
@@ -27,7 +27,7 @@ var ship = {
         The possible effects are:
         resource_fuel +-
         resource_crew +-
-        resource_oxygen +-
+        resource_happiness +-
         resource_hull +=
         */
         
@@ -37,8 +37,8 @@ var ship = {
         if (effect.resource_crew != null) {
             ship.crew += effect.resource_crew;
         }
-        if (effect.resource_oxygen != null) {
-            ship.oxygen += effect.resource_oxygen;
+        if (effect.resource_happiness != null) {
+            ship.happiness += effect.resource_happiness;
         }
         if (effect.resource_hull != null) {
             ship.hull += effect.resource_hull;
@@ -110,6 +110,10 @@ var playState = {
 	
 	update: function() {
 		this.scrollBackground();
+        
+        if (ship.happiness > 100) {
+            ship.happiness = 100;
+        }
 	},
 	
 	render: function() {
@@ -286,7 +290,7 @@ var playState = {
         mapButton.events.onInputUp.add(function () {game.state.start('map');});
         statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
         statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.crew));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Oxygen: " + ship.oxygen + "%"));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Happiness index: " + ship.happiness + "%"));
         statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Hull integrity: " + ship.hull + "%"));
     }
 	

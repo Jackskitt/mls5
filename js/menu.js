@@ -5,12 +5,10 @@ var creditsPanel;
 var menuState = {
 	
 	create: function() {
-		
         
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
         slickUI.load('res/ui/kenney/kenney.json');
-		
 		
         var panel;
         
@@ -40,26 +38,23 @@ var menuState = {
 		creditsButton.add(new SlickUI.Element.Text(0,0, "Credits")).center();
         creditsButton.events.onInputUp.add(this.credits);
         
-        
         slickUI.add(welcomePanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 240));
         
         var welcomeText;
         
         welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 4, "Welcome to MLS.", 24));
-        welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 44, "My Little Starship is a game about safely running a generation ship carrying refugees from Earth.\n\nCan you reach Earth 2?", 15));
-	},
-	
-	start: function() {
-		game.state.start('play');
-	},
-	
-    settings: function() {
-        slickUI.add(settingsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 280));
+        welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 44, "You're the captain of a generation ship carrying Earth's last humans. Can you find a new home?\n\nExpect bugs. Send feedback to contact@niallslater.com.", 16));
         
-        var closeButton;
-        settingsPanel.add(closeButton = new SlickUI.Element.Button(320-32, 0, 16, 16));
-        closeButton.events.onInputUp.add(function () {settingsPanel.destroy();});
-        closeButton.add(new SlickUI.Element.Text(0,0, "x", 8)).center();
+        slickUI.add(creditsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 240));
+        
+        var closeCreditsButton;
+        creditsPanel.add(closeCreditsButton = new SlickUI.Element.Button(320-32, 0, 16, 16));
+        closeCreditsButton.events.onInputUp.add(function () {menuState.closeCredits();});
+        closeCreditsButton.add(new SlickUI.Element.Text(0,0, "x", 8)).center();
+        
+        creditsPanel.visible = false;
+        
+        slickUI.add(settingsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 280));
         
         var nameField_PilotF;
         var nameField_PilotS;
@@ -96,19 +91,36 @@ var menuState = {
         nameField_EngineerF.events.onOK.add(function() {ship.fname_Engineer = nameField_EngineerF.value;});
 		settingsPanel.add(nameField_EngineerS = new SlickUI.Element.TextField(140 + 4, 24 + 64 + 64 + 64, 159, 44, 14));
         nameField_EngineerS.events.onOK.add(function() {ship.sname_Engineer = nameField_EngineerS.value;});
+        
+        
+        var closeSettingsButton;
+        settingsPanel.add(closeSettingsButton = new SlickUI.Element.Button(320-32, 0, 16, 16));
+        closeSettingsButton.events.onInputUp.add(function () {menuState.closeSettings();});
+        closeSettingsButton.add(new SlickUI.Element.Text(0,0, "x", 8)).center();
+        
+        settingsPanel.visible = false;
+	},
+	
+	start: function() {
+		game.state.start('play');
+	},
+	
+    settings: function() {
+        creditsPanel.visible = false;
+        settingsPanel.visible = true;
     },
     
     closeSettings: function() {
-        settingsPanel.destroy();
+        settingsPanel.visible = false;
     },
     
     credits: function() {
-        var creditsPanel;
-        slickUI.add(creditsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 240));
+        settingsPanel.visible = false;
+        creditsPanel.visible = true;
     },
     
     closeCredits: function() {
-        creditsPanel.destroy();
+        creditsPanel.visible = false;
     }
     
 };
