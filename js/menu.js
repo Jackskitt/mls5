@@ -11,11 +11,6 @@ var menuState = {
         slickUI.load('res/ui/kenney/kenney.json');
 		
         var panel;
-        
-        //Slick UI library
-        slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
-        slickUI.load('res/ui/kenney/kenney.json');
-		
 		
         slickUI.add(panel = new SlickUI.Element.Panel(48, 48, 320, 240));
 		

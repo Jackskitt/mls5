@@ -12,3 +12,5 @@ game.state.add('map', mapState);
 game.state.add('win', winState);
 
 game.state.start('boot');
+
+var mapData;

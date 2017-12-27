@@ -1,0 +1,57 @@
+[
+{
+	"name": "Home",
+	"x" : 64,
+	"y" : 128,
+	"spriteIndex" : 1,
+	"visited": true,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [1,2],
+	"isDestination": false
+},
+{
+	"name": "System one",
+	"x" : 194,
+	"y" : 100,
+	"spriteIndex" : 3,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [3],
+	"isDestination": false
+},
+{
+	"name": "System two",
+	"x" : 200,
+	"y" : 190,
+	"spriteIndex" : 0,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [3],
+	"isDestination": false
+},
+{
+	"name": "System three",
+	"x" : 349,
+	"y" : 124,
+	"spriteIndex" : 1,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [4],
+	"isDestination": false
+},
+{
+	"name": "System four",
+	"x" : 440,
+	"y" : 175,
+	"spriteIndex" : 2,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [],
+	"isDestination": true
+}
+]

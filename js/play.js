@@ -81,7 +81,7 @@ var playState = {
 		slickUI.load('res/ui/kenney/kenney.json');
 		
 		//Data
-		game.load.json("encounters", "res/data/encounters.json");
+		game.load.json("data_encounters", "res/data/data_encounters.json");
 	},
 
 	create: function () {
@@ -249,7 +249,7 @@ var playState = {
 	/* TESTING FOR THE JSON INTERPRETER */
 	
 	JSONtest: function() {
-		var data_encounters = game.cache.getJSON('encounters');
+		var data_encounters = game.cache.getJSON('data_encounters');
 		var selector = Math.floor(Math.random() * data_encounters.length);
 		var encounter = data_encounters[selector];
 		console.log("Encounter: " + encounter.name);
