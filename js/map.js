@@ -58,7 +58,7 @@ var mapState = {
                 var iconRadius = 10;
                 
                 /*
-                    We're rending the lines as textures for performance reasons, but this means
+                    We're rendering the lines as textures for performance reasons, but this means
                     that if the line has a negative angle (that is, it slopes upwards onscreen)
                     it draws too low down. The below is a quick and easy fix that just checks if
                     the line has a negative angle and, if so, subtracts the line's height from
@@ -107,7 +107,7 @@ var mapState = {
         jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
 		
         var closeButton;
-        mapPanel.add(closeButton = new SlickUI.Element.Button(game.width - 48, game.height-24, 40, 14));
+        mapPanel.add(closeButton = new SlickUI.Element.Button(game.width - 150, game.height-62, 120, 36));
         closeButton.events.onInputUp.add(function () {game.state.start('play');});
         closeButton.add(new SlickUI.Element.Text(0,0, "Close map")).center();
     },
@@ -115,18 +115,16 @@ var mapState = {
     update: function() {
         
         game.world.bringToTop(groupIcons);
-        
     },
 	
 	selectIcon: function(icon) {
 
-		selectedIcon = icon;
+		selectedIcon = this.icon;
 		
-		console.log("icon is");
-		console.log(selectedIcon);
+		console.log(selectedIcon.data.name);
 		
-		icon_selector.x = selectedIcon.x - mapOffsetX - 5; //These 'magic numbers' (5 and 17) are half the width and height of the selector icon. (They won't change.)
-		icon_selector.y = selectedIcon.y - mapOffsetY - 17;
+		icon_selector.x = selectedIcon.x + mapOffsetX + 5; //These 'magic numbers' (5 and 7) are half the width and height of the selector icon. (They won't change.)
+		icon_selector.y = selectedIcon.y + mapOffsetY - 7;
 		icon_selector.visible = true;
 	},
 	
