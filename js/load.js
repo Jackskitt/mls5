@@ -19,6 +19,9 @@ var loadState = {
         }
         game.load.image('icon_planet_selector', 'res/ui/icon_planet_selector.png');
         game.load.image('icon_planet_highlight', 'res/ui/icon_planet_highlight.png');
+		
+        game.load.image('warning_lowFuel', 'res/ui/warning_lowFuel.png');
+        game.load.image('warning_noFuel', 'res/ui/warning_noFuel.png');
         
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
