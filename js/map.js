@@ -1,10 +1,29 @@
-var connectingLines = [];
+/*
+    Much of the UI in MLS5 uses hardcoded pixel values to position elements.
+    This isn't ideal design, but the pixel art means we want to be careful
+    with resizing (don't want any antialiasing). Often just easier to do it
+    directly in the code.
+*/
+
+/* TODO: have a look at these globals and see which need to/can be moved to the mapState object */
+
+//UI positioning values
 var mapOffsetX = 8;
 var mapOffsetY = 40;
+
+//UI elements
 var groupIcons;
 var systemIcons;
 var selectedIcon;
 var icon_selector;
+var connectingLines = [];
+
+var mapPanel;
+var mapBG;  //The image we use as the background of the map.
+
+var systemPanel;
+var systemPanel_name;
+var systemPanel_description;
 
 var mapState = {
 	
@@ -16,11 +35,10 @@ var mapState = {
 	},
 	
     create: function () {
-        var mapPanel;
+        
         slickUI.add(mapPanel = new SlickUI.Element.Panel(0, 0, game.width, game.height));
         mapPanel.add(new SlickUI.Element.Text(4, 0, "GALACTIC MAP", 24));
         
-        var mapBG;
         mapPanel.add(mapBG = new SlickUI.Element.DisplayObject(mapOffsetX, mapOffsetY, game.make.sprite(0, 0, 'bg_map')));
         
         mapBG.add(icon_selector = new SlickUI.Element.DisplayObject(0, 0, game.make.sprite(0, 0, 'icon_planet_selector')));
@@ -35,8 +53,6 @@ var mapState = {
         
         systemIcons = [];
         groupIcons = game.add.group();
-		
-		starSystems = [];
         
         for (var i = 0; i < mapData.systems.length; i++) {
             
@@ -99,6 +115,15 @@ var mapState = {
         var firstSystem = mapData.systems[0];
         mapBG.add(highlight = new SlickUI.Element.DisplayObject(firstSystem.x, firstSystem.y, game.make.image(0, 0, 'icon_planet_highlight')));
         
+        //Create the panel which shows information about the selected system
+        mapPanel.add(systemPanel = new SlickUI.Element.Panel(mapPanel.width - 260, mapPanel.height-320, 220, 220));
+        
+        systemPanel.alpha = 0.8;
+        
+        systemPanel.add(systemPanel_name = new SlickUI.Element.Text(2, 0, "SYSTEM: "), 14);
+        systemPanel.add(systemPanel_description = new SlickUI.Element.Text(2, 24, "Description text"), 12);
+        systemPanel.visible = false;
+        
         //Create the button to jump to the selected system
 		
         var jumpButton;
@@ -115,17 +140,29 @@ var mapState = {
     update: function() {
         
         game.world.bringToTop(groupIcons);
+        
     },
 	
 	selectIcon: function(icon) {
 
 		selectedIcon = this.icon;
 		
-		console.log(selectedIcon.data.name);
-		
 		icon_selector.x = selectedIcon.x + mapOffsetX + 5; //These 'magic numbers' (5 and 7) are half the width and height of the selector icon. (They won't change.)
 		icon_selector.y = selectedIcon.y + mapOffsetY - 7;
 		icon_selector.visible = true;
+        
+        var canGetToSelection = "Not reachable";
+        
+        //TODO: update mapData.shipPosition to correspond to a system with data access,
+        //      so we can check it against the selected system and see if it's one of
+        //      the reachable systems.
+        
+        systemPanel_name.value = "SYSTEM: " + selectedIcon.data.name;
+        systemPanel_description.value = selectedIcon.data.description + "\n\n" +
+                                        "DANGER: " + selectedIcon.data.danger + "\n" +
+                                        canGetToSelection;
+        
+        systemPanel.visible = true;
 	},
 	
 	jump: function() {
@@ -137,6 +174,8 @@ var mapState = {
 			-If so, jump and change ship.currentSystem
 			-Else, display some kind of response
 		*/
+        
+        systemPanel.visible = false;
 		
 		ship.day++;
 		ship.fuel--;

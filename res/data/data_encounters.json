@@ -14,7 +14,7 @@
 		},
 		"fail": {
 			"response": "You send a scout ship to carve out some ore. A micrometeorite swipes it out of existence, taking the crew with it.",
-			"effect" : {"resource_crew" : -4}
+			"effect" : {"resource_crew" : -4, "resource_happiness" : -10}
 		}
 	}, {
 		"choice": "Leave it, too dangerous",
@@ -37,7 +37,7 @@
 		},
 		"fail": {
 			"response": "The landing craft enters the ionosphere and immediately loses contact. You wait for hours, but they don't return.",
-			"effect" : {"resource_crew" : 8}
+			"effect" : {"resource_crew" : 8, "resource_happiness" : -15}
 		}
 	}, {
 		"choice": "Ignore the readings",
