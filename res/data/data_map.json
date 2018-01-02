@@ -54,7 +54,7 @@
 	"y" : 75,
 	"spriteIndex" : 4,
 	"visited": false,
-	"danger": null,
+	"danger": "ASTEROIDS",
 	"encounter": null,
 	"reachableSystems": [5,6],
 	"isDestination": false
@@ -78,19 +78,19 @@
 	"y" : 140,
 	"spriteIndex" : 2,
 	"visited": false,
-	"danger": null,
+	"danger": "MILITARY",
 	"encounter": null,
 	"reachableSystems": [8,9],
 	"isDestination": false
 },
 {
 	"name": "Reach",
-	"description": "A promising world with a rich nitrogen atmosphere, but plagued by electrical storms.",
+	"description": "A promising world with a rich nitrogen atmosphere, but plagued by ion storms.",
 	"x" : 345,
 	"y" : 75,
 	"spriteIndex" : 0,
 	"visited": false,
-	"danger": null,
+	"danger": "ION STORMS",
 	"encounter": null,
 	"reachableSystems": [9],
 	"isDestination": false

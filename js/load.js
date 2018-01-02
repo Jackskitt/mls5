@@ -1,3 +1,6 @@
+var data_encounters;
+var encounterCounter;
+
 var loadState = {
 	
 	preload: function() {
@@ -30,7 +33,7 @@ var loadState = {
         slickUI.load('res/ui/kenney/kenney.json');
 		
 		//Data
-		game.load.json("data_encounters", "res/data/data_encounters.json");
+		game.load.json("data_encounters", "res/data/data_encounters.json");		//TODO: randomise encounter list at start of game and iterate through to prevent repetition
 		game.load.json("data_map", "res/data/data_map.json");
         
         mapData = {
@@ -46,6 +49,9 @@ var loadState = {
         
 		//shipPosition is an integer corresponding to the index of the current system in mapData.systems
 		mapData.shipPosition = 0;
+		
+		//Shuffle the encounter list
+		
 		
 		game.state.start('menu');
 	}

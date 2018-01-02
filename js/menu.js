@@ -97,6 +97,7 @@ var menuState = {
 	},
 	
 	start: function() {
+		encounterCounter = 0;
 		game.state.start('play');
 	},
 	

@@ -21,6 +21,8 @@ var connectingLines = [];
 var mapPanel;
 var mapBG;  //The image we use as the background of the map.
 
+var jumpButton;
+
 var systemPanel;
 var systemPanel_name;
 var systemPanel_description;
@@ -130,16 +132,16 @@ var mapState = {
         
         systemPanel.alpha = 0.8;
         
-        systemPanel.add(systemPanel_name = new SlickUI.Element.Text(2, 0, "SYSTEM: "), 14);
-        systemPanel.add(systemPanel_description = new SlickUI.Element.Text(2, 24, "Description text"), 12);
+        systemPanel.add(systemPanel_name = new SlickUI.Element.Text(2, 0, "SYSTEM"), 14).centerHorizontally();
+        systemPanel.add(systemPanel_description = new SlickUI.Element.Text(2, 28, "Description text"), 12);
         systemPanel.visible = false;
         
         //Create the button to jump to the selected system
 		
-        var jumpButton;
         mapPanel.add(jumpButton = new SlickUI.Element.Button(game.width/2 - 60, game.height-82, 120, 60));
         jumpButton.events.onInputUp.add(function () {mapState.jump();});
         jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
+		jumpButton.visible = false;
 		
         var closeButton;
         mapPanel.add(closeButton = new SlickUI.Element.Button(game.width - 150, game.height-62, 120, 36));
@@ -160,14 +162,21 @@ var mapState = {
 		icon_selector.x = selectedIcon.x + mapOffsetX + 5; //These 'magic numbers' (5 and 7) are half the width and height of the selector icon. (They won't change.)
 		icon_selector.y = selectedIcon.y + mapOffsetY - 7;
 		icon_selector.visible = true;
+		
+		jumpButton.visible = false;
+		
+		if (mapState.canReachSystem(selectedIcon)) {
+			jumpButton.visible = true;
+		}
         
-        var canGetToSelection = "Not reachable";
-        
-        systemPanel_name.value = "SYSTEM: " + selectedIcon.data.name;
-        systemPanel_description.value = selectedIcon.data.description + "\n\n" +
-                                        "DANGER: " + selectedIcon.data.danger + "\n" +
-                                        canGetToSelection;
-        
+        systemPanel_name.value = selectedIcon.data.name.toUpperCase();
+		systemPanel_name.centerHorizontally();
+        systemPanel_description.value = selectedIcon.data.description;
+		
+		if (selectedIcon.data.danger != null) {
+			 systemPanel_description.value += "\n\n" + "DANGER: " + selectedIcon.data.danger;
+		}
+		
         systemPanel.visible = true;
 	},
 	
@@ -184,12 +193,9 @@ var mapState = {
 		var canMakeJump = false;
 		
 		var currentSystem = mapData.systems[mapData.shipPosition];
-		var currentlyReachableSystems = currentSystem.reachableSystems;
-        
-		for (var i = 0; i < currentlyReachableSystems.length; i++) {
-			if (currentlyReachableSystems[i] == mapData.systems.indexOf(selectedIcon.data)) {
-				canMakeJump = true;
-			}
+		
+		if (mapState.canReachSystem(selectedIcon)) {
+			canMakeJump = true;
 		}
 		
 		if (!canMakeJump) {
@@ -205,17 +211,24 @@ var mapState = {
 		//Update ship position
 		mapData.shipPosition = mapData.systems.indexOf(selectedIcon.data);
 		
-		if (selectedIcon.data.isDestination) {
-			//If this returns true then the player has reached the goal
-			
-			console.log("YOU WIN YAY");
-		}
-		
         systemPanel.visible = false;
 		
 		ship.day++;
 		ship.fuel--;
 		game.state.start('play');
+	},
+	
+	canReachSystem: function(systemIconToCheck) {
+		
+		var currentSystem = mapData.systems[mapData.shipPosition];
+		
+		for (var i = 0; i < currentSystem.reachableSystems.length; i++) {
+			if (currentSystem.reachableSystems[i] == mapData.systems.indexOf(systemIconToCheck.data)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 };
