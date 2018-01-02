@@ -75,21 +75,26 @@ var mapState = {
                 
                 /*
                     We're rendering the lines as textures for performance reasons, but this means
-                    that if the line has a negative angle (that is, it slopes upwards onscreen)
-                    it draws too low down. The below is a quick and easy fix that just checks if
-                    the line has a negative angle and, if so, subtracts the line's height from
-                    the y-position of the render.
+					that if the end point is above or to the left of the start point, you need to
+					adjust the position of the texture
                 */
                 
-                var gradientCorrection;
+                var yCorrection;
+				var xCorrection;
                 
                 if (line.angle < 0) {
-                    gradientCorrection = -line.height;
+                    yCorrection = -line.height;
                 } else {
-                    gradientCorrection = 0;
+                    yCorrection = 0;
                 }
                 
-                var myLine = game.add.image(line.start.x + mapOffsetX + iconRadius, line.start.y + mapOffsetY + iconRadius + gradientCorrection, graphicsLine.generateTexture());
+                if (line.end.x < line.start.x) {
+                    xCorrection = -line.width;
+                } else {
+                    xCorrection = 0;
+                }
+                
+                var myLine = game.add.image(line.start.x + mapOffsetX + iconRadius + xCorrection, line.start.y + mapOffsetY + iconRadius + yCorrection, graphicsLine.generateTexture());
                 
                 graphicsLine.destroy();
             }
@@ -108,12 +113,12 @@ var mapState = {
             groupIcons.add(systemIcons[i].sprite);
         }
         
-		//Create the highlight to show the player's current system:
+		//Create the highlight to show the player's current system. (16 is an offset because the highlight has an extra bit on top)
 		
         var highlight;
         
-        var firstSystem = mapData.systems[0];
-        mapBG.add(highlight = new SlickUI.Element.DisplayObject(firstSystem.x, firstSystem.y, game.make.image(0, 0, 'icon_planet_highlight')));
+        var highlightedSystem = mapData.systems[mapData.shipPosition];
+        mapBG.add(highlight = new SlickUI.Element.DisplayObject(highlightedSystem.x, highlightedSystem.y - 16, game.make.image(0, 0, 'icon_planet_highlight')));
         
         //Create the panel which shows information about the selected system
         mapPanel.add(systemPanel = new SlickUI.Element.Panel(mapPanel.width - 260, mapPanel.height-320, 220, 220));
@@ -153,10 +158,6 @@ var mapState = {
         
         var canGetToSelection = "Not reachable";
         
-        //TODO: update mapData.shipPosition to correspond to a system with data access,
-        //      so we can check it against the selected system and see if it's one of
-        //      the reachable systems.
-        
         systemPanel_name.value = "SYSTEM: " + selectedIcon.data.name;
         systemPanel_description.value = selectedIcon.data.description + "\n\n" +
                                         "DANGER: " + selectedIcon.data.danger + "\n" +
@@ -174,7 +175,30 @@ var mapState = {
 			-If so, jump and change ship.currentSystem
 			-Else, display some kind of response
 		*/
+		
+		var canMakeJump = false;
+		
+		var currentSystem = mapData.systems[mapData.shipPosition];
+		var currentlyReachableSystems = currentSystem.reachableSystems;
         
+		for (var i = 0; i < currentlyReachableSystems.length; i++) {
+			console.log("checking " + currentlyReachableSystems[i] + " against " + mapData.systems.indexOf(selectedIcon.data));
+			if (currentlyReachableSystems[i] == mapData.systems.indexOf(selectedIcon.data)) {
+				canMakeJump = true;
+			}
+		}
+		
+		if (!canMakeJump) {
+			//Display a warning notice if system is out of reach
+			//OR if not enough fuel
+			return;
+		}
+		
+		//Checks complete - we can jump!
+		
+		//Update ship position
+		mapData.shipPosition = mapData.systems.indexOf(selectedIcon.data);
+		
         systemPanel.visible = false;
 		
 		ship.day++;

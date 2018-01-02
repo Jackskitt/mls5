@@ -41,7 +41,10 @@ var loadState = {
 	
 	create: function() {
         mapData.systems = game.cache.getJSON('data_map');
-        mapData.shipPosition = mapData.systems[0];
+        
+		//shipPosition is an integer corresponding to the index of the current system in mapData.systems
+		mapData.shipPosition = 0;
+		
 		game.state.start('menu');
 	}
 	

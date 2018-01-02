@@ -62,13 +62,13 @@
 {
 	"name": "LV-426",
 	"description": "A cold rock, but it looks harmless enough.",
-	"x" : 300,
+	"x" : 380,
 	"y" : 20,
 	"spriteIndex" : 3,
 	"visited": false,
 	"danger": null,
 	"encounter": null,
-	"reachableSystems": [],
+	"reachableSystems": [7],
 	"isDestination": false
 },
 {
@@ -80,7 +80,19 @@
 	"visited": false,
 	"danger": null,
 	"encounter": null,
-	"reachableSystems": [7,8],
+	"reachableSystems": [8,9],
+	"isDestination": false
+},
+{
+	"name": "Reach",
+	"description": "A promising world with a rich nitrogen atmosphere, but plagued by electrical storms.",
+	"x" : 345,
+	"y" : 75,
+	"spriteIndex" : 0,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [9],
 	"isDestination": false
 },
 {
@@ -92,14 +104,14 @@
 	"visited": false,
 	"danger": null,
 	"encounter": null,
-	"reachableSystems": [8],
+	"reachableSystems": [9],
 	"isDestination": false
 },
 {
 	"name": "Earth 2.0",
 	"description": "This is a rocky world in the goldilocks zone. Fingers crossed.",
-	"x" : 390,
-	"y" : 75,
+	"x" : 420,
+	"y" : 95,
 	"spriteIndex" : 0,
 	"visited": false,
 	"danger": null,
