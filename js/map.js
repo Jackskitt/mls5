@@ -102,6 +102,11 @@ var mapState = {
             //Now add the icons.
             mapBG.add(systemIcons[i] = new SlickUI.Element.DisplayObject(starSystem.x, starSystem.y, game.make.image(0, 0, 'icon_planet' + starSystem.spriteIndex)));
 			
+			//Check if the system description mentions an asteroid belt - if so, put one on the map screen
+			if (starSystem.description.indexOf('asteroid') != -1) {
+				mapBG.add(new SlickUI.Element.DisplayObject(starSystem.x - 24, starSystem.y - 24, game.make.image(0, 0, 'icon_asteroids')));
+			}
+			
 			//Give each icon a reference to the JSON information about that system
 			systemIcons[i].data = starSystem;
 			
@@ -113,7 +118,7 @@ var mapState = {
             groupIcons.add(systemIcons[i].sprite);
         }
         
-		//Create the highlight to show the player's current system. (16 is an offset because the highlight has an extra bit on top)
+		//Create the highlight to show the player's current system. (Using a 16px offset because the highlight has an extra bit on top)
 		
         var highlight;
         
@@ -182,7 +187,6 @@ var mapState = {
 		var currentlyReachableSystems = currentSystem.reachableSystems;
         
 		for (var i = 0; i < currentlyReachableSystems.length; i++) {
-			console.log("checking " + currentlyReachableSystems[i] + " against " + mapData.systems.indexOf(selectedIcon.data));
 			if (currentlyReachableSystems[i] == mapData.systems.indexOf(selectedIcon.data)) {
 				canMakeJump = true;
 			}
@@ -196,8 +200,16 @@ var mapState = {
 		
 		//Checks complete - we can jump!
 		
+		/* TODO: jump effect goes here */
+		
 		//Update ship position
 		mapData.shipPosition = mapData.systems.indexOf(selectedIcon.data);
+		
+		if (selectedIcon.data.isDestination) {
+			//If this returns true then the player has reached the goal
+			
+			console.log("YOU WIN YAY");
+		}
 		
         systemPanel.visible = false;
 		

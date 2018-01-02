@@ -20,6 +20,8 @@ var ship = {
     sname_Navigator: "Magellan",
     fname_Security: "Danai",
     sname_Security: "Michigan",
+	
+	reachedDestination: false,
     
     //Parse a JSON object to change some ship data.
     effectChange: function(effect) {

@@ -14,7 +14,7 @@ var loadState = {
 		
         //Map screen
         game.load.image('bg_map', 'res/ui/bg_map.png');
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 6; i++) {
             game.load.image('icon_planet' + i, 'res/ui/icon_planet' + i + '.png');
         }
         game.load.image('icon_planet_selector', 'res/ui/icon_planet_selector.png');
@@ -22,6 +22,8 @@ var loadState = {
 		
         game.load.image('warning_lowFuel', 'res/ui/warning_lowFuel.png');
         game.load.image('warning_noFuel', 'res/ui/warning_noFuel.png');
+		
+        game.load.image('icon_asteroids', 'res/ui/icon_asteroids.png');
         
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
