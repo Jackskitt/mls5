@@ -37,7 +37,7 @@
 		},
 		"fail": {
 			"response": "The landing craft enters the ionosphere and immediately loses contact. You wait for hours, but they don't return.",
-			"effect" : {"resource_crew" : 8, "resource_happiness" : -15}
+			"effect" : {"resource_crew" : -8, "resource_happiness" : -15}
 		}
 	}, {
 		"choice": "Ignore the readings",
@@ -90,6 +90,37 @@
 		"diceRoll": false,
 		"response": "[SNAME_SECURITY] doesn't seem happy about it, but talks to the victim and convinces them to keep quiet. You transfer him to another department.",
 		"effect" : {"resource_happiness" : -5}
+	}]
+},
+{
+	"name": "encounter_storm",
+	"title": "ION STORM",
+	"content": "A panel lights up on the bridge. Moments later a warning comes through from belowdecks - you've jumped right into a cloud of ionised gas.",
+	"options":
+	[{
+		"choice": "Try to boost away",
+		"diceRoll": true,
+		"winChance": 0.45,
+		"win": {
+			"response": "[SNAME_PILOT] hits the afterburner and the ship lurches out of danger. Close one.",
+			"effect" : {"resource_fuel" : -5}
+		},
+		"fail": {
+			"response": "[SNAME_PILOT] floors it, but the cloud is huge. The shield soaks up most of the damage, but ion interference causes it to score the hull badly.",
+			"effect" : {"resource_fuel" : -5, "resource_hull" : -12}
+		}
+	}, {
+		"choice": "Lockdown systems and stay put",
+		"diceRoll": true,
+		"winChance": 0.85,
+		"win": {
+			"response": "[SNAME_ENGINEER] flips the shield to static mode and [SNAME_PILOT] kills the engines. You ride it out with minimal damage.",
+			"effect" : {"resource_hull" : -2}
+		},
+		"fail": {
+			"response": "[SNAME_ENGINEER] locks down all systems, but after hours of bombardment the heating system overloads and causes an explosion in the mess hall. [SNAME_ENGINEER] barely manages to contain the damage.",
+			"effect" : {"resource_crew" : -3, "resource_hull" : -16}
+		}
 	}]
 }
 ]

@@ -223,17 +223,53 @@ var playState = {
 					
 					var response = "Response not set!";
                     var effect = "Effect not set!";
+					var effectText = "";
 					
 					if (Math.random() < selectedOption.winChance) {
 						//win! :)
 						response = selectedOption.win.response;
 						effect = selectedOption.win.effect;
+						
+						effectText = JSON.stringify(effect);
+						effectText = effectText.substr(effectText.indexOf('_')+1);
+						effectText = effectText.replace('":',": ");
+						effectText = effectText.replace('}',"");
+						
+						if (effectText.includes(',')) {
+							var effectText2 = effectText.substr(effectText.indexOf(',')+1);
+							effectText = effectText.substr(0,effectText.indexOf(','));
+							effectText2 = effectText2.substr(effectText2.indexOf('_')+1);
+							effectText2 = effectText2.replace('":',": ");
+							effectText2 = effectText2.replace('}',"");
+							
+							effectText += "\n" + effectText2;
+						}
+						
+						response += "\n\n" + effectText;
+						
                         ship.effectChange(effect);
 						
 					} else {
 						//fail! :(
 						response = selectedOption.fail.response;
 						effect = selectedOption.fail.effect;
+						
+						effectText = JSON.stringify(effect);
+						effectText = effectText.substr(effectText.indexOf('_')+1);
+						effectText = effectText.replace('":',": ");
+						effectText = effectText.replace('}',"");
+						
+						if (effectText.includes(',')) {
+							var effectText2 = effectText.substr(effectText.indexOf(',')+1);
+							effectText = effectText.substr(0,effectText.indexOf(','));
+							effectText2 = effectText2.substr(effectText2.indexOf('_')+1);
+							effectText2 = effectText2.replace('":',": ");
+							effectText2 = effectText2.replace('}',"");
+							effectText += "\n" + effectText2;
+						}
+						
+						response += "\n\n" + effectText;
+						
                         ship.effectChange(effect);
 					}
 					
