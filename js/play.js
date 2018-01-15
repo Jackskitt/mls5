@@ -19,7 +19,7 @@ var ship = {
     fname_Navigator: "Nasir",
     sname_Navigator: "Magellan",
     fname_Security: "Danai",
-    sname_Security: "Michigan",
+    sname_Security: "Michaels",
 	
 	reachedDestination: false,
     
@@ -126,6 +126,10 @@ var playState = {
 		}
         
         if (ship.day > 1) {
+            
+            //TODO: if we've just landed in a system, check for dangers and fire the danger event
+            //      if we've just rested, fire the story event
+            
             this.JSONtest();
         }
 	},
@@ -292,7 +296,7 @@ var playState = {
 					panel.destroy();
 					
 					if (!option.final) {
-						//option.final is just a flag to note whether this is the last dialog box.
+						//option.final is just a flag to note whether this is the last dialog box in a sequence.
 						playState.displayMessageNoChoice(messageBox.title, option.response);
 					}
                     
