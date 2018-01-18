@@ -111,9 +111,8 @@ var playState = {
 		
         ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
         
-		for (i = 0; i < 5; i++) {
-			var newPlanet;
-			newPlanet = groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
+		for (var i = 0; i < 5; i++) {
+			groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
 		}
 		
         groupPlanets.scale.set(scale);
@@ -121,7 +120,8 @@ var playState = {
         groupShip.scale.set(scale);
 		
         this.initUI();
-
+        
+        console.log(mapData);
         var systemObject = mapData.systems[mapData.shipPosition];
         
 		if (systemObject.isDestination) {
@@ -220,7 +220,7 @@ var playState = {
         panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content));
         
 		//Add buttons
-		for (i = 0; i < messageBox.options.length; i++) {
+		for (var i = 0; i < messageBox.options.length; i++) {
 			var button;
 			var option = messageBox.options[i];
 			
