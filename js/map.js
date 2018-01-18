@@ -194,9 +194,15 @@ var mapState = {
 		
 		var currentSystem = mapData.systems[mapData.shipPosition];
 		
+        //TODO: do not allow jump if a messagebox is currently being displayed! Otherwise the sneaky jerks can just race right through.
+        
 		if (mapState.canReachSystem(selectedIcon)) {
 			canMakeJump = true;
 		}
+        
+        if (ship.needsRecharge) { 
+            canMakeJump = false;
+        }
 		
 		if (!canMakeJump) {
 			//Display a warning notice if system is out of reach
@@ -215,6 +221,7 @@ var mapState = {
 		
 		ship.day++;
 		ship.fuel--;
+        ship.needsRecharge = true;
 		game.state.start('play');
 	},
 	
