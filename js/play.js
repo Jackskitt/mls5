@@ -2,6 +2,8 @@
 
 var scale = 3;
 
+var messageActive = false;
+
 //Scenery & Objects
 var ship = {
 	sprite: null,
@@ -100,7 +102,8 @@ var playState = {
 		slickUI.load('res/ui/kenney/kenney.json');
 		
 		//Data
-		game.load.json("data_encounters", "res/data/data_encounters.json");
+		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");
+		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");
 	},
 
 	create: function () {
@@ -205,6 +208,8 @@ var playState = {
     
     createMessageBox: function() {
 		
+		messageActive = true;
+		
 		//Set bounds and instantiate panel
         var x = 84 * scale;
         var y = 7 * scale;
@@ -293,6 +298,8 @@ var playState = {
 					}
 					
 					panel.destroy();
+					
+					messageActive = false;
                     
                     response = playState.swapNames(response);
                     
@@ -310,6 +317,8 @@ var playState = {
 					
 					panel.destroy();
 					
+					messageActive = false;
+					
 					if (!option.final) {
 						//option.final is just a flag to note whether this is the last dialog box in a sequence.
 						playState.displayMessageNoChoice(messageBox.title, option.response);
@@ -326,8 +335,8 @@ var playState = {
 	/* TESTING FOR THE JSON INTERPRETER */
 	
 	JSONtest: function() {
-		data_encounters = game.cache.getJSON('data_encounters');
-		console.log(data_encounters);
+		data_eventsStory = game.cache.getJSON('data_eventsStory');
+		console.log(data_eventsStory);
 	},
     
     /* Events loaded from JSON data */
@@ -339,19 +348,42 @@ var playState = {
         
         //Danger events are system-dependent, so pull the event from a JSON file,
         //looking it up by the tag attached to the mapData object. E.g. "danger": "ASTEROIDS" or "danger": "MILITARY"
-        //Actually, thinking about it, the danger events could be procedurally generated while the story events are written.
         
         //Danger events, when complete, require you to recharge your jump drive before you can jump again.
         //Recharging should play a visual effect (like jumping does - or will, rather) and then fire a story event.
+		
+		/*
+		
+		Danger events happen immediately after landing in a system. They present some dangerous situation the player has to
+		try and resolve, using logic and reasoning.
+		
+		Story events happen the day after, under the assumption that the crew has slept while the jump drive recharged. They
+		present moral challenges, which the player must deal with on an emotional level. (Hopefully.)
+		
+		Danger events should make good use of dice rolls and chance, whereas story events should have persistent effects on
+		the future of the game.
+		
+		*/
+		
+		data_eventsDanger = game.cache.getJSON('data_eventsDanger');
+		
+		var selector = Math.floor(Math.random() * data_eventsDanger.length);
+		
+		var encounter = data_eventsDanger[selector];
+		
+		console.log("Firing danger event: " + encounter.name);
+		
+		this.displayMessage(encounter.title, encounter.content, encounter.options);
+        
     },
     
     fireEvent_Story: function() {
 		
-		data_encounters = game.cache.getJSON('data_encounters');
+		data_eventsStory = game.cache.getJSON('data_eventsStory');
 		
-		var selector = Math.floor(Math.random() * data_encounters.length);
+		var selector = Math.floor(Math.random() * data_eventsStory.length);
 		
-		var encounter = data_encounters[selector];
+		var encounter = data_eventsStory[selector];
 		
 		console.log("Firing story event: " + encounter.name);
 		
@@ -361,10 +393,36 @@ var playState = {
     },
     
     recharge: function() {
+		
+		if (!ship.needsRecharge) {
+			console.log("JUMP DRIVE ALREADY CHARGED");
+			return;
+		}
+		
+		if (messageActive) {
+			console.log("CANNOT RECHARGE - STUFF IS HAPPENING");
+			return;
+		}
+		
         ship.needsRecharge = false;
         playState.fireEvent_Story();
     },
     
+	jump: function() {
+		
+		if (ship.needsRecharge) {
+			console.log("CANNOT JUMP - JUMP DRIVE DRAINED");
+			return;
+		}
+		
+		if (messageActive) {
+			console.log("CANNOT JUMP - STUFF IS HAPPENING");
+			return;
+		}
+		
+		game.state.start('map');
+	},
+	
     swapNames: function(text) {
         
         //Swap out the nametags in a string with the player-set character names (or defaults)
@@ -394,9 +452,9 @@ var playState = {
         
         statusPanel.add(new SlickUI.Element.Text(4 * scale, 2 * scale, "DAY " + ship.day));
         
-        var mapButton = statusPanel.add(new SlickUI.Element.Button(2 * scale, 12 * scale, 24 * scale, 10 * scale));
-		mapButton.add(new SlickUI.Element.Text(0, 0, "Map")).center();
-        mapButton.events.onInputUp.add(function () {game.state.start('map');});
+        var jumpButton = statusPanel.add(new SlickUI.Element.Button(2 * scale, 12 * scale, 24 * scale, 10 * scale));
+		jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump")).center();
+        jumpButton.events.onInputUp.add(this.jump);
         
         var rechargeButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 12 * scale, 84 * scale, 10 * scale));
 		rechargeButton.add(new SlickUI.Element.Text(0, 0, "Recharge Jump Drive")).center();

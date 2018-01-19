@@ -90,7 +90,7 @@
 	"y" : 75,
 	"spriteIndex" : 0,
 	"visited": false,
-	"danger": "ION STORMS",
+	"danger": "ION",
 	"encounter": null,
 	"reachableSystems": [9],
 	"isDestination": false

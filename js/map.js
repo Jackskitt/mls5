@@ -142,11 +142,6 @@ var mapState = {
         jumpButton.events.onInputUp.add(function () {mapState.jump();});
         jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
 		jumpButton.visible = false;
-		
-        var closeButton;
-        mapPanel.add(closeButton = new SlickUI.Element.Button(game.width - 150, game.height-62, 120, 36));
-        closeButton.events.onInputUp.add(function () {game.state.start('play');});
-        closeButton.add(new SlickUI.Element.Text(0,0, "Close map")).center();
     },
     
     update: function() {

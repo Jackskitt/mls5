@@ -1,4 +1,5 @@
-var data_encounters;
+var data_eventsStory;
+var data_eventsDanger;
 var encounterCounter;
 
 var loadState = {
@@ -33,7 +34,8 @@ var loadState = {
         slickUI.load('res/ui/kenney/kenney.json');
 		
 		//Data
-		game.load.json("data_encounters", "res/data/data_encounters.json");		//TODO: randomise encounter list at start of game and iterate through to prevent repetition
+		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");		//TODO: randomise encounter list at start of game and iterate through to prevent repetition
+		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");		//TODO: randomise encounter list at start of game and iterate through to prevent repetition
 		game.load.json("data_map", "res/data/data_map.json");
         
         mapData = {
