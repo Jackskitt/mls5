@@ -128,7 +128,7 @@ var playState = {
         if (ship.day > 1) {
             
             //TODO: if we've just landed in a system, check for dangers and fire the danger event
-            //      if we've just rested, fire the story event
+            //      if we've just rested, fire the story event - also replace JSONtest
             
             this.JSONtest();
         }
