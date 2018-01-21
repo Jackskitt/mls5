@@ -67,6 +67,11 @@ var ship = {
     }
 };
 
+var warnings = {
+	sprite_driveCharge: null,
+	sprite_driveReady: null
+};
+
 var bg = {
 	sprite0: null,
 	sprite1: null,
@@ -113,6 +118,14 @@ var playState = {
 		bg.sprite1 = groupBackground.create(bg.posX + bg.sprite0.width, 0, 'bg_starField');
 		
         ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
+		
+		//Warning lights on HUD
+		warnings.sprite_driveCharge = game.add.sprite(14, 14, 'hud_driveCharge');
+		warnings.sprite_driveCharge.visible = false;
+		warnings.sprite_driveReady = game.add.sprite(14, 14, 'hud_driveReady');
+		warnings.sprite_driveReady.visible = false;
+		
+        ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
         
 		for (var i = 0; i < 5; i++) {
 			groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
@@ -124,7 +137,6 @@ var playState = {
 		
         this.initUI();
         
-        console.log(mapData);
         var systemObject = mapData.systems[mapData.shipPosition];
         
 		if (systemObject.isDestination) {
@@ -141,13 +153,14 @@ var playState = {
            
             if (ship.needsRecharge) {
                 //The ship just jumped and needs to recharge. Display some system welcome text, and maybe a danger event.
+				
+				warnings.sprite_driveReady.visible = false;
+				warnings.sprite_driveCharge.visible = true;
+				
                 if (currentDanger !== undefined) {
                     this.fireEvent_Danger(currentDanger);
                 }
                 
-            } else {
-                //The ship just spent a night recharging its jump drive. We haven't changed systems - fire a story event.
-                this.fireEvent_Story();
             }
         }
 	},
@@ -405,6 +418,10 @@ var playState = {
 		}
 		
         ship.needsRecharge = false;
+		
+		warnings.sprite_driveReady.visible = true;
+		warnings.sprite_driveCharge.visible = false;
+		
         playState.fireEvent_Story();
     },
     
