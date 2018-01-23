@@ -32,6 +32,9 @@ var loadState = {
 		
         game.load.image('icon_asteroids', 'res/ui/icon_asteroids.png');
         
+        //Animations
+        game.load.spritesheet('anim_ship', 'res/ships/anim_ship_32x16.png', 32, 16);
+        
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
         slickUI.load('res/ui/kenney/kenney.json');

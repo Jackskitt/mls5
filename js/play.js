@@ -117,15 +117,21 @@ var playState = {
 		bg.sprite0 = groupBackground.create(bg.posX, 0, 'bg_starField');
 		bg.sprite1 = groupBackground.create(bg.posX + bg.sprite0.width, 0, 'bg_starField');
 		
-        ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
-		
+        ship.sprite = groupShip.create(ship.posX, ship.posY, 'anim_ship');
+        var animIdle = ship.sprite.animations.add('anim_ship_idle', [0,1,2,3,4,5,6,7]);
+        var animJump = ship.sprite.animations.add('anim_ship_jump', [8,9,10,11]);
+        
+        ship.sprite.animations.play('anim_ship_idle', 8, true);
+        
+        animJump.onComplete.add(playState.goToMap, this);
+        
+        
 		//Warning lights on HUD
 		warnings.sprite_driveCharge = game.add.sprite(14, 14, 'hud_driveCharge');
 		warnings.sprite_driveCharge.visible = false;
 		warnings.sprite_driveReady = game.add.sprite(14, 14, 'hud_driveReady');
 		warnings.sprite_driveReady.visible = false;
 		
-        ship.sprite = groupShip.create(ship.posX, ship.posY, 'img_ship');
         
 		for (var i = 0; i < 5; i++) {
 			groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
@@ -437,9 +443,15 @@ var playState = {
 			return;
 		}
 		
-		game.state.start('map');
+        ship.sprite.animations.play('anim_ship_jump', 16, false);
+        
+		
 	},
 	
+    goToMap: function() {
+        game.state.start('map');
+    },
+    
     swapNames: function(text) {
         
         //Swap out the nametags in a string with the player-set character names (or defaults)
