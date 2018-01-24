@@ -104,9 +104,9 @@ var mapState = {
             //Now add the icons.
             mapBG.add(systemIcons[i] = new SlickUI.Element.DisplayObject(starSystem.x, starSystem.y, game.make.image(0, 0, 'icon_planet' + starSystem.spriteIndex)));
 			
-			//Check if the system description mentions an asteroid belt - if so, put one on the map screen
-			if (starSystem.description.indexOf('asteroid') != -1) {
-				mapBG.add(new SlickUI.Element.DisplayObject(starSystem.x - 24, starSystem.y - 24, game.make.image(0, 0, 'icon_asteroids')));
+			//Add visual danger indicators
+			if (starSystem.danger != null) {
+				mapBG.add(new SlickUI.Element.DisplayObject(starSystem.x - 24, starSystem.y - 24, game.make.image(0, 0, 'icon_' + starSystem.danger.toLowerCase())));
 			}
 			
 			//Give each icon a reference to the JSON information about that system
