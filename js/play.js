@@ -264,7 +264,7 @@ var playState = {
             } else {
                 panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale, 164 * scale, 14 * scale));
             }
-			button.add(new SlickUI.Element.Text(0,0, option.choice)).center();
+			button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
 			
 			//Make the buttons do different stuff depending on what the JSON data says.
 			
@@ -375,7 +375,6 @@ var playState = {
     
     fireEvent_Danger: function(danger) {
         
-		console.log("Firing danger event " + danger);
         ship.needsRecharge = true;
         
         //Danger events are system-dependent, so pull the event from a JSON file,
@@ -401,11 +400,27 @@ var playState = {
 		
 		var selector = Math.floor(Math.random() * data_eventsDanger.length);
 		
-		var encounter = data_eventsDanger[selector];
+		var relevantEvents = [];
+		var j = 0;
 		
-		console.log("Firing danger event: " + encounter.name);
+		for (var i = 0; i < data_eventsDanger.length; i++) {
 		
-		this.displayMessage(encounter.title, encounter.content, encounter.options);
+			var encounter = data_eventsDanger[i];
+			
+			if (encounter.dangerType == danger) {
+				relevantEvents[j] = encounter;
+				j++;
+			}
+			
+		}
+		
+		var selector = Math.floor(Math.random() * relevantEvents.length);
+		
+		var eventToFire = relevantEvents[selector];
+		
+		console.log("Firing danger event: " + eventToFire.name);
+		
+		this.displayMessage(eventToFire.title, eventToFire.content, eventToFire.options);
         
     },
     

@@ -1,7 +1,7 @@
 [
 {
 	"name": "danger_asteroids",
-	"type": "ASTEROIDS",
+	"dangerType": "ASTEROIDS",
 	"title": "ASTEROID FIELD DETECTED",
 	"content": "Our short-range sensors have picked up an asteroid field nearby. Might be some useful minerals in there.",
 	"options":
@@ -25,7 +25,7 @@
 },
 {
 	"name": "danger_micrometeorites",
-	"type": "ASTEROIDS",
+	"dangerType": "ASTEROIDS",
 	"title": "MICROMETEORITE BARRAGE",
 	"content": "You can make out a sound like hail falling on a metal roof. Navigation Officer [SNAME_NAVIGATOR] says you've jumped right into a debris field.",
 	"options":
@@ -50,7 +50,7 @@
 },
 {
 	"name": "danger_storm",
-	"type": "ION",
+	"dangerType": "ION",
 	"title": "ION STORM",
 	"content": "A panel lights up on the bridge. Moments later a warning comes through from belowdecks - you've jumped right into a cloud of ionised gas.",
 	"options":
@@ -82,7 +82,7 @@
 },
 {
 	"name": "danger_miningDrones",
-	"type": "MILITARY",
+	"dangerType": "MILITARY",
 	"title": "INCOMING DRONES",
 	"content": "You drop into a system full of old mining drones, leftover from colonial days. The further you go, the more of them blink into life and turn to watch your progress.",
 	"options":
