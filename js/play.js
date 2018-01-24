@@ -125,9 +125,22 @@ var playState = {
         
         ship.sprite.animations.play('anim_ship_idle', 8, true);
         
-        animJump.onComplete.add(playState.goToMap, this);
-        animLand.onComplete.add(function(){ship.sprite.animations.play('anim_ship_idle', 8, true);});
-        animCharge.onComplete.add(function(){ship.sprite.animations.play('anim_ship_idle', 8, true);});
+        animJump.onComplete.add(function() {			
+        	game.state.start('map');
+		});
+		
+        animLand.onComplete.add(function() {
+			ship.sprite.animations.play('anim_ship_idle', 8, true);
+				
+			if (currentDanger !== undefined) {
+				playState.fireEvent_Danger(currentDanger);
+			}
+		});
+		
+        animCharge.onComplete.add(function(){
+			ship.sprite.animations.play('anim_ship_idle', 8, true);
+        	playState.fireEvent_Story();
+		});
         
 		//Warning lights on HUD
 		warnings.sprite_driveCharge = game.add.sprite(14, 14, 'hud_driveCharge');
@@ -165,12 +178,8 @@ var playState = {
 				
 				warnings.sprite_driveReady.visible = false;
 				warnings.sprite_driveCharge.visible = true;
-				
-                if (currentDanger !== undefined) {
-                    this.fireEvent_Danger(currentDanger);
-                }
                 
-				ship.sprite.animations.play('anim_ship_land', 32, false);
+				ship.sprite.animations.play('anim_ship_land', 16, false);
             }
         }
 	},
@@ -433,8 +442,6 @@ var playState = {
 		warnings.sprite_driveCharge.visible = false;
 		
 		ship.sprite.animations.play('anim_ship_charge', 16, false);
-		
-        playState.fireEvent_Story();
     },
     
 	jump: function() {
@@ -449,14 +456,10 @@ var playState = {
 			return;
 		}
 		
-        ship.sprite.animations.play('anim_ship_jump', 32, false);
+        ship.sprite.animations.play('anim_ship_jump', 16, false);
         
 		
 	},
-	
-    goToMap: function() {
-        game.state.start('map');
-    },
     
     swapNames: function(text) {
         
