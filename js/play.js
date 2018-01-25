@@ -148,11 +148,14 @@ var playState = {
 		warnings.sprite_driveReady = game.add.sprite(14, 14, 'hud_driveReady');
 		warnings.sprite_driveReady.visible = false;
 		
-        
+        /*
 		for (var i = 0; i < 5; i++) {
 			groupPlanets.create(15 + i*50, Math.random() * 150, 'img_planet');
 		}
+        */
 		
+        groupPlanets.create(130, 50, 'img_planet0');
+        
         groupPlanets.scale.set(scale);
         groupBackground.scale.set(scale);
         groupShip.scale.set(scale);
@@ -210,7 +213,7 @@ var playState = {
 		bg.sprite0.x = bg.posX;
 		bg.sprite1.x = bg.posX + bg.sprite0.width;
 		
-		groupPlanets.x -= backgroundMovement * 45;
+		groupPlanets.x -= backgroundMovement * 1;
 		
 		if (groupPlanets.x < - 250 * scale)
 			groupPlanets.x = 250 * scale;
