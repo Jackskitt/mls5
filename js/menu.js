@@ -2,10 +2,17 @@ var welcomePanel;
 var settingsPanel;
 var creditsPanel;
 
+var music;
+
 var menuState = {
 	
+	preload: function() {
+        music = game.add.audio('music_thinkingOutLoud');
+	},
+	
 	create: function() {
-        
+		music.play();
+		
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
         slickUI.load('res/ui/kenney/kenney.json');

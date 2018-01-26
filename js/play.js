@@ -93,6 +93,7 @@ var messageBox = {
 };
 var slickUI;
 
+
 var playState = {
     
     //State Information
@@ -109,6 +110,7 @@ var playState = {
 		//Data
 		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");
 		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");
+		
 	},
 
 	create: function () {
