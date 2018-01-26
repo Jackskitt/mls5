@@ -19,8 +19,8 @@ var loadState = {
         game.load.image('hud_driveCharge', 'res/ui/hud_driveCharge.png');
         
         
-        for (var i = 0; i < 1; i++) {
-            game.load.image('img_planet' + i, 'res/scenery/planets/img_planet' + i + '.png');
+        for (var i = 0; i < 6; i++) {
+            game.load.image('img_scenery_' + i, 'res/scenery/img_scenery_' + i + '.png');
         }
 		
         //Map screen
