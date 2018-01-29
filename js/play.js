@@ -127,21 +127,30 @@ var playState = {
         
         ship.sprite.animations.play('anim_ship_idle', 8, true);
         
-        animJump.onComplete.add(function() {			
-        	game.state.start('map');
+        animJump.onComplete.add(function() {
+        	setTimeout(function() {
+				game.state.start('map');
+			}, 300);
 		});
 		
         animLand.onComplete.add(function() {
 			ship.sprite.animations.play('anim_ship_idle', 8, true);
 				
+			
 			if (currentDanger !== undefined) {
-				playState.fireEvent_Danger(currentDanger);
+				
+				setTimeout(function() {
+					playState.fireEvent_Danger(currentDanger);
+				}, 300);
 			}
 		});
 		
         animCharge.onComplete.add(function(){
 			ship.sprite.animations.play('anim_ship_idle', 8, true);
-        	playState.fireEvent_Story();
+				
+				setTimeout(function() {
+        			playState.fireEvent_Story();
+				}, 300);
 		});
         
 		//Warning lights on HUD
@@ -179,6 +188,7 @@ var playState = {
 				warnings.sprite_driveCharge.visible = true;
                 
 				ship.sprite.animations.play('anim_ship_land', 16, false);
+				sound_land.play();
             }
         }
 	},
@@ -275,7 +285,7 @@ var playState = {
 				button.events.onInputUp.add(function () {
 					//This event requires a roll of the dice to see the outcome.
 					//We grab the probability and the win/lose responses from the JSON data.
-					
+					sound_select.play();
 					var response = "Response not set!";
                     var effect = "Effect not set!";
 					var effectText = "";
@@ -343,6 +353,8 @@ var playState = {
 			} else {
 				
 				button.events.onInputUp.add(function () {
+					
+					sound_select.play();
 					
 					//There's no dice roll needed here. 
 					
@@ -442,11 +454,13 @@ var playState = {
 		
 		if (!ship.needsRecharge) {
 			console.log("JUMP DRIVE ALREADY CHARGED");
+			sound_selectFail.play();
 			return;
 		}
 		
 		if (messageActive) {
 			console.log("CANNOT RECHARGE - STUFF IS HAPPENING");
+			sound_selectFail.play();
 			return;
 		}
 		
@@ -456,22 +470,25 @@ var playState = {
 		warnings.sprite_driveCharge.visible = false;
 		
 		ship.sprite.animations.play('anim_ship_charge', 16, false);
+        sound_beam.play();
     },
     
 	jump: function() {
 		
 		if (ship.needsRecharge) {
 			console.log("CANNOT JUMP - JUMP DRIVE DRAINED");
+			sound_selectFail.play();
 			return;
 		}
 		
 		if (messageActive) {
 			console.log("CANNOT JUMP - STUFF IS HAPPENING");
+			sound_selectFail.play();
 			return;
 		}
 		
         ship.sprite.animations.play('anim_ship_jump', 16, false);
-        
+        sound_jump2.play();
 		
 	},
     

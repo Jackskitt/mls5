@@ -139,7 +139,7 @@ var mapState = {
         //Create the button to jump to the selected system
 		
         mapPanel.add(jumpButton = new SlickUI.Element.Button(game.width/2 - 60, game.height-82, 120, 60));
-        jumpButton.events.onInputUp.add(function () {mapState.jump();});
+        jumpButton.events.onInputUp.add(function () {sound_select.play(); mapState.jump();});
         jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
 		jumpButton.visible = false;
     },
@@ -151,7 +151,7 @@ var mapState = {
     },
 	
 	selectIcon: function(icon) {
-
+		sound_select.play();
 		selectedIcon = this.icon;
 		
 		icon_selector.x = selectedIcon.x + mapOffsetX + 5; //These 'magic numbers' (5 and 7) are half the width and height of the selector icon. (They won't change.)

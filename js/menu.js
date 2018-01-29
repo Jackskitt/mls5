@@ -2,16 +2,38 @@ var welcomePanel;
 var settingsPanel;
 var creditsPanel;
 
+
+/* GLOBAL AUDIO REFERENCES */
 var music;
+
+var sound_jump;
+var sound_jump2;
+var sound_buoy;
+var sound_signal;
+var sound_select;
+var sound_selectFail;
+var sound_beep;
+var sound_land;
+var sound_beam;
 
 var menuState = {
 	
 	preload: function() {
-        music = game.add.audio('music_thinkingOutLoud');
+        music = game.add.audio('music_airshipSerenity');
+		
+		sound_jump = game.add.audio('sound_jump');
+		sound_jump2 = game.add.audio('sound_jump2');
+		sound_buoy = game.add.audio('sound_buoy');
+		sound_signal = game.add.audio('sound_signal');
+		sound_select = game.add.audio('sound_select');
+		sound_selectFail = game.add.audio('sound_selectFail');
+		sound_beep = game.add.audio('sound_beep');
+		sound_land = game.add.audio('sound_land');
+		sound_beam = game.add.audio('sound_beam');
 	},
 	
 	create: function() {
-		music.play();
+		music.play("", 0, 1, true, false);
 		
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
@@ -104,25 +126,30 @@ var menuState = {
 	},
 	
 	start: function() {
+		sound_select.play();
 		encounterCounter = 0;
 		game.state.start('play');
 	},
 	
     settings: function() {
+		sound_select.play();
         creditsPanel.visible = false;
         settingsPanel.visible = true;
     },
     
     closeSettings: function() {
+		sound_select.play();
         settingsPanel.visible = false;
     },
     
     credits: function() {
+		sound_select.play();
         settingsPanel.visible = false;
         creditsPanel.visible = true;
     },
     
     closeCredits: function() {
+		sound_select.play();
         creditsPanel.visible = false;
     }
     

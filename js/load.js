@@ -2,6 +2,8 @@ var data_eventsStory;
 var data_eventsDanger;
 var encounterCounter;
 
+
+
 var loadState = {
 	
 	preload: function() {
@@ -42,7 +44,16 @@ var loadState = {
         game.load.spritesheet('anim_ship', 'res/ships/anim_ship_32x16.png', 32, 16);
         
 		/* AUDIO */
-		game.load.audio('music_thinkingOutLoud', 'res/audio/Thinking Out Loud.mp3');
+		game.load.audio('music_airshipSerenity', 'res/audio/Airship Serenity.mp3');
+		game.load.audio('sound_jump', 'res/audio/jump.ogg');
+		game.load.audio('sound_jump2', 'res/audio/jump2.ogg');
+		game.load.audio('sound_buoy', 'res/audio/buoy.ogg');
+		game.load.audio('sound_signal', 'res/audio/signal.ogg');
+		game.load.audio('sound_select', 'res/audio/select.ogg');
+		game.load.audio('sound_selectFail', 'res/audio/selectFail.ogg');
+		game.load.audio('sound_beep', 'res/audio/beep.ogg');
+		game.load.audio('sound_land', 'res/audio/land.ogg');
+		game.load.audio('sound_beam', 'res/audio/beam.ogg');
 		
 		/* UI */
 		
