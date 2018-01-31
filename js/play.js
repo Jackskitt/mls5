@@ -213,6 +213,8 @@ var playState = {
 		
 		bg.posX -= backgroundMovement;
 		
+        //TODO: The loop is based on the starfield image width - change the starfield width to match the scenery sprite or something
+        
 		if (bg.posX < 0 - bg.sprite0.width)
 			bg.posX = 0;
 		
@@ -530,8 +532,10 @@ var playState = {
         var barX = 0;
         var barY = 99 * scale;
         slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
-        
-        statusPanel.add(new SlickUI.Element.Text(4 * scale, 8 * scale, "DAY " + ship.day));
+
+        //TODO: replace this with a background monitor-looking sprite that we can pop up the status messages on
+        var warningSprite;
+        statusPanel.add(warningSprite = new SlickUI.Element.DisplayObject(7 * scale, 5 * scale, game.make.sprite(0, 0, 'hud_driveReady')));
         
         var jumpButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 2 * scale, 24 * scale, 10 * scale));
 		jumpButton.add(new SlickUI.Element.Text(0, 0, "JUMP")).center();
@@ -564,6 +568,7 @@ var playState = {
         var arseButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 13 * scale, 24 * scale, 10 * scale));
 		arseButton.add(new SlickUI.Element.Text(0, 0, "ARSE")).center();
         arseButton.events.onInputUp.add(this.manageCrew);
+
         
         statusPanel.add(new SlickUI.Element.Text(199 * scale, 0 * scale, "STAT"));
         statusPanel.add(new SlickUI.Element.Text(164 * scale, 8 * scale, "FUEL: " + ship.fuel + "KT"));

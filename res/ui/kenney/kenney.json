@@ -7,7 +7,7 @@
     "check_off": "images/grey_box.png",
     "cross_off": "images/grey_box.png",
     "radio_off": "images/grey_circle.png",
-    "button_on": "images/blue_button02.png",
+    "button_on": "images/green_button02.png",
     "button_off": "images/grey_button02.png",
     "text_field": "images/grey_button02.png",
     "slider_end": "images/grey_sliderEnd.png",
