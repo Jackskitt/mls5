@@ -492,6 +492,18 @@ var playState = {
 		
 	},
     
+	engineer: function() {
+        
+        sound_selectFail.play();
+		
+	},
+    
+	manageCrew: function() {
+        
+        sound_selectFail.play();
+		
+	},
+    
     swapNames: function(text) {
         
         //Swap out the nametags in a string with the player-set character names (or defaults)
@@ -519,20 +531,45 @@ var playState = {
         var barY = 99 * scale;
         slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
         
-        statusPanel.add(new SlickUI.Element.Text(4 * scale, 2 * scale, "DAY " + ship.day));
+        statusPanel.add(new SlickUI.Element.Text(4 * scale, 8 * scale, "DAY " + ship.day));
         
-        var jumpButton = statusPanel.add(new SlickUI.Element.Button(2 * scale, 12 * scale, 24 * scale, 10 * scale));
-		jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump")).center();
+        var jumpButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 2 * scale, 24 * scale, 10 * scale));
+		jumpButton.add(new SlickUI.Element.Text(0, 0, "JUMP")).center();
         jumpButton.events.onInputUp.add(this.jump);
         
-        var rechargeButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 12 * scale, 84 * scale, 10 * scale));
-		rechargeButton.add(new SlickUI.Element.Text(0, 0, "Recharge Jump Drive")).center();
+        var rechargeButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 13 * scale, 24 * scale, 10 * scale));
+		rechargeButton.add(new SlickUI.Element.Text(0, 0, "CHRG")).center();
         rechargeButton.events.onInputUp.add(this.recharge);
         
-        statusPanel.add(new SlickUI.Element.Text(32 * scale, 2 * scale, "Fuel reserves: " + ship.fuel + " kilotonnes"));
-        //statusPanel.add(new SlickUI.Element.Text(32 * scale, 12 * scale, "Crew complement: " + ship.crew));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 2 * scale, "Happiness index: " + ship.happiness + "%"));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 12 * scale, "Hull integrity: " + ship.hull + "%"));
+        var engineerButton = statusPanel.add(new SlickUI.Element.Button(58 * scale, 2 * scale, 24 * scale, 10 * scale));
+		engineerButton.add(new SlickUI.Element.Text(0, 0, "ENGI")).center();
+        engineerButton.events.onInputUp.add(this.engineer);
+        
+        var crewButton = statusPanel.add(new SlickUI.Element.Button(58 * scale, 13 * scale, 24 * scale, 10 * scale));
+		crewButton.add(new SlickUI.Element.Text(0, 0, "CREW")).center();
+        crewButton.events.onInputUp.add(this.manageCrew);
+        
+        var mineButton = statusPanel.add(new SlickUI.Element.Button(85 * scale, 2 * scale, 24 * scale, 10 * scale));
+		mineButton.add(new SlickUI.Element.Text(0, 0, "MINE")).center();
+        mineButton.events.onInputUp.add(this.engineer);
+        
+        var scanButon = statusPanel.add(new SlickUI.Element.Button(85 * scale, 13 * scale, 24 * scale, 10 * scale));
+		scanButon.add(new SlickUI.Element.Text(0, 0, "SCAN")).center();
+        scanButon.events.onInputUp.add(this.manageCrew);
+        
+        var feckButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 2 * scale, 24 * scale, 10 * scale));
+		feckButton.add(new SlickUI.Element.Text(0, 0, "FECK")).center();
+        feckButton.events.onInputUp.add(this.engineer);
+        
+        var arseButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 13 * scale, 24 * scale, 10 * scale));
+		arseButton.add(new SlickUI.Element.Text(0, 0, "ARSE")).center();
+        arseButton.events.onInputUp.add(this.manageCrew);
+        
+        statusPanel.add(new SlickUI.Element.Text(199 * scale, 0 * scale, "STAT"));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 8 * scale, "FUEL: " + ship.fuel + "KT"));
+        statusPanel.add(new SlickUI.Element.Text(164 * scale, 14 * scale, "CREW: " + ship.crew));
+        statusPanel.add(new SlickUI.Element.Text(208 * scale, 8 * scale, "HAPP: " + ship.happiness + "%"));
+        statusPanel.add(new SlickUI.Element.Text(208 * scale, 14 * scale, "HULL: " + ship.hull + "%"));
     },
 	
 	win: function() {

@@ -5,6 +5,7 @@ var creditsPanel;
 
 /* GLOBAL AUDIO REFERENCES */
 var music;
+var musicVolume = 0.1;
 
 var sound_jump;
 var sound_jump2;
@@ -33,7 +34,7 @@ var menuState = {
 	},
 	
 	create: function() {
-		music.play("", 0, 1, true, false);
+		music.play("", 0, musicVolume, true, false);
 		
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
