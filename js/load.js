@@ -19,6 +19,7 @@ var loadState = {
 		
         game.load.image('hud_driveReady', 'res/ui/hud_driveReady.png');
         game.load.image('hud_driveCharge', 'res/ui/hud_driveCharge.png');
+        game.load.image('hud_panel', 'res/ui/hud_panel.png');
         
         
         for (var i = 0; i < 6; i++) {

@@ -153,12 +153,6 @@ var playState = {
 				}, 300);
 		});
         
-		//Warning lights on HUD
-		warnings.sprite_driveCharge = game.add.sprite(14, 14, 'hud_driveCharge');
-		warnings.sprite_driveCharge.visible = false;
-		warnings.sprite_driveReady = game.add.sprite(14, 14, 'hud_driveReady');
-		warnings.sprite_driveReady.visible = false;
-        
         var systemObject = mapData.systems[mapData.shipPosition];
 		
         groupPlanets.create(0, 0, 'img_scenery_' + systemObject.spriteIndex);
@@ -534,8 +528,23 @@ var playState = {
         slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
 
         //TODO: replace this with a background monitor-looking sprite that we can pop up the status messages on
-        var warningSprite;
-        statusPanel.add(warningSprite = new SlickUI.Element.DisplayObject(7 * scale, 5 * scale, game.make.sprite(0, 0, 'hud_driveReady')));
+        var hudPanel;
+        statusPanel.add(hudPanel = new SlickUI.Element.DisplayObject(3 * scale, 1 * scale, game.make.sprite(0, 0, 'hud_panel')));
+        
+        //TODO: bring to top!
+        var hudGroup = game.add.group();
+        
+		//Warning lights on HUD panel
+		hudPanel.add(warnings.sprite_driveCharge = new SlickUI.Element.DisplayObject(12, 12, game.make.sprite(0, 0, 'hud_driveCharge')));
+		hudPanel.add(warnings.sprite_driveReady = new SlickUI.Element.DisplayObject(2, 2, game.make.sprite(0, 0, 'hud_driveReady')));
+		warnings.sprite_driveCharge.visible = true;
+		warnings.sprite_driveReady.visible = false;
+        
+        
+        var hud_;
+        statusPanel.add(warningSprite = new SlickUI.Element.DisplayObject(3 * scale, 1 * scale, game.make.sprite(0, 0, 'hud_panel')));
+        var hudPanel;
+        statusPanel.add(warningSprite = new SlickUI.Element.DisplayObject(3 * scale, 1 * scale, game.make.sprite(0, 0, 'hud_panel')));
         
         var jumpButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 2 * scale, 24 * scale, 10 * scale));
 		jumpButton.add(new SlickUI.Element.Text(0, 0, "JUMP")).center();
