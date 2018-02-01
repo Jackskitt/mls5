@@ -84,24 +84,28 @@ var menuState = {
         var label_Pilot;
         settingsPanel.add(label_Pilot = new SlickUI.Element.Text(8, 2, "Pilot name:", 12));
 		settingsPanel.add(nameField_Pilot = new SlickUI.Element.TextField(4, 24, 140, 44, 14));
+        nameField_Pilot.text.text.text = "Flyboy";
         nameField_Pilot.events.onOK.add(function() {ship.name_Pilot = nameField_Pilot.value;});
         
         var nameField_Engineer;
         var label_Engineer;
         settingsPanel.add(label_Engineer = new SlickUI.Element.Text(8, 2 + 64, "Engineer name:", 12));
 		settingsPanel.add(nameField_Engineer = new SlickUI.Element.TextField(4, 24 + 64, 140, 44, 14));
+        nameField_Engineer.text.text.text = "Dorkington";
         nameField_Engineer.events.onOK.add(function() {ship.name_Engineer = nameField_Engineer.value;});
         
         var nameField_Navigator;
         var label_Navigator;
         settingsPanel.add(label_Navigator = new SlickUI.Element.Text(8 + 140, 2, "Navigator name:", 12));
 		settingsPanel.add(nameField_Navigator = new SlickUI.Element.TextField(8 + 140, 24, 140, 44, 14));
+        nameField_Navigator.text.text.text = "Mapsie";
         nameField_Navigator.events.onOK.add(function() {ship.name_Navigator = nameField_Navigator.value;});
         
         var nameField_Security;
         var label_Security;
         settingsPanel.add(label_Security = new SlickUI.Element.Text(8 + 140, 2 + 64, "Security name:", 12));
 		settingsPanel.add(nameField_Security = new SlickUI.Element.TextField(8 + 140, 24 + 64, 140, 44, 14));
+        nameField_Security.text.text.text = "Ms. Fist";
         nameField_Security.events.onOK.add(function() {ship.name_Security = nameField_Security.value;});
         
         var volumeSlider;
