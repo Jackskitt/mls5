@@ -5,7 +5,6 @@ var creditsPanel;
 
 /* GLOBAL AUDIO REFERENCES */
 var music;
-var musicVolume = 0.1;
 
 var sound_jump;
 var sound_jump2;
@@ -34,7 +33,7 @@ var menuState = {
 	},
 	
 	create: function() {
-		music.play("", 0, musicVolume, true, false);
+		music.play("", 0, 1, true, false);
 		
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
@@ -81,41 +80,40 @@ var menuState = {
         
         slickUI.add(settingsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 280));
         
-        var nameField_PilotF;
-        var nameField_PilotS;
+        var nameField_Pilot;
         var label_Pilot;
         settingsPanel.add(label_Pilot = new SlickUI.Element.Text(8, 2, "Pilot name:", 12));
-		settingsPanel.add(nameField_PilotF = new SlickUI.Element.TextField(4, 24, 140, 44, 14));
-        nameField_PilotF.events.onOK.add(function() {ship.fname_Pilot = nameField_PilotF.value;});
-		settingsPanel.add(nameField_PilotS = new SlickUI.Element.TextField(140 + 4, 24, 159, 44, 14));
-        nameField_PilotS.events.onOK.add(function() {ship.sname_Pilot = nameField_PilotS.value;});
+		settingsPanel.add(nameField_Pilot = new SlickUI.Element.TextField(4, 24, 140, 44, 14));
+        nameField_Pilot.events.onOK.add(function() {ship.name_Pilot = nameField_Pilot.value;});
         
-        var nameField_EngineerF;
-        var nameField_EngineerS;
+        var nameField_Engineer;
         var label_Engineer;
         settingsPanel.add(label_Engineer = new SlickUI.Element.Text(8, 2 + 64, "Engineer name:", 12));
-		settingsPanel.add(nameField_EngineerF = new SlickUI.Element.TextField(4, 24 + 64, 140, 44, 14));
-        nameField_EngineerF.events.onOK.add(function() {ship.fname_Engineer = nameField_EngineerF.value;});
-		settingsPanel.add(nameField_EngineerS = new SlickUI.Element.TextField(140 + 4, 24 + 64, 159, 44, 14));
-        nameField_EngineerS.events.onOK.add(function() {ship.sname_Engineer = nameField_EngineerS.value;});
+		settingsPanel.add(nameField_Engineer = new SlickUI.Element.TextField(4, 24 + 64, 140, 44, 14));
+        nameField_Engineer.events.onOK.add(function() {ship.name_Engineer = nameField_Engineer.value;});
         
-        var nameField_NavigatorF;
-        var nameField_NavigatorS;
+        var nameField_Navigator;
         var label_Navigator;
-        settingsPanel.add(label_Navigator = new SlickUI.Element.Text(8, 2 + 64 + 64, "Navigator name:", 12));
-		settingsPanel.add(nameField_NavigatorF = new SlickUI.Element.TextField(4, 24 + 64 + 64, 140, 44, 14));
-        nameField_NavigatorF.events.onOK.add(function() {ship.fname_Navigator = nameField_NavigatorF.value;});
-		settingsPanel.add(nameField_NavigatorS = new SlickUI.Element.TextField(140 + 4, 24 + 64 + 64, 159, 44, 14));
-        nameField_NavigatorS.events.onOK.add(function() {ship.sname_Navigator = nameField_NavigatorS.value;});
+        settingsPanel.add(label_Navigator = new SlickUI.Element.Text(8 + 140, 2, "Navigator name:", 12));
+		settingsPanel.add(nameField_Navigator = new SlickUI.Element.TextField(8 + 140, 24, 140, 44, 14));
+        nameField_Navigator.events.onOK.add(function() {ship.name_Navigator = nameField_Navigator.value;});
         
-        var nameField_EngineerF;
-        var nameField_EngineerS;
-        var label_Engineer;
-        settingsPanel.add(label_Engineer = new SlickUI.Element.Text(8, 2 + 64 + 64 + 64, "Engineer name:", 12));
-		settingsPanel.add(nameField_EngineerF = new SlickUI.Element.TextField(4, 24 + 64 + 64 + 64, 140, 44, 14));
-        nameField_EngineerF.events.onOK.add(function() {ship.fname_Engineer = nameField_EngineerF.value;});
-		settingsPanel.add(nameField_EngineerS = new SlickUI.Element.TextField(140 + 4, 24 + 64 + 64 + 64, 159, 44, 14));
-        nameField_EngineerS.events.onOK.add(function() {ship.sname_Engineer = nameField_EngineerS.value;});
+        var nameField_Security;
+        var label_Security;
+        settingsPanel.add(label_Security = new SlickUI.Element.Text(8 + 140, 2 + 64, "Security name:", 12));
+		settingsPanel.add(nameField_Security = new SlickUI.Element.TextField(8 + 140, 24 + 64, 140, 44, 14));
+        nameField_Security.events.onOK.add(function() {ship.name_Security = nameField_Security.value;});
+        
+        var volumeSlider;
+        var label_Volume;
+        settingsPanel.add(label_Volume = new SlickUI.Element.Text(8, 2 + 64 + 64, "Music volume:", 12));
+		settingsPanel.add(volumeSlider = new SlickUI.Element.Slider(16, 2 + 64 + 64 + 50, 256));
+        
+        volumeSlider.onDrag.add(function (value) {
+            var setting = value;
+            music.volume = setting;
+        });
+        
         
         
         var closeSettingsButton;

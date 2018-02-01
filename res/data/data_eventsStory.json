@@ -25,24 +25,24 @@
 {
 	"name": "story_fight",
 	"title": "ASSAULT ON BOARD",
-	"content": "Head of Security [SNAME_SECURITY] takes you aside at breakfast. A junior engineer has seriously assaulted a colleague. There is no brig on board.",
+	"content": "Head of Security [NAME_SECURITY] takes you aside at breakfast. A junior engineer has seriously assaulted a colleague. There is no brig on board.",
 	"options":
 	[{
 		"choice": "Fire him out the airlock",
 		"diceRoll": true,
 		"winChance": 0.8,
 		"win": {
-			"response": "[SNAME_SECURITY] nods and immediately leaves the mess hall. It's a hard decision, but you can't tolerate violence onboard.",
+			"response": "[NAME_SECURITY] nods and immediately leaves the mess hall. It's a hard decision, but you can't tolerate violence onboard.",
 			"effect" : {"resource_crew" : -1}
 		},
 		"fail": {
-			"response": "[SNAME_SECURITY] leaves and, the next day, brings you the report of the incident. The perpetrator made a scene. Everyone knows.",
+			"response": "[NAME_SECURITY] leaves and, the next day, brings you the report of the incident. The perpetrator made a scene. Everyone knows.",
 			"effect" : {"resource_crew" : -1, "resource_happiness" : -20}
 		}
 	}, {
 		"choice": "Keep the incident under wraps",
 		"diceRoll": false,
-		"response": "[SNAME_SECURITY] doesn't seem happy about it, but talks to the victim and convinces them to keep quiet. You transfer him to another department.",
+		"response": "[NAME_SECURITY] doesn't seem happy about it, but talks to the victim and convinces them to keep quiet. You transfer him to another department.",
 		"effect" : {"resource_happiness" : -5}
 	}]
 }

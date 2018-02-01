@@ -15,14 +15,10 @@ var ship = {
 	happiness: 100,
 	hull: 100,
     needsRecharge: false,
-    fname_Pilot: "Kim",
-    sname_Pilot: "Slipples",
-    fname_Engineer: "Grace",
-    sname_Engineer: "Walker",
-    fname_Navigator: "Becca",
-    sname_Navigator: "Waters",
-    fname_Security: "Rosie",
-    sname_Security: "Milligan",
+    name_Pilot: "Slipples",
+    name_Engineer: "Walker",
+    name_Navigator: "Waters",
+    name_Security: "Milligan",
 	
 	reachedDestination: false,
     
@@ -503,19 +499,15 @@ var playState = {
     swapNames: function(text) {
         
         //Swap out the nametags in a string with the player-set character names (or defaults)
-        //Positions are in the format FNAME_JOBTITLE and SNAME_JOBTITLE
+        //Positions are in the format NAME_JOBTITLE
         //Jobtitles are PILOT, NAVIGATOR, ENGINEER, SECURITY
         
         var result = text;
         
-        result = result.replace("[FNAME_PILOT]", ship.fname_Pilot);
-        result = result.replace("[SNAME_PILOT]", ship.sname_Pilot);
-        result = result.replace("[FNAME_ENGINEER]", ship.fname_Engineer);
-        result = result.replace("[SNAME_ENGINEER]", ship.sname_Engineer);
-        result = result.replace("[FNAME_NAVIGATOR]", ship.fname_Navigator);
-        result = result.replace("[SNAME_NAVIGATOR]", ship.sname_Navigator);
-        result = result.replace("[FNAME_SECURITY]", ship.fname_Security);
-        result = result.replace("[SNAME_SECURITY]", ship.sname_Security);
+        result = result.replace("[NAME_PILOT]", ship.name_Pilot);
+        result = result.replace("[NAME_ENGINEER]", ship.name_Engineer);
+        result = result.replace("[NAME_NAVIGATOR]", ship.name_Navigator);
+        result = result.replace("[NAME_SECURITY]", ship.name_Security);
         
         return result;
     },
@@ -527,24 +519,14 @@ var playState = {
         var barY = 99 * scale;
         slickUI.add(statusPanel = new SlickUI.Element.Panel(barX, barY, game.width, game.height));
 
-        //TODO: replace this with a background monitor-looking sprite that we can pop up the status messages on
         var hudPanel;
         statusPanel.add(hudPanel = new SlickUI.Element.DisplayObject(3 * scale, 1 * scale, game.make.sprite(0, 0, 'hud_panel')));
         
-        //TODO: bring to top!
-        var hudGroup = game.add.group();
-        
 		//Warning lights on HUD panel
-		hudPanel.add(warnings.sprite_driveCharge = new SlickUI.Element.DisplayObject(12, 12, game.make.sprite(0, 0, 'hud_driveCharge')));
-		hudPanel.add(warnings.sprite_driveReady = new SlickUI.Element.DisplayObject(2, 2, game.make.sprite(0, 0, 'hud_driveReady')));
-		warnings.sprite_driveCharge.visible = true;
+		slickUI.add(warnings.sprite_driveCharge = new SlickUI.Element.DisplayObject(barX + 16, barY + 10, game.make.sprite(0, 0, 'hud_driveCharge')));
+		slickUI.add(warnings.sprite_driveReady = new SlickUI.Element.DisplayObject(barX + 16, barY + 10, game.make.sprite(0, 0, 'hud_driveReady')));
+		warnings.sprite_driveCharge.visible = false;
 		warnings.sprite_driveReady.visible = false;
-        
-        
-        var hud_;
-        statusPanel.add(warningSprite = new SlickUI.Element.DisplayObject(3 * scale, 1 * scale, game.make.sprite(0, 0, 'hud_panel')));
-        var hudPanel;
-        statusPanel.add(warningSprite = new SlickUI.Element.DisplayObject(3 * scale, 1 * scale, game.make.sprite(0, 0, 'hud_panel')));
         
         var jumpButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 2 * scale, 24 * scale, 10 * scale));
 		jumpButton.add(new SlickUI.Element.Text(0, 0, "JUMP")).center();
