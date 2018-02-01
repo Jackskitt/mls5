@@ -169,14 +169,16 @@ var playState = {
 			currentDanger = systemObject.danger;
 		}
         
+        warning_current = warnings.sprite_driveReady;
+        playState.setWarning(warnings.sprite_driveReady);
+
         if (ship.day > 1) {
            
             if (ship.needsRecharge) {
                 //The ship just jumped and needs to recharge. Display some system welcome text, and maybe a danger event.
 				
-				warnings.sprite_driveReady.visible = false;
-				warnings.sprite_driveCharge.visible = true;
-                
+                playState.setWarning(warnings.sprite_driveCharge);
+		
 				ship.sprite.animations.play('anim_ship_land', 16, false);
 				sound_land.play();
             }
@@ -442,6 +444,12 @@ var playState = {
         //Story events, when complete, allow you to jump to another system.
     },
     
+    setWarning: function(warning) {
+        warning_current.visible = false;
+        warning_current = warning;
+        warning_current.visible = true;
+    },
+    
     recharge: function() {
 		
 		if (!ship.needsRecharge) {
@@ -458,8 +466,7 @@ var playState = {
 		
         ship.needsRecharge = false;
 		
-		warnings.sprite_driveReady.visible = true;
-		warnings.sprite_driveCharge.visible = false;
+        playState.setWarning(warnings.sprite_driveReady);
 		
 		ship.sprite.animations.play('anim_ship_charge', 16, false);
         sound_beam.play();
