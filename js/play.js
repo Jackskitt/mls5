@@ -205,8 +205,6 @@ var playState = {
 		var backgroundMovement = 0.001 * game.time.elapsed * scale;
 		
 		bg.posX -= backgroundMovement;
-		
-        //TODO: The loop is based on the starfield image width - change the starfield width to match the scenery sprite or something
         
 		if (bg.posX < 0 - bg.sprite0.width)
 			bg.posX = 0;
@@ -216,8 +214,8 @@ var playState = {
 		
 		groupPlanets.x -= backgroundMovement * 6;
 		
-		if (groupPlanets.x < - 250 * scale)
-			groupPlanets.x = 250 * scale;
+		if (groupPlanets.x < - bg.sprite0.width * 3)	//The planet scenery image will always be the same width as the background starfield.
+			groupPlanets.x = bg.sprite0.width * 2;
 	},
 	
 	/* UI MANAGEMENT */
