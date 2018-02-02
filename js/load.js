@@ -65,8 +65,8 @@ var loadState = {
 		/* DATA */
 		
 		//Data
-		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");		//TODO: randomise encounter list at start of game and iterate through to prevent repetition
-		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");		//TODO: randomise encounter list at start of game and iterate through to prevent repetition
+		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");		//TODO: randomise event lists at start of game and iterate through to prevent repetition
+		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");
 		game.load.json("data_map", "res/data/data_map.json");
         
         mapData = {

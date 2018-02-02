@@ -31,7 +31,7 @@ var ship = {
         resource_happiness +-
         resource_hull +=
         */
-        
+		
         if (effect.resource_fuel != null) {
             ship.fuel += effect.resource_fuel;
 			
@@ -60,6 +60,8 @@ var ship = {
 				playState.lose();
 			}
         }
+		
+		playState.refreshStatusPanel();
     }
 };
 
@@ -272,6 +274,8 @@ var playState = {
 			var button;
 			var option = messageBox.options[i];
 			
+			console.log(option);
+			
             if (messageBox.options.length == 1) {
                 panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));
             } else {
@@ -280,6 +284,8 @@ var playState = {
 			button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
 			
 			//Make the buttons do different stuff depending on what the JSON data says.
+			
+			//TODO: There's a bug with certain JSON events - looks like if both options are dicerolls then it always chooses option 2, even if player selected option 1.
 			
 			if (option.diceRoll) {
 				
@@ -298,6 +304,8 @@ var playState = {
 						//win! :)
 						response = selectedOption.win.response;
 						effect = selectedOption.win.effect;
+						
+						//Parse some JSON:
 						
 						effectText = JSON.stringify(effect);
 						effectText = effectText.substr(effectText.indexOf('_')+1);
@@ -382,8 +390,6 @@ var playState = {
     createMessageBoxEndgame: function() {
 		
 		messageActive = true;
-		
-		//Set bounds and instantiate panel
         var x = 84 * scale;
         var y = 7 * scale;
         var panel;
@@ -391,11 +397,9 @@ var playState = {
 		
         messageBox.content = playState.swapNames(messageBox.content);
         
-		//Add title and content
         panel.add(new SlickUI.Element.Text(2 * scale, 0, messageBox.title)).centerHorizontally();
         panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content));
         
-		//Add buttons
 		for (var i = 0; i < messageBox.options.length; i++) {
 			var button;
 			var option = messageBox.options[i];
@@ -407,8 +411,7 @@ var playState = {
             }
 			button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
 			
-			//Make the buttons do different stuff depending on what the JSON data says.
-			
+			playState.refreshStatusPanel();
 				
 			button.events.onInputUp.add(function () {
 
@@ -644,10 +647,10 @@ var playState = {
 	},
 	
 	refreshStatusPanel: function() {
-        label_FUEL.text = "FUEL: " + ship.fuel + "KT";
-        label_CREW.text = "CREW: " + ship.crew;
-        label_HAPP.text = "HAPP: " + ship.happiness + "%";
-        label_HULL.text = "HULL: " + ship.hull + "%";
+        label_FUEL.text.text = "FUEL: " + ship.fuel + "KT";
+        label_CREW.text.text = "CREW: " + ship.crew;
+        label_HAPP.text.text = "HAPP: " + ship.happiness + "%";
+        label_HULL.text.text = "HULL: " + ship.hull + "%";
 	}
 	
 };

@@ -49,6 +49,38 @@
 	}]
 },
 {
+	"name": "danger_bigAsteroid",
+	"dangerType": "ASTEROIDS",
+	"title": "LARGE OBJECT DETECTED",
+	"content": "Moments after you arrive, [NAME_NAVIGATOR] hits the alarm. That small speck in the distance is growing, fast. [NAME_ENGINEER] and [NAME_PILOT] both yell from their seats, pushing alerts to your screen.",
+	"options":
+	[{
+		"choice": "Trust [NAME_PILOT], take evasive action",
+		"diceRoll": true,
+		"winChance": 0.5,
+		"win": {
+			"response": "[NAME_PILOT] jettisons two fuel banks for speed and yanks the ship around, firing the main engine. You just pull away as the object clips off the aft comm tower. It's bad, but the ship survives.",
+			"effect" : {"resource_fuel" : -15, "resource_hull" : -12, "resource_crew" : -3}
+		},
+		"fail": {
+			"response": "[NAME_PILOT] guns the retros and pulls the ship backwards, tilting away from the path of the object. Not fast enough - it tears through the lower decks. You seal the breach, but losses are high.",
+			"effect" : {"resource_hull" : -65, "resource_fuel" : -25, "resource_crew" : -63}
+		}
+	}, {
+		"choice": "Trust [NAME_ENGINEER], raise impact shield",
+		"diceRoll": true,
+		"winChance": 0.5,
+		"win": {
+			"response": "[NAME_ENGINEER] cuts the power to everything except the forward shield. The bridge goes pitch-black and silent. When the asteroid hits it shatters into a thousand pieces, dealing minimal damage.",
+			"effect" : {"resource_fuel" : -35, "resource_hull" : -2}
+		},
+		"fail": {
+			"response": "[NAME_ENGINEER] raises the forward shield. You sit in silence as the object approaches, holding your ground - it strikes you head-on. The rock breaks in half, but fractures the hull badly.",
+			"effect" : {"resource_hull" : -45, "resource_fuel" : -25}
+		}
+	}]
+},
+{
 	"name": "danger_storm",
 	"dangerType": "ION",
 	"title": "ION STORM",
