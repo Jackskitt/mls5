@@ -63,11 +63,6 @@ var ship = {
     }
 };
 
-var warnings = {
-	sprite_driveCharge: null,
-	sprite_driveReady: null
-};
-
 var bg = {
 	sprite0: null,
 	sprite1: null,
@@ -82,6 +77,18 @@ var groupShip;
 var statusBar = {
 	bgSprite: null
 };
+
+var warnings = {
+	sprite_driveCharge: null,
+	sprite_driveReady: null
+};
+
+var label_STAT;
+var label_FUEL;
+var label_CREW;
+var label_HAPP;
+var label_HULL;
+
 var messageBox = {
 	title: "MESSAGETITLE",
 	content: "MESSAGECONTENT",
@@ -124,20 +131,14 @@ var playState = {
         ship.sprite.animations.play('anim_ship_idle', 8, true);
         
         animJump.onComplete.add(function() {
-        	setTimeout(function() {
-				game.state.start('map');
-			}, 300);
+			game.state.start('map');
 		});
 		
         animLand.onComplete.add(function() {
 			ship.sprite.animations.play('anim_ship_idle', 8, true);
 				
-			
 			if (currentDanger !== undefined) {
-				
-				setTimeout(function() {
-					playState.fireEvent_Danger(currentDanger);
-				}, 300);
+				playState.fireEvent_Danger(currentDanger);
 			}
 		});
 		
@@ -341,7 +342,7 @@ var playState = {
 					playState.displayMessageNoChoice(messageBox.title, response);
                     
                     //Update the UI with the changes
-                    playState.initUI();
+                    playState.refreshStatusPanel();
 				});
 				
 			} else {
@@ -362,7 +363,7 @@ var playState = {
 					}
                     
                     //Update the UI with the changes
-                    playState.initUI();
+                    playState.refreshStatusPanel();
                     
 				});
 			}
@@ -486,6 +487,12 @@ var playState = {
 			return;
 		}
 		
+		if (ship.sprite.animations.currentAnim.name == 'anim_ship_charge') {
+			console.log("CANNOT JUMP - CHARGE ANIMATION RUNNING");
+			sound_selectFail.play();
+			return;
+		}
+		
         ship.sprite.animations.play('anim_ship_jump', 16, false);
         sound_jump2.play();
 		
@@ -566,13 +573,12 @@ var playState = {
         var arseButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 13 * scale, 24 * scale, 10 * scale));
 		arseButton.add(new SlickUI.Element.Text(0, 0, "ARSE")).center();
         arseButton.events.onInputUp.add(this.manageCrew);
-
-        
-        statusPanel.add(new SlickUI.Element.Text(199 * scale, 0 * scale, "STAT"));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 8 * scale, "FUEL: " + ship.fuel + "KT"));
-        statusPanel.add(new SlickUI.Element.Text(164 * scale, 14 * scale, "CREW: " + ship.crew));
-        statusPanel.add(new SlickUI.Element.Text(208 * scale, 8 * scale, "HAPP: " + ship.happiness + "%"));
-        statusPanel.add(new SlickUI.Element.Text(208 * scale, 14 * scale, "HULL: " + ship.hull + "%"));
+		
+        label_STAT = statusPanel.add(new SlickUI.Element.Text(199 * scale, 0 * scale, "STAT"));
+		label_FUEL = statusPanel.add(new SlickUI.Element.Text(164 * scale, 8 * scale, "FUEL: " + ship.fuel + "KT"));
+		label_CREW = statusPanel.add(new SlickUI.Element.Text(164 * scale, 14 * scale, "CREW: " + ship.crew));
+		label_HAPP = statusPanel.add(new SlickUI.Element.Text(208 * scale, 8 * scale, "HAPP: " + ship.happiness + "%"));
+		label_HULL = statusPanel.add(new SlickUI.Element.Text(208 * scale, 14 * scale, "HULL: " + ship.hull + "%"));
     },
 	
 	win: function() {
@@ -581,6 +587,13 @@ var playState = {
 	
 	lose: function() {
 		console.log("LOSE");
+	},
+	
+	refreshStatusPanel: function() {
+        label_FUEL.text = "FUEL: " + ship.fuel + "KT";
+        label_CREW.text = "CREW: " + ship.crew;
+        label_HAPP.text = "HAPP: " + ship.happiness + "%";
+        label_HULL.text = "HULL: " + ship.hull + "%";
 	}
 	
 };

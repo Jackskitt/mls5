@@ -1,10 +1,20 @@
 body {
-	background-color: #1c1c1c;
+	background-color: #f0f0f0;
 	margin: auto;
 }
 
+h1 {
+	font-family: monospace;
+	text-align: center;
+	font-weight: 800;
+	font-size: 3em;
+}
+
 .gameWrapper {
-	margin: auto;
+	padding: 40px;
+	border-radius: 4px;
+	background-color: #727272;
+	margin: 5% auto;
 	width: 768px;
 	height: 384px;
 }
