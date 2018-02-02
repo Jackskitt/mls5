@@ -229,15 +229,26 @@ var playState = {
         this.createMessageBox();
     },
     
-    displayMessageNoChoice: function(title, content) {
+    displayMessageNoChoice: function(title, content, choiceText) {
         
-		var continueJourney = [{choice: "Continue the journey", diceRoll: false, final: true}];
+		var continueJourney = [{choice: choiceText, diceRoll: false, final: true}];
         
         messageBox.title = title;
         messageBox.content = content;
 		messageBox.options = continueJourney;
         
         this.createMessageBox();
+    },
+    
+    displayMessageEndgame: function(title, content, choiceText) {
+        
+		var continueJourney = [{choice: choiceText, diceRoll: false, final: true}];
+        
+        messageBox.title = title;
+        messageBox.content = content;
+		messageBox.options = continueJourney;
+        
+        this.createMessageBoxEndgame();
     },
     
     createMessageBox: function() {
@@ -337,7 +348,7 @@ var playState = {
                     
                     response = playState.swapNames(response);
                     
-					playState.displayMessageNoChoice(messageBox.title, response);
+					playState.displayMessageNoChoice(messageBox.title, response, "Continue the journey");
                     
                     //Update the UI with the changes
                     playState.refreshStatusPanel();
@@ -357,7 +368,7 @@ var playState = {
 					
 					if (!option.final) {
 						//option.final is just a flag to note whether this is the last dialog box in a sequence.
-						playState.displayMessageNoChoice(messageBox.title, option.response);
+						playState.displayMessageNoChoice(messageBox.title, option.response, "Continue the journey");
 					}
                     
                     //Update the UI with the changes
@@ -365,6 +376,51 @@ var playState = {
                     
 				});
 			}
+		}
+    },
+	
+    createMessageBoxEndgame: function() {
+		
+		messageActive = true;
+		
+		//Set bounds and instantiate panel
+        var x = 84 * scale;
+        var y = 7 * scale;
+        var panel;
+        slickUI.add(panel = new SlickUI.Element.Panel(x, y, 164 * scale, 84 * scale));
+		
+        messageBox.content = playState.swapNames(messageBox.content);
+        
+		//Add title and content
+        panel.add(new SlickUI.Element.Text(2 * scale, 0, messageBox.title)).centerHorizontally();
+        panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content));
+        
+		//Add buttons
+		for (var i = 0; i < messageBox.options.length; i++) {
+			var button;
+			var option = messageBox.options[i];
+			
+            if (messageBox.options.length == 1) {
+                panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));
+            } else {
+                panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale, 164 * scale, 14 * scale));
+            }
+			button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
+			
+			//Make the buttons do different stuff depending on what the JSON data says.
+			
+				
+			button.events.onInputUp.add(function () {
+
+				sound_select.play();
+
+				panel.destroy();
+
+				messageActive = false;
+				
+				window.location.reload();
+			});
+			
 		}
     },
 	
@@ -465,6 +521,8 @@ var playState = {
 		
         ship.needsRecharge = false;
 		
+		messageActive = true;	//The message isn't active just yet, but we don't want anything to prevent it displaying.
+		
         playState.setWarning(warnings.sprite_driveReady);
 		
 		ship.sprite.animations.play('anim_ship_charge', 16, false);
@@ -481,12 +539,6 @@ var playState = {
 		
 		if (messageActive) {
 			console.log("CANNOT JUMP - STUFF IS HAPPENING");
-			sound_selectFail.play();
-			return;
-		}
-		
-		if (ship.sprite.animations.currentAnim.name == 'anim_ship_charge') {
-			console.log("CANNOT JUMP - CHARGE ANIMATION RUNNING");
 			sound_selectFail.play();
 			return;
 		}
@@ -581,10 +633,14 @@ var playState = {
 	
 	win: function() {
 		console.log("WIN");
+		
+		this.displayMessageEndgame("SUCCESS", "The pods detach and begin their descent to the surface. You made it. " + ship.crew + " humans will have a chance to start over.\n\nGAME OVER", "Reflect on the journey.");
 	},
 	
 	lose: function() {
 		console.log("LOSE");
+		
+		this.displayMessageEndgame("FAILURE", "Through incompetence, malice or just plain bad luck, the human race has been extinguished. Good riddance.\n\nGAME OVER", "Reflect on your mistakes.");
 	},
 	
 	refreshStatusPanel: function() {
