@@ -298,7 +298,6 @@ var playState = {
 			var button;
 			var option = messageBox.options[i];
 			
-			
             if (messageBox.options.length == 1) {
                 panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));	//If there's only one button, shift it to the bottom of the panel.
             } else {
@@ -308,7 +307,7 @@ var playState = {
 			
 			//Make the buttons do different stuff depending on what the JSON data says.
 			
-			//TODO: There's a bug with certain JSON events - looks like if both options are dicerolls then it always chooses option 2, even if player selected option 1.
+			//TODO: Bug - the value of i isn't saved for the callback later.
 			
 			if (option.diceRoll) {
 				
@@ -316,40 +315,33 @@ var playState = {
 				var selectedOption = option;
 				
 				button.events.onInputUp.add(function () {
+					
 					//This event requires a roll of the dice to see the outcome.
-					//We grab the probability and the win/lose responses from the JSON data.
+					//We grab the probability and the win/lose responses from the JSON data
+					
 					sound_select.play();
 					var response = "Response not set!";
                     var effect = "Effect not set!";
 					var effectText = "";
 					
 					if (Math.random() < selectedOption.winChance) {
-						//win! :)
+						//win!
 						response = selectedOption.win.response;
 						effect = selectedOption.win.effect;
 						
-						//Parse some JSON:
-						effectText = playState.parseEffectText(effectText, effect);
-						
-						response += "\n\n" + effectText;
-						
-                        ship.effectChange(effect);
-						
 					} else {
-						//fail! :(
+						//fail!
 						response = selectedOption.fail.response;
 						effect = selectedOption.fail.effect;
-						
-						//Parse some JSON:
-						effectText = playState.parseEffectText(effectText, effect);
-						
-						response += "\n\n" + effectText;
-						
-                        ship.effectChange(effect);
 					}
+						
+					//Parse some JSON:
+					effectText = playState.parseEffectText(effectText, effect);
+
+					response += "\n\n" + effectText;
+					ship.effectChange(effect);
 					
-					panel.destroy();
-					
+					panel.destroy();					
 					messageActive = false;
                     
                     response = playState.swapNames(response);
