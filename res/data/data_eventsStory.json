@@ -19,7 +19,8 @@
 	}, {
 		"choice": "Ignore the readings",
 		"diceRoll": false,
-		"response": "You broadcast a data packet in case it's of use to someone else. Time to move on."
+		"response": "You broadcast a data packet in case it's of use to someone else. Time to move on.",
+		"effect": null
 	}]
 },
 {
@@ -44,6 +45,37 @@
 		"diceRoll": false,
 		"response": "[NAME_SECURITY] doesn't seem happy about it, but talks to the victim and convinces them to keep quiet. You transfer him to another department.",
 		"effect" : {"resource_happiness" : -5}
+	}]
+},
+{
+	"name": "story_riot",
+	"title": "SECURITY ALERT",
+	"content": "[NAME_SECURITY] buzzes you at lunch. Yelling to be heard, she tells you that a group of malcontents have started a riot in the mess hall. They've had enough travelling.",
+	"options":
+	[{
+		"choice": "Have [NAME_SECURITY] arrest them",
+		"diceRoll": true,
+		"winChance": 0.7,
+		"win": {
+			"response": "[NAME_SECURITY] moves officers in quickly and incapacitates the troublemakers. They end up spending a few days in the brig, and order is restored - if not peace.",
+			"effect" : {"resource_happiness" : -18}
+		},
+		"fail": {
+			"response": "[NAME_SECURITY] rushes in to quell the disturbance. The violence escalates and few people get out unscathed. This won't help.",
+			"effect" : {"resource_crew" : -3, "resource_happiness" : -39}
+		}
+	}, {
+		"choice": "Let [NAME_SECURITY] talk them down",
+		"diceRoll": true,
+		"winChance": 0.2,
+		"win": {
+			"response": "[NAME_SECURITY] offers an increase in food rations and more flexibility in work shifts. A dialogue is opened, and eventually the troublemakers settle down, relieved to have been listened to.",
+			"effect" : {"resource_happiness" : 24}
+		},
+		"fail": {
+			"response": "[NAME_SECURITY] hangs up and, from what you can piece together later, tries to convince them of their folly. It doesn't go well. Medbay fills up, but at least nobody died.",
+			"effect" : {"resource_happiness" : -17}
+		}
 	}]
 }
 ]

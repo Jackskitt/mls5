@@ -356,6 +356,8 @@ var playState = {
 					});
 
 				} else {
+					
+					var selectedOption = messageBox.options[e];
 
 					button.events.onInputUp.add(function () {
 
@@ -366,7 +368,27 @@ var playState = {
 						panel.destroy();
 
 						messageActive = false;
+						
+						var response = "Response not set!";
+						var effect = "Effect not set!";
+						var effectText = "";
+	
+						messageActive = false;
 
+						response = playState.swapNames(response);
+
+						effect = selectedOption.effect;
+						
+						if (effect != null) {
+							//Parse some JSON:
+							effectText = playState.parseEffectText(effectText, effect);
+
+							response += "\n\n" + effectText;
+
+							ship.effectChange(effect);
+						}
+						
+						
 						if (!option.final) {
 							//option.final is just a flag to note whether this is the last dialog box in a sequence.
 							playState.displayMessageNoChoice(messageBox.title, option.response, "Continue the journey");

@@ -42,7 +42,7 @@
 			"effect" : {"resource_hull" : -25, "resource_fuel" : -5}
 		}
 	}, {
-		"choice": "(-25 FUEL) Raise emergency shield",
+		"choice": "Raise emergency shield",
 		"diceRoll": false,
 		"response": "Chief Engineer [NAME_ENGINEER] diverts power to the emergency shield. It screeches into life and drains the fuel cells. The storm continues, but the hull holds.",
 		"effect" : {"resource_fuel" : -25}
@@ -64,7 +64,7 @@
 		},
 		"fail": {
 			"response": "[NAME_PILOT] guns the retros and pulls the ship backwards, tilting away from the path of the object. Not fast enough - it tears through the lower decks. You seal the breach, but losses are high.",
-			"effect" : {"resource_hull" : -65, "resource_fuel" : -25, "resource_crew" : -63}
+			"effect" : {"resource_hull" : -65, "resource_crew" : -63}
 		}
 	}, {
 		"choice": "Trust [NAME_ENGINEER], raise impact shield",
@@ -140,6 +140,38 @@
 		"fail": {
 			"response": "There's a screech as one drone scores a gouge in the hull, then another, and another. [NAME_PILOT] panics, but [NAME_ENGINEER] quickly overloads the shield, knocking the drones out of commission.",
 			"effect" : {"resource_hull" : -8, "resource_fuel" : -12}
+		}
+	}]
+},
+{
+	"name": "danger_powerFailure",
+	"dangerType": "ION",
+	"title": "[##UNDEFINED FAILURE]",
+	"content": "####EXCEPTION.E0x00310####SYSTEMFAILURE\n#CPU\n#POWER\n#OVERFLOW",
+	"options":
+	[{
+		"choice": "Call for [NAME_ENGINEER]",
+		"diceRoll": true,
+		"winChance": 0.8,
+		"win": {
+			"response": "[NAME_ENGINEER] rushes to the main terminal, swearing, and disconnects the secondary battery. Your screen flashes and blacks out, then slowly starts up again. Looks like it's back to normal.",
+			"effect" : {"resource_happiness" : 2}
+		},
+		"fail": {
+			"response": "[NAME_ENGINEER] sends an assistant to restart the computer core. You soon hear a distant bang. The computers come back online, but engineering reports that the secondary battery exploded. The assistant didn't make it.",
+			"effect" : {"resource_hull" : -2, "resource_crew" : -1}
+		}
+	}, {
+		"choice": "Reboot the terminal",
+		"diceRoll": true,
+		"winChance": 0.1,
+		"win": {
+			"response": "You're no expert, so you give the terminal a kick. It comes back online. There is a smattering of applause on the bridge.",
+			"effect" : {"resource_happiness" : 5}
+		},
+		"fail": {
+			"response": "You're no expert, so you give the terminal a kick. It comes back online, but five minutes later there's an explosion belowdecks.",
+			"effect" : {"resource_hull" : -27, "resource_crew" : -23}
 		}
 	}]
 }
