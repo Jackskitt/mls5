@@ -295,85 +295,91 @@ var playState = {
         
 		//Add buttons
 		for (var i = 0; i < messageBox.options.length; i++) {
-			var button;
-			var option = messageBox.options[i];
 			
-            if (messageBox.options.length == 1) {
-                panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));	//If there's only one button, shift it to the bottom of the panel.
-            } else {
-                panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale, 164 * scale, 14 * scale));
-            }
-			button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
+			//This is an anonymous wrapper which lets us save the value of i as e - this value will be saved for the callback later
 			
-			//Make the buttons do different stuff depending on what the JSON data says.
-			
-			//TODO: Bug - the value of i isn't saved for the callback later.
-			
-			if (option.diceRoll) {
+			(function(e) {
 				
-				//Save the option for use in the callback later.
-				var selectedOption = option;
-				
-				button.events.onInputUp.add(function () {
-					
-					//This event requires a roll of the dice to see the outcome.
-					//We grab the probability and the win/lose responses from the JSON data
-					
-					sound_select.play();
-					var response = "Response not set!";
-                    var effect = "Effect not set!";
-					var effectText = "";
-					
-					if (Math.random() < selectedOption.winChance) {
-						//win!
-						response = selectedOption.win.response;
-						effect = selectedOption.win.effect;
-						
-					} else {
-						//fail!
-						response = selectedOption.fail.response;
-						effect = selectedOption.fail.effect;
-					}
-						
-					//Parse some JSON:
-					effectText = playState.parseEffectText(effectText, effect);
+				var button;
+				var option = messageBox.options[i];
 
-					response += "\n\n" + effectText;
-					ship.effectChange(effect);
-					
-					panel.destroy();					
-					messageActive = false;
-                    
-                    response = playState.swapNames(response);
-                    
-					playState.displayMessageNoChoice(messageBox.title, response, "Continue the journey");
-                    
-                    //Update the UI with the changes
-                    playState.refreshStatusPanel();
-				});
+				if (messageBox.options.length == 1) {
+					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));	//If there's only one button, shift it to the bottom of the panel.
+				} else {
+					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale, 164 * scale, 14 * scale));
+				}
+				button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
+
+				//Make the buttons do different stuff depending on what the JSON data says.
 				
-			} else {
+				if (option.diceRoll) {
+
+					//Save the option for use in the callback later.
+					var selectedOption = messageBox.options[e];
+
+					button.events.onInputUp.add(function () {
+
+						//This event requires a roll of the dice to see the outcome.
+						//We grab the probability and the win/lose responses from the JSON data
+
+						sound_select.play();
+						var response = "Response not set!";
+						var effect = "Effect not set!";
+						var effectText = "";
+
+						if (Math.random() < selectedOption.winChance) {
+							//win!
+							response = selectedOption.win.response;
+							effect = selectedOption.win.effect;
+
+						} else {
+							//fail!
+							response = selectedOption.fail.response;
+							effect = selectedOption.fail.effect;
+						}
+
+						//Parse some JSON:
+						effectText = playState.parseEffectText(effectText, effect);
+
+						response += "\n\n" + effectText;
+						ship.effectChange(effect);
+
+						panel.destroy();					
+						messageActive = false;
+
+						response = playState.swapNames(response);
+
+						playState.displayMessageNoChoice(messageBox.title, response, "Continue the journey");
+
+						//Update the UI with the changes
+						playState.refreshStatusPanel();
+					});
+
+				} else {
+
+					button.events.onInputUp.add(function () {
+
+						sound_select.play();
+
+						//There's no dice roll needed here. 
+
+						panel.destroy();
+
+						messageActive = false;
+
+						if (!option.final) {
+							//option.final is just a flag to note whether this is the last dialog box in a sequence.
+							playState.displayMessageNoChoice(messageBox.title, option.response, "Continue the journey");
+						}
+
+						//Update the UI with the changes
+						playState.refreshStatusPanel();
+
+					});
+				}
 				
-				button.events.onInputUp.add(function () {
-					
-					sound_select.play();
-					
-					//There's no dice roll needed here. 
-					
-					panel.destroy();
-					
-					messageActive = false;
-					
-					if (!option.final) {
-						//option.final is just a flag to note whether this is the last dialog box in a sequence.
-						playState.displayMessageNoChoice(messageBox.title, option.response, "Continue the journey");
-					}
-                    
-                    //Update the UI with the changes
-                    playState.refreshStatusPanel();
-                    
-				});
-			}
+			})(i); //End of anonymous wrapper
+			
 		}
     },
 	
