@@ -255,6 +255,8 @@ var playState = {
     
 	parseEffectText: function(text, effect) {
 		
+		//TODO: at the moment only supports two effects - increase to four
+		
 		var result = text;
 		
 		result = JSON.stringify(effect);
@@ -269,7 +271,7 @@ var playState = {
 			effectText2 = effectText2.replace('":',": ");
 			effectText2 = effectText2.replace('}',"");
 
-			result += "\n" + effectText2;
+			result += ", " + effectText2;
 		}
 		
 		return result;
@@ -281,9 +283,9 @@ var playState = {
 		
 		//Set bounds and instantiate panel
         var x = 84 * scale;
-        var y = 7 * scale;
+        var y = 2 * scale;
         var panel;
-        slickUI.add(panel = new SlickUI.Element.Panel(x, y, 164 * scale, 84 * scale));
+        slickUI.add(panel = new SlickUI.Element.Panel(x, y, 168 * scale, 96 * scale));
 		
         messageBox.content = playState.swapNames(messageBox.content);
         
@@ -296,12 +298,11 @@ var playState = {
 			var button;
 			var option = messageBox.options[i];
 			
-			console.log(option);
 			
             if (messageBox.options.length == 1) {
-                panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));
+                panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));	//If there's only one button, shift it to the bottom of the panel.
             } else {
-                panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale, 164 * scale, 14 * scale));
+                panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale, 164 * scale, 14 * scale));
             }
 			button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
 			
