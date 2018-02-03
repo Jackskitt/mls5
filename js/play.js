@@ -253,6 +253,28 @@ var playState = {
         this.createMessageBoxEndgame();
     },
     
+	parseEffectText: function(text, effect) {
+		
+		var result = text;
+		
+		result = JSON.stringify(effect);
+		result = result.substr(result.indexOf('_')+1);
+		result = result.replace('":',": ");
+		result = result.replace('}',"");
+
+		if (result.includes(',')) {
+			var effectText2 = result.substr(result.indexOf(',')+1);
+			result = result.substr(0,result.indexOf(','));
+			effectText2 = effectText2.substr(effectText2.indexOf('_')+1);
+			effectText2 = effectText2.replace('":',": ");
+			effectText2 = effectText2.replace('}',"");
+
+			result += "\n" + effectText2;
+		}
+		
+		return result;
+	},
+	
     createMessageBox: function() {
 		
 		messageActive = true;
@@ -306,21 +328,7 @@ var playState = {
 						effect = selectedOption.win.effect;
 						
 						//Parse some JSON:
-						
-						effectText = JSON.stringify(effect);
-						effectText = effectText.substr(effectText.indexOf('_')+1);
-						effectText = effectText.replace('":',": ");
-						effectText = effectText.replace('}',"");
-						
-						if (effectText.includes(',')) {
-							var effectText2 = effectText.substr(effectText.indexOf(',')+1);
-							effectText = effectText.substr(0,effectText.indexOf(','));
-							effectText2 = effectText2.substr(effectText2.indexOf('_')+1);
-							effectText2 = effectText2.replace('":',": ");
-							effectText2 = effectText2.replace('}',"");
-							
-							effectText += "\n" + effectText2;
-						}
+						effectText = playState.parseEffectText(effectText, effect);
 						
 						response += "\n\n" + effectText;
 						
@@ -331,19 +339,8 @@ var playState = {
 						response = selectedOption.fail.response;
 						effect = selectedOption.fail.effect;
 						
-						effectText = JSON.stringify(effect);
-						effectText = effectText.substr(effectText.indexOf('_')+1);
-						effectText = effectText.replace('":',": ");
-						effectText = effectText.replace('}',"");
-						
-						if (effectText.includes(',')) {
-							var effectText2 = effectText.substr(effectText.indexOf(',')+1);
-							effectText = effectText.substr(0,effectText.indexOf(','));
-							effectText2 = effectText2.substr(effectText2.indexOf('_')+1);
-							effectText2 = effectText2.replace('":',": ");
-							effectText2 = effectText2.replace('}',"");
-							effectText += "\n" + effectText2;
-						}
+						//Parse some JSON:
+						effectText = playState.parseEffectText(effectText, effect);
 						
 						response += "\n\n" + effectText;
 						
