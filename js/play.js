@@ -4,6 +4,11 @@ var scale = 3;
 
 var messageActive = false;
 
+//Event testing
+
+var testing = true;
+var eventToTest = "story_spaceWalk";
+
 //Scenery & Objects
 var ship = {
 	sprite: null,
@@ -513,7 +518,16 @@ var playState = {
 		
 		var encounter = data_eventsStory[selector];
 		
-		console.log("Firing story event: " + encounter.name);
+		if (testing) {
+			//This doesn't work uhhh fix it TODO
+			encounter = data_eventsStory.filter(function(data_eventsStory) {
+				console.log(data_eventsStory.name);
+				return data_eventsStory.name == eventToTest;
+			});
+			console.log("Testing story event: " + encounter.name);
+		} else {
+			console.log("Firing story event: " + encounter.name);
+		}
 		
 		this.displayMessage(encounter.title, encounter.content, encounter.options);
         
