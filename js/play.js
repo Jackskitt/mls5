@@ -6,7 +6,7 @@ var messageActive = false;
 
 //Event testing
 
-var testing = true;
+var testing = false;
 var eventToTest = "story_spaceWalk";
 
 //Scenery & Objects
@@ -310,8 +310,10 @@ var playState = {
 
 				if (messageBox.options.length == 1) {
 					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));	//If there's only one button, shift it to the bottom of the panel.
-				} else {
+				} else if (messageBox.options.length == 2) {
 					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale, 164 * scale, 14 * scale));
+				} else if (messageBox.options.length == 3) {
+					panel.add(button = new SlickUI.Element.Button(0, (48 * scale) + (i * 14 * scale), 164 * scale, 14 * scale));
 				}
 				button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
 
@@ -519,12 +521,20 @@ var playState = {
 		var encounter = data_eventsStory[selector];
 		
 		if (testing) {
-			//This doesn't work uhhh fix it TODO
-			encounter = data_eventsStory.filter(function(data_eventsStory) {
-				console.log(data_eventsStory.name);
-				return data_eventsStory.name == eventToTest;
-			});
-			console.log("Testing story event: " + encounter.name);
+			//This is for testing specific story events. Saves time.
+			
+			for (var i = 0; i < data_eventsStory.length; i++) {
+				if (data_eventsStory[i].name == eventToTest) {
+					encounter = data_eventsStory[i];
+				}
+			}
+			
+			if (encounter == undefined) {
+				console.log("Couldn't find test subject " + eventToTest + " in story events list.");
+			} else {
+				console.log("Testing story event: " + encounter.name);
+			}
+			
 		} else {
 			console.log("Firing story event: " + encounter.name);
 		}
