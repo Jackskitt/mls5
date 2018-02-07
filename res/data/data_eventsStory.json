@@ -129,7 +129,7 @@
                 },
                 "fail": {
                     "response": "They get it aboard and force it open. Inside is a pile of broken vials, and within minutes people start to throw up. [NAME_ENGINEER] seals and vents the cargo bay just in time.",
-					"effect": {"resource_crew": -9; "resource_happiness": -12}
+					"effect": {"resource_crew": -9, "resource_happiness": -12}
                 }
             },
             {
@@ -142,7 +142,7 @@
                 },
                 "fail": {
                     "response": "You order them to recycle it. When it enters the crusher it releases some kind of bio-agent and the waste team fall ill very quickly.",
-					"effect": {"resource_crew": -4; "resource_happiness": -8}
+					"effect": {"resource_crew": -4, "resource_happiness": -8}
                 }
             }
         ]
