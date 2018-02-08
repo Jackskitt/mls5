@@ -37,6 +37,9 @@ var ship = {
         resource_hull +=
         */
 		
+        if (effect == null)
+            return;
+        
         if (effect.resource_fuel != null) {
             ship.fuel += effect.resource_fuel;
 			
@@ -446,6 +449,7 @@ var playState = {
 
 				messageActive = false;
 				
+                //refresh the page to start the game again
 				window.location.reload();
 			});
 			
@@ -674,6 +678,11 @@ var playState = {
 		label_CREW = statusPanel.add(new SlickUI.Element.Text(164 * scale, 14 * scale, "CREW: " + ship.crew));
 		label_HAPP = statusPanel.add(new SlickUI.Element.Text(208 * scale, 8 * scale, "HAPP: " + ship.happiness + "%"));
 		label_HULL = statusPanel.add(new SlickUI.Element.Text(208 * scale, 14 * scale, "HULL: " + ship.hull + "%"));
+        
+        var fullScreenButton;
+        slickUI.add(fullScreenButton = new SlickUI.Element.Button(0, 0, 32, 32));
+        fullScreenButton.events.onInputUp.add(function () {playState.fullScreenToggle();});
+        fullScreenButton.add(new SlickUI.Element.Text(0,0, "[]")).center();
     },
 	
 	win: function() {
@@ -693,6 +702,20 @@ var playState = {
         label_CREW.text.text = "CREW: " + ship.crew;
         label_HAPP.text.text = "HAPP: " + ship.happiness + "%";
         label_HULL.text.text = "HULL: " + ship.hull + "%";
-	}
+	},
+    
+    fullScreenToggle: function() {
+        
+        game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+        
+        if (game.scale.isFullScreen)
+        {
+            game.scale.stopFullScreen();
+        }
+        else
+        {
+            game.scale.startFullScreen(false);
+        }
+    }
 	
 };
