@@ -179,5 +179,57 @@
                 }
             }
         ]
+    },
+	
+    {
+        "name": "story_lost",
+        "title": "MAPPING ERROR",
+        "content": "You call for engineering to prime the jump drive, but [NAME_NAVIGATOR] interrupts. Apparently the mapping system glitched and you've ended up nowhere near the jump beacon.",
+        "options": [
+            {
+                "choice": "Jump anyway",
+                "diceRoll": true,
+                "winChance": 0,
+                "win": {
+                    "response": "null"
+                },
+                "fail": {
+                    "response": "The drive makes a noise like reverse birdsong. When you regain consciousness, you learn several people are in medical with massive blood loss.",
+					"effect": {"resource_happiness": -7, "resource_crew": -3}			
+                }
+            },
+            {
+                "choice": "Navigate manually",
+                "diceRoll": false,
+                "response": "It takes all night to correct your course and make it to the node. Everyone's tired and angry, but it's much safer than jumping blind.",
+				"effect": {"resource_happiness": -4}
+            }
+        ]
+    },
+    {
+        "name": "story_tapping",
+        "title": "TAP TAP TAP",
+        "content": "You hear a tapping from an overhead storage locker on the bridge. [NAME_NAVIGATOR] looks at you with some degree of concern.",
+        "options": [
+            {
+                "choice": "Open locker",
+                "diceRoll": true,
+                "winChance": 0.95,
+                "win": {
+                    "response": "You open the locker. A ginger cat leaps down and yowls at you - a hungry stowaway! It takes up residence on the bridge.",
+					"effect": {"resource_happiness": 5}
+                },
+                "fail": {
+                    "response": "You open the locker and a metronome falls out, striking your assistant navigator on the head. He later succumbs to his injury.",
+					"effect": {"resource_happiness": -7, "resource_crew": -1}
+                }
+            },
+            {
+                "choice": "Reassure self",
+                "diceRoll": false,
+                "response": "You tell yourself you're imagining things and order the crew onwards. [NAME_NAVIGATOR] watches you with fearful eyes.",
+				"effect": {"resource_happiness": -4}
+            }
+        ]
     }
 ]

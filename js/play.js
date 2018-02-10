@@ -56,6 +56,10 @@ var ship = {
         }
         if (effect.resource_happiness != null) {
             ship.happiness += effect.resource_happiness;
+        
+			if (ship.happiness > 100) {
+				ship.happiness = 100;
+			}
 			
 			if (ship.happiness <= 0) {
 				playState.lose();
@@ -63,6 +67,10 @@ var ship = {
         }
         if (effect.resource_hull != null) {
             ship.hull += effect.resource_hull;
+			
+			if (ship.hull > 100) {
+				ship.hull = 100;
+			}
 			
 			if (ship.hull <= 0) {
 				playState.lose();
@@ -198,10 +206,6 @@ var playState = {
 	
 	update: function() {
 		this.scrollBackground();
-        
-        if (ship.happiness > 100) {
-            ship.happiness = 100;
-        }
 	},
 	
 	render: function() {
@@ -360,9 +364,6 @@ var playState = {
 						response = playState.swapNames(response);
 
 						playState.displayMessageNoChoice(messageBox.title, response, "Continue the journey");
-
-						//Update the UI with the changes
-						playState.refreshStatusPanel();
 					});
 
 				} else {
@@ -396,6 +397,8 @@ var playState = {
 							response += "\n\n" + effectText;
 
 							ship.effectChange(effect);
+						} else {
+							console.log("Effect is null.");
 						}
 						
 						
@@ -403,9 +406,6 @@ var playState = {
 							//option.final is just a flag to note whether this is the last dialog box in a sequence.
 							playState.displayMessageNoChoice(messageBox.title, option.response, "Continue the journey");
 						}
-
-						//Update the UI with the changes
-						playState.refreshStatusPanel();
 
 					});
 				}
@@ -438,8 +438,6 @@ var playState = {
                 panel.add(button = new SlickUI.Element.Button(0, 50 * scale + i * 14 * scale, 164 * scale, 14 * scale));
             }
 			button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
-			
-			playState.refreshStatusPanel();
 				
 			button.events.onInputUp.add(function () {
 
