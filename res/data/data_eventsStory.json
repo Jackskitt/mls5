@@ -194,7 +194,7 @@
                     "response": "null"
                 },
                 "fail": {
-                    "response": "The drive makes a noise like reverse birdsong. When you regain consciousness, you learn several people are in medical with massive blood loss.",
+                    "response": "The drive makes a noise like birdsong in reverse. When you regain consciousness, you learn several people are in medical with massive blood loss.",
 					"effect": {"resource_happiness": -7, "resource_crew": -3}			
                 }
             },

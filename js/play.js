@@ -302,8 +302,13 @@ var playState = {
         messageBox.content = playState.swapNames(messageBox.content);
         
 		//Add title and content
+		var textSize_content = 16;
+		
+		if (messageBox.content.length > 190 && messageBox.options.length > 1)
+			textSize_content = 14;
+		
         panel.add(new SlickUI.Element.Text(2 * scale, 0, messageBox.title)).centerHorizontally();
-        panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content));
+        panel.add(new SlickUI.Element.Text(2 * scale, 12 * scale, messageBox.content, textSize_content));
         
 		//Add buttons
 		for (var i = 0; i < messageBox.options.length; i++) {
@@ -314,13 +319,16 @@ var playState = {
 				
 				var button;
 				var option = messageBox.options[i];
-
+				
+				var optionHeight = 14;
+				
 				if (messageBox.options.length == 1) {
-					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale + 50, 164 * scale, 14 * scale));	//If there's only one button, shift it to the bottom of the panel.
+					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale + 50, 164 * scale, optionHeight * scale));	//If there's only one button, shift it to the bottom of the panel.
 				} else if (messageBox.options.length == 2) {
-					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale, 164 * scale, 14 * scale));
+					panel.add(button = new SlickUI.Element.Button(0, 64 * scale + i * 14 * scale, 164 * scale, optionHeight * scale));
 				} else if (messageBox.options.length == 3) {
-					panel.add(button = new SlickUI.Element.Button(0, (48 * scale) + (i * 14 * scale), 164 * scale, 14 * scale));
+					optionHeight = 12;
+					panel.add(button = new SlickUI.Element.Button(0, (58 * scale) + (i * optionHeight * scale), 164 * scale, optionHeight * scale));
 				}
 				button.add(new SlickUI.Element.Text(0,0, playState.swapNames(option.choice))).center();
 
