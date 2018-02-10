@@ -110,7 +110,7 @@ var menuState = {
         
         var volumeSlider;
         var label_Volume;
-        settingsPanel.add(label_Volume = new SlickUI.Element.Text(8, 2 + 64 + 64, "Music volume:", 12));
+        settingsPanel.add(label_Volume = new SlickUI.Element.Text(8, 2 + 64 + 64 + 12, "Music volume:", 12));
 		settingsPanel.add(volumeSlider = new SlickUI.Element.Slider(16, 2 + 64 + 64 + 50, 256));
         
         volumeSlider.onDrag.add(function (value) {

@@ -96,6 +96,8 @@ var statusBar = {
 	bgSprite: null
 };
 
+var crewPanel;
+
 var warnings = {
 	sprite_driveCharge: null,
 	sprite_driveReady: null
@@ -611,7 +613,14 @@ var playState = {
     
 	manageCrew: function() {
         
-        sound_selectFail.play();
+        sound_select.play();
+		
+		var crewPanelX = 32;
+		var crewPanelY = 32 + 8;
+		var crewPanelWidth = 256 * 2;
+		var crewPanelHeight = 180;
+		
+		//slickUI.add(crewPanel = new SlickUI.Element.Panel(crewPanelX, crewPanelY, crewPanelWidth, crewPanelHeight));
 		
 	},
     
