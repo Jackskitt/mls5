@@ -44,8 +44,8 @@ var menuState = {
         slickUI.add(panel = new SlickUI.Element.Panel(48, 48, 320, 240));
 		
 		//Add title and content
-        panel.add(new SlickUI.Element.Text(12, 0, "My Little Starship", 24));
-        panel.add(new SlickUI.Element.Text(12, 38, "Tales of failure", 16));
+        panel.add(new SlickUI.Element.Text(12, 0, "Miserable Life, Space", 20));
+        panel.add(new SlickUI.Element.Text(12, 38, "A game about choices", 16));
 		
 		var startButton;
 		panel.add(startButton = new SlickUI.Element.Button(4, 88, 300, 44));
@@ -67,7 +67,7 @@ var menuState = {
         var welcomeText;
         
         welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 4, "Welcome to MLS.", 24));
-        welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 44, "You're the captain of a generation ship carrying Earth's last humans. Can you find a new home?\n\nExpect bugs. Send feedback to contact@niallslater.com.", 16));
+        welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 44, "You're the captain of a generation ship carrying Earth's last humans. Can you find a new home?\n\nVery WIP. Bug reports to contact@niallslater.com.", 16));
         
         slickUI.add(creditsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 240));
         
