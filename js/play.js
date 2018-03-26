@@ -669,23 +669,23 @@ var playState = {
         engineerButton.events.onInputUp.add(this.engineer);
         
         var crewButton = statusPanel.add(new SlickUI.Element.Button(58 * scale, 13 * scale, 24 * scale, 10 * scale));
-		crewButton.add(new SlickUI.Element.Text(0, 0, "CREW")).center();
+		crewButton.add(new SlickUI.Element.Text(0, 0, "SOON")).center();
         crewButton.events.onInputUp.add(this.manageCrew);
         
         var mineButton = statusPanel.add(new SlickUI.Element.Button(85 * scale, 2 * scale, 24 * scale, 10 * scale));
-		mineButton.add(new SlickUI.Element.Text(0, 0, "MINE")).center();
+		mineButton.add(new SlickUI.Element.Text(0, 0, "MORE")).center();
         mineButton.events.onInputUp.add(this.engineer);
         
         var scanButon = statusPanel.add(new SlickUI.Element.Button(85 * scale, 13 * scale, 24 * scale, 10 * scale));
-		scanButon.add(new SlickUI.Element.Text(0, 0, "SCAN")).center();
+		scanButon.add(new SlickUI.Element.Text(0, 0, "PLS")).center();
         scanButon.events.onInputUp.add(this.manageCrew);
         
         var feckButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 2 * scale, 24 * scale, 10 * scale));
-		feckButton.add(new SlickUI.Element.Text(0, 0, "FECK")).center();
+		feckButton.add(new SlickUI.Element.Text(0, 0, "BITS")).center();
         feckButton.events.onInputUp.add(this.engineer);
         
         var arseButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 13 * scale, 24 * scale, 10 * scale));
-		arseButton.add(new SlickUI.Element.Text(0, 0, "ARSE")).center();
+		arseButton.add(new SlickUI.Element.Text(0, 0, "WAIT")).center();
         arseButton.events.onInputUp.add(this.manageCrew);
 		
         label_STAT = statusPanel.add(new SlickUI.Element.Text(199 * scale, 0 * scale, "STAT"));
