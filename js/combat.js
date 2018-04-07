@@ -85,9 +85,14 @@ var combatState = {
 		
 		this.enemies.forEach(function (enemy) {
 			
-			enemy.y += .15;
+			enemy.y += 15 * game.time.physicsElapsed;
 			
-			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){obj1.kill(); obj2.kill(); combatState.spawnExplosion(obj2.x/scale - 6, obj2.y/scale - 8);});
+			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){
+				obj1.kill();
+				obj2.kill();
+				combatState.spawnExplosion(obj2.x/scale -16, obj2.y/scale - 8);
+				combatState.spawnGibs();
+			});
 			
 			game.physics.arcade.overlap(enemy.weapon.bullets, groupExplosions, function(obj1, obj2){obj1.kill();});
 			
@@ -125,6 +130,8 @@ var combatState = {
 			}
 
 		}
+		
+		game.world.bringToTop(groupExplosions);
 	},
 	
 	render: function() {
@@ -150,7 +157,7 @@ var combatState = {
 		
 		enemy.weapon = game.add.weapon(30, 'img_laser');
 		enemy.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-		enemy.weapon.bulletSpeed = 80;
+		enemy.weapon.bulletSpeed = 800 * game.time.physicsElapsed + 500;
 		enemy.weapon.trackSprite(enemy, 32, 32, false);
 		enemy.weapon.bulletAngleVariance = 15;
 		
@@ -175,10 +182,30 @@ var combatState = {
         explosion.animations.play('anim_splode', 20, false);
 		game.physics.arcade.enable(explosion);
 		explosion.body.setSize(explosion.width * scale, explosion.height * scale)
-		explosion.lifespan = 400;
+		explosion.lifespan = 280;
 		explosion.body.immovable = true;
 		explosion.body.setCircle();
 		
 		sound_laserExplosion1.play();
+	},
+	
+	spawnGibs: function() {
+		
+        var gib0 = game.add.sprite((108 - 6) * scale, 100 * scale + 8, 'img_ship_gib0');
+        var gib1 = game.add.sprite((108 + 6) * scale, 100 * scale + 8, 'img_ship_gib1');
+        var gib2 = game.add.sprite((108 + 22) * scale, 100 * scale + 8, 'img_ship_gib2');
+		
+		gib0.scale.set(scale);
+		gib1.scale.set(scale);
+		gib2.scale.set(scale);
+		
+		game.physics.arcade.enable(gib0);
+		game.physics.arcade.enable(gib1);
+		game.physics.arcade.enable(gib2);
+
+        gib0.body.angularVelocity = -5;
+        gib1.body.angularVelocity = -2;
+        gib2.body.angularVelocity = +8;
+		
 	}
 };

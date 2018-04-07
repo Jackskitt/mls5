@@ -17,6 +17,12 @@ var loadState = {
 		game.load.image('bg_starField', 'res/scenery/bg_starField.png');
 		game.load.image('img_ship', 'res/ships/img_ship.png');
 		game.load.image('img_enemy', 'res/ships/img_enemy.png');
+		
+		
+		game.load.image('img_ship_gib0', 'res/ships/gibs/img_ship_gib0.png');
+		game.load.image('img_ship_gib1', 'res/ships/gibs/img_ship_gib1.png');
+		game.load.image('img_ship_gib2', 'res/ships/gibs/img_ship_gib2.png');
+		
 		game.load.image('img_laser', 'res/ships/img_laser.png');
 		game.load.image('img_missile', 'res/ships/img_missile.png');
 		game.load.image('img_reticle', 'res/ships/img_reticle.png');
