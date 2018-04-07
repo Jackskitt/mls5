@@ -1,4 +1,4 @@
-My Little Starship 5
+Miserable Life, Space
 =======
 
 ## A simple proof-of-concept for a straightforward starship maintenance game based on meaningful narrative choices.
