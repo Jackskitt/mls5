@@ -16,6 +16,8 @@ var loadState = {
 		//Scenery & Objects
 		game.load.image('bg_starField', 'res/scenery/bg_starField.png');
 		game.load.image('img_ship', 'res/ships/img_ship.png');
+		game.load.image('img_enemy', 'res/ships/img_enemy.png');
+		game.load.image('img_laser', 'res/ships/img_laser.png');
 		
         game.load.image('hud_driveReady', 'res/ui/hud_driveReady.png');
         game.load.image('hud_driveCharge', 'res/ui/hud_driveCharge.png');

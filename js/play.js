@@ -607,7 +607,9 @@ var playState = {
     
 	engineer: function() {
         
-        sound_selectFail.play();
+        sound_select.play();
+		
+		game.state.start('combat');
 		
 	},
     
