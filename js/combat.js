@@ -7,7 +7,17 @@ var combatState = {
 		groupTargets = game.add.group();
 		groupExplosions = game.add.group();
 		var playerShip;
+		
+		
+		//Slick UI library
+		slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
+		slickUI.load('res/ui/kenney/kenney.json');
 	},
+	
+	//4 weapon slots - 1, 2, 3, 4
+	
+	currentWeaponSlot: 1,
+	fireEnabled: false,
 	
 	enemies: [],
 	
@@ -38,21 +48,46 @@ var combatState = {
 		groupTargets.scale.set(scale);
 		groupExplosions.scale.set(scale);
 		
+		
+		//UI
+		
+        var weaponsPanel;
+        var barX = 0;
+        var barY = 0;
+        slickUI.add(weaponsPanel = new SlickUI.Element.Panel(barX, barY, 21 * scale, 14 * scale));
+        var button1 = weaponsPanel.add(new SlickUI.Element.Button(0 * scale, 2 * scale, 8 * scale, 8 * scale));
+		button1.add(new SlickUI.Element.Text(0, 0, "1")).center();
+        button1.events.onInputUp.add(function(){combatState.currentWeaponSlot = 1; combatState.fireEnabled = false;});
+        var button2 = weaponsPanel.add(new SlickUI.Element.Button(10 * scale, 2 * scale, 8 * scale, 8 * scale));
+		button2.add(new SlickUI.Element.Text(0, 0, "2")).center();
+        button2.events.onInputUp.add(function(){combatState.currentWeaponSlot = 2; combatState.fireEnabled = false;});
+		
+		
+		//WEAPON SLOT 1
 		playerShip.weaponMissile = game.add.weapon(30, 'img_missile');
 		playerShip.weaponMissile.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
 		playerShip.weaponMissile.bulletSpeed = 450;
 		playerShip.weaponMissile.fireRate = 800;
 		playerShip.weaponMissile.trackSprite(playerShip, 32, 16, false);
+		
+		//WEAPON SLOT 2
+		playerShip.weaponRail = game.add.weapon(30, 'img_rail');
+		playerShip.weaponRail.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+		playerShip.weaponRail.bulletSpeed = 1250;
+		playerShip.weaponRail.fireRate = 1200;
+		playerShip.weaponRail.trackSprite(playerShip, 32, 16, false);
 	},
 	
 	update: function() {
 		
 		
+		//ENEMY AI & COLLISION CODE
+		
 		this.enemies.forEach(function (enemy) {
 			
 			enemy.y += .15;
 			
-			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){obj1.kill(); obj2.kill();});
+			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){obj1.kill(); obj2.kill(); combatState.spawnExplosion(obj2.x/scale - 6, obj2.y/scale - 8);});
 			
 			game.physics.arcade.overlap(enemy.weapon.bullets, groupExplosions, function(obj1, obj2){obj1.kill();});
 			
@@ -64,14 +99,29 @@ var combatState = {
 		});
 		
 		game.physics.arcade.collide(playerShip.weaponMissile.bullets, groupTargets, function(obj1, obj2){obj1.kill(); obj2.kill(); combatState.spawnExplosion(obj1.x/scale - 16, obj1.y/scale - 16);}); //16 is half the width of the explosion sprite
+		
+		game.physics.arcade.collide(playerShip.weaponRail.bullets, groupEnemies, function(obj1, obj2){obj2.kill();});
 
+
+		
+		//INPUT CODE
+		
 		if (game.input.activePointer.isDown)
 		{
-			var didFire = playerShip.weaponMissile.fireAtPointer();
-			
-			if (didFire) {
-				var reticle = groupTargets.create(game.input.x/scale, game.input.y/scale, 'img_reticle');
-				game.physics.arcade.enable(reticle, Phaser.Physics.ARCADE);
+			if (this.fireEnabled) {
+				
+				if (this.currentWeaponSlot === 1) {
+					var didFire = playerShip.weaponMissile.fireAtPointer();
+
+					if (didFire) {
+						var reticle = groupTargets.create(game.input.x/scale - 2, game.input.y/scale - 2, 'img_reticle');
+						game.physics.arcade.enable(reticle, Phaser.Physics.ARCADE);
+					}
+				} else if (this.currentWeaponSlot === 2) {
+					playerShip.weaponRail.fireAtPointer();
+				}
+			} else {
+				this.fireEnabled = true;
 			}
 
 		}
@@ -128,5 +178,7 @@ var combatState = {
 		explosion.lifespan = 400;
 		explosion.body.immovable = true;
 		explosion.body.setCircle();
+		
+		sound_laserExplosion1.play();
 	}
 };

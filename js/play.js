@@ -657,7 +657,7 @@ var playState = {
 		slickUI.add(warnings.sprite_driveReady = new SlickUI.Element.DisplayObject(barX + 16, barY + 10, game.make.sprite(0, 0, 'hud_driveReady')));
 		warnings.sprite_driveCharge.visible = false;
 		warnings.sprite_driveReady.visible = false;
-        
+
         var jumpButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 2 * scale, 24 * scale, 10 * scale));
 		jumpButton.add(new SlickUI.Element.Text(0, 0, "JUMP")).center();
         jumpButton.events.onInputUp.add(this.jump);

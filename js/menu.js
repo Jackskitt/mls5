@@ -15,6 +15,8 @@ var sound_selectFail;
 var sound_beep;
 var sound_land;
 var sound_beam;
+var sound_laserExplosion0;
+var sound_laserExplosion1;
 
 var menuState = {
 	
@@ -30,6 +32,8 @@ var menuState = {
 		sound_beep = game.add.audio('sound_beep');
 		sound_land = game.add.audio('sound_land');
 		sound_beam = game.add.audio('sound_beam');
+		sound_laserExplosion0 = game.add.audio('sound_laserExplosion0');
+		sound_laserExplosion1 = game.add.audio('sound_laserExplosion1');
 	},
 	
 	create: function() {

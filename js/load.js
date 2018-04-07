@@ -20,6 +20,7 @@ var loadState = {
 		game.load.image('img_laser', 'res/ships/img_laser.png');
 		game.load.image('img_missile', 'res/ships/img_missile.png');
 		game.load.image('img_reticle', 'res/ships/img_reticle.png');
+		game.load.image('img_rail', 'res/ships/img_rail.png');
 		
         game.load.image('hud_driveReady', 'res/ui/hud_driveReady.png');
         game.load.image('hud_driveCharge', 'res/ui/hud_driveCharge.png');
@@ -60,6 +61,9 @@ var loadState = {
 		game.load.audio('sound_beep', 'res/audio/beep.ogg');
 		game.load.audio('sound_land', 'res/audio/land.ogg');
 		game.load.audio('sound_beam', 'res/audio/beam.ogg');
+		game.load.audio('sound_laserExplosion0', 'res/audio/laserExplosion0.ogg');
+		game.load.audio('sound_laserExplosion1', 'res/audio/laserExplosion1.ogg');
+		
 		
 		/* UI */
 		
