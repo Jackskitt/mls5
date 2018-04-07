@@ -18,6 +18,9 @@ var loadState = {
 		game.load.image('img_ship', 'res/ships/img_ship.png');
 		game.load.image('img_enemy', 'res/ships/img_enemy.png');
 		game.load.image('img_laser', 'res/ships/img_laser.png');
+		game.load.image('img_missile', 'res/ships/img_missile.png');
+		game.load.image('img_explosion', 'res/ships/img_explosion.png');
+		game.load.image('img_reticle', 'res/ships/img_reticle.png');
 		
         game.load.image('hud_driveReady', 'res/ui/hud_driveReady.png');
         game.load.image('hud_driveCharge', 'res/ui/hud_driveCharge.png');

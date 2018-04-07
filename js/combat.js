@@ -4,7 +4,8 @@ var combatState = {
 		groupBackground = game.add.group();
 		groupEnemies = game.add.group();
         groupShip = game.add.group();
-		groupEnemyShots = game.add.group();
+		groupTargets = game.add.group();
+		groupExplosions = game.add.group();
 		var playerShip;
 	},
 	
@@ -34,11 +35,13 @@ var combatState = {
         groupBackground.scale.set(scale);
         playerShip.scale.set(scale);
         groupEnemies.scale.set(scale);
-		groupEnemyShots.scale.set(scale);
+		groupTargets.scale.set(scale);
+		groupExplosions.scale.set(scale);
 		
-		playerShip.weaponMissile = game.add.weapon(30, 'img_laser');
+		playerShip.weaponMissile = game.add.weapon(30, 'img_missile');
 		playerShip.weaponMissile.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-		playerShip.weaponMissile.bulletSpeed = 250;
+		playerShip.weaponMissile.bulletSpeed = 450;
+		playerShip.weaponMissile.fireRate = 800;
 		playerShip.weaponMissile.trackSprite(playerShip, 32, 16, false);
 	},
 	
@@ -47,30 +50,35 @@ var combatState = {
 		
 		this.enemies.forEach(function (enemy) {
 			
-			enemy.y += .2;
+			enemy.y += .15;
 			
 			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){obj1.kill(); obj2.kill();});
 			
-			game.physics.arcade.collide(playerShip.weaponMissile.bullets, enemy, function(obj1, obj2){obj1.kill(); obj2.kill();});
+			game.physics.arcade.overlap(enemy.weapon.bullets, groupExplosions, function(obj1, obj2){obj1.kill();});
 			
 			enemy.fireTimer -= game.time.physicsElapsed;
 			if (enemy.fireTimer <= 0) {
 				enemy.fire();
 				enemy.fireTimer = Math.floor(Math.random() * 5) + 2;
 			}
-			
-			
 		});
 		
-		
+		game.physics.arcade.collide(playerShip.weaponMissile.bullets, groupTargets, function(obj1, obj2){obj1.kill(); obj2.kill(); combatState.spawnExplosion(obj1.x/scale - 16, obj1.y/scale - 16);}); //16 is half the width of the explosion sprite
+
 		if (game.input.activePointer.isDown)
 		{
-			playerShip.weaponMissile.fireAtPointer();
+			var didFire = playerShip.weaponMissile.fireAtPointer();
+			
+			if (didFire) {
+				var reticle = groupTargets.create(game.input.x/scale, game.input.y/scale, 'img_reticle');
+				game.physics.arcade.enable(reticle, Phaser.Physics.ARCADE);
+			}
+
 		}
 	},
 	
 	render: function() {
-			
+		
 	},
 	
 	spawnEnemy: function() {
@@ -87,7 +95,7 @@ var combatState = {
 		
 		enemy.weapon = game.add.weapon(30, 'img_laser');
 		enemy.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-		enemy.weapon.bulletSpeed = 120;
+		enemy.weapon.bulletSpeed = 80;
 		enemy.weapon.trackSprite(enemy, 32, 32, false);
 		enemy.weapon.bulletAngleVariance = 15;
 		
@@ -96,7 +104,7 @@ var combatState = {
 		}
 		
 		game.physics.arcade.enable(enemy, Phaser.Physics.ARCADE);
-		
+		enemy.body.setSize(enemy.width * scale, enemy.height * scale)
 		this.enemies.push(enemy);
 		
 	},
@@ -104,5 +112,14 @@ var combatState = {
 	killBoth: function(object1, object2) {
 		object1.kill();
 		object2.kill();
+	},
+	
+	spawnExplosion: function(x, y) {
+		var explosion = groupExplosions.create(x, y, 'img_explosion');
+		game.physics.arcade.enable(explosion);
+		explosion.body.setSize(explosion.width * scale, explosion.height * scale)
+		explosion.lifespan = 3000;
+		explosion.body.immovable = true;
+		explosion.body.setCircle();
 	}
 };
