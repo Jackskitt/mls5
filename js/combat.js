@@ -28,7 +28,7 @@ var combatState = {
 		
 		groupBackground.create(0, 0, 'bg_starField');
 		
-		for (var i = 0; i < 5; i++) {
+		for (var i = 0; i < 8; i++) {
 			this.spawnEnemy();
 		}
 		
@@ -83,7 +83,12 @@ var combatState = {
 	
 	spawnEnemy: function() {
 		
-		var randomX = Math.floor(Math.random() * 230);
+		var randomX = Math.floor(Math.random() * 150);
+		
+		//This is a trick to make sure enemies don't spawn on a player collision course
+		if (randomX > 60)
+			randomX += Math.floor(Math.random() * 100) + 100;
+		
 		var randomY = Math.floor(Math.random() * 100) - 110;
 		
 		var posX = randomX;
@@ -115,10 +120,12 @@ var combatState = {
 	},
 	
 	spawnExplosion: function(x, y) {
-		var explosion = groupExplosions.create(x, y, 'img_explosion');
+		var explosion = groupExplosions.create(x, y, 'anim_explosion');
+        var explosionAnim = explosion.animations.add('anim_splode', [0,1,2,3,4,5,6,7,8]);
+        explosion.animations.play('anim_splode', 20, false);
 		game.physics.arcade.enable(explosion);
 		explosion.body.setSize(explosion.width * scale, explosion.height * scale)
-		explosion.lifespan = 3000;
+		explosion.lifespan = 400;
 		explosion.body.immovable = true;
 		explosion.body.setCircle();
 	}

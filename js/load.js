@@ -19,7 +19,6 @@ var loadState = {
 		game.load.image('img_enemy', 'res/ships/img_enemy.png');
 		game.load.image('img_laser', 'res/ships/img_laser.png');
 		game.load.image('img_missile', 'res/ships/img_missile.png');
-		game.load.image('img_explosion', 'res/ships/img_explosion.png');
 		game.load.image('img_reticle', 'res/ships/img_reticle.png');
 		
         game.load.image('hud_driveReady', 'res/ui/hud_driveReady.png');
@@ -48,6 +47,7 @@ var loadState = {
         
         //Animations
         game.load.spritesheet('anim_ship', 'res/ships/anim_ship_32x16.png', 32, 16);
+        game.load.spritesheet('anim_explosion', 'res/ships/anim_explosion_32x32.png', 32, 32);
         
 		/* AUDIO */
 		game.load.audio('music_airshipSerenity', 'res/audio/Airship Serenity.mp3');
