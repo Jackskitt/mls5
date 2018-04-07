@@ -1,6 +1,6 @@
 /* GLOBALS */
 
-var scale = 3;
+var scale = 1;
 
 var messageActive = false;
 

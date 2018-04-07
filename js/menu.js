@@ -44,7 +44,7 @@ var menuState = {
         slickUI.add(panel = new SlickUI.Element.Panel(48, 48, 320, 240));
 		
 		//Add title and content
-        panel.add(new SlickUI.Element.Text(12, 0, "Miserable Life, Space", 20));
+        panel.add(new SlickUI.Element.Text(12, 0, "Miserable Life, Space", 16));
         panel.add(new SlickUI.Element.Text(12, 38, "A game about choices", 16));
 		
 		var startButton;
