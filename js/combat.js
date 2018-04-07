@@ -35,6 +35,11 @@ var combatState = {
         playerShip.scale.set(scale);
         groupEnemies.scale.set(scale);
 		groupEnemyShots.scale.set(scale);
+		
+		playerShip.weaponMissile = game.add.weapon(30, 'img_laser');
+		playerShip.weaponMissile.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+		playerShip.weaponMissile.bulletSpeed = 250;
+		playerShip.weaponMissile.trackSprite(playerShip, 32, 16, false);
 	},
 	
 	update: function() {
@@ -46,6 +51,8 @@ var combatState = {
 			
 			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){obj1.kill(); obj2.kill();});
 			
+			game.physics.arcade.collide(playerShip.weaponMissile.bullets, enemy, function(obj1, obj2){obj1.kill(); obj2.kill();});
+			
 			enemy.fireTimer -= game.time.physicsElapsed;
 			if (enemy.fireTimer <= 0) {
 				enemy.fire();
@@ -55,10 +62,15 @@ var combatState = {
 			
 		});
 		
+		
+		if (game.input.activePointer.isDown)
+		{
+			playerShip.weaponMissile.fireAtPointer();
+		}
 	},
 	
 	render: function() {
-		
+			
 	},
 	
 	spawnEnemy: function() {
