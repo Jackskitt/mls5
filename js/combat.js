@@ -1,11 +1,11 @@
 /* COMBAT VARIABLES */
     
 var enemyInfo = {
-    bulletSpeed: 100,
+    bulletSpeed: 60,
     bulletSpread: 15,
-    moveSpeed: 15,
-    bulletInterval_min: 2,
-    bulletInterval_max: 5
+    moveSpeed: 6,
+    bulletInterval_min: 4,
+    bulletInterval_max: 8
 };
 
 var combatState = {
@@ -76,7 +76,7 @@ var combatState = {
 		//WEAPON SLOT 1
 		playerShip.weaponMissile = game.add.weapon(30, 'img_missile');
 		playerShip.weaponMissile.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-		playerShip.weaponMissile.bulletSpeed = 450;
+		playerShip.weaponMissile.bulletSpeed = 100;
 		playerShip.weaponMissile.fireRate = 800;
 		playerShip.weaponMissile.trackSprite(playerShip, 32, 16, false);
 		
@@ -197,6 +197,19 @@ var combatState = {
 	
 	spawnExplosion: function(x, y) {
 		var explosion = groupExplosions.create(x, y, 'anim_explosion');
+        var explosionAnim = explosion.animations.add('anim_splode', [3, 4, 5, 6]);
+        explosion.animations.play('anim_splode', 24, true, true);
+		game.physics.arcade.enable(explosion);
+		explosion.body.setSize(explosion.width * scale, explosion.height * scale)
+		explosion.lifespan = 1880;
+		explosion.body.immovable = true;
+		explosion.body.setCircle();
+		
+		sound_laserExplosion1.play();
+	},
+	
+	spawnExplosion2: function(x, y) {
+		var explosion = groupExplosions.create(x, y, 'anim_explosion');
         var explosionAnim = explosion.animations.add('anim_splode', [0,1,2,3,4,5,6,7,8]);
         explosion.animations.play('anim_splode', 20, false);
 		game.physics.arcade.enable(explosion);
@@ -207,6 +220,7 @@ var combatState = {
 		
 		sound_laserExplosion1.play();
 	},
+	
 	
 	spawnGibs: function() {
 		
