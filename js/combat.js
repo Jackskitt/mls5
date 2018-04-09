@@ -1,5 +1,15 @@
+/* COMBAT VARIABLES */
+    
+var enemyInfo = {
+    bulletSpeed: 100,
+    bulletSpread: 15,
+    moveSpeed: 15,
+    bulletInterval_min: 2,
+    bulletInterval_max: 5
+};
+
 var combatState = {
-	
+    
 	preload: function() {
 		groupBackground = game.add.group();
 		groupEnemies = game.add.group();
@@ -85,7 +95,7 @@ var combatState = {
 		
 		this.enemies.forEach(function (enemy) {
 			
-			enemy.y += 15 * game.time.physicsElapsed;
+			enemy.y += enemyInfo.moveSpeed * game.time.physicsElapsed;
 			
 			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){
 				obj1.kill();
@@ -99,7 +109,7 @@ var combatState = {
 			enemy.fireTimer -= game.time.physicsElapsed;
 			if (enemy.fireTimer <= 0) {
 				enemy.fire();
-				enemy.fireTimer = Math.floor(Math.random() * 5) + 2;
+				enemy.fireTimer = Math.floor(Math.random() * enemyInfo.bulletInterval_max) + enemyInfo.bulletInterval_min;
 			}
 		});
 		
@@ -157,9 +167,9 @@ var combatState = {
 		
 		enemy.weapon = game.add.weapon(30, 'img_laser');
 		enemy.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-		enemy.weapon.bulletSpeed = 800 * game.time.physicsElapsed + 500;
+		enemy.weapon.bulletSpeed = enemyInfo.bulletSpeed;
 		enemy.weapon.trackSprite(enemy, 32, 32, false);
-		enemy.weapon.bulletAngleVariance = 15;
+		enemy.weapon.bulletAngleVariance = enemyInfo.bulletSpread;
 		
 		enemy.fire = function() {
 			this.weapon.fireAtSprite(playerShip);
