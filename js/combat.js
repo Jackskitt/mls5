@@ -98,22 +98,31 @@ var combatState = {
 			enemy.y += enemyInfo.moveSpeed * game.time.physicsElapsed;
 			
 			game.physics.arcade.collide(enemy.weapon.bullets, this.playerShip, function(obj1, obj2){
+				//Enemy bullet collides with player ship
 				obj1.kill();
 				obj2.kill();
 				combatState.spawnExplosion(obj2.x/scale -16, obj2.y/scale - 8);
 				combatState.spawnGibs();
 			});
 			
-			game.physics.arcade.overlap(enemy.weapon.bullets, groupExplosions, function(obj1, obj2){obj1.kill();});
+			game.physics.arcade.overlap(enemy.weapon.bullets, groupExplosions, function(obj1, obj2){
+				//Enemy bullet collides with explosion
+				obj1.kill();
+			});
 			
 			enemy.fireTimer -= game.time.physicsElapsed;
 			if (enemy.fireTimer <= 0) {
-				enemy.fire();
-				enemy.fireTimer = Math.floor(Math.random() * enemyInfo.bulletInterval_max) + enemyInfo.bulletInterval_min;
+				if (enemy.alive) {
+					enemy.fire();
+					enemy.fireTimer = Math.floor(Math.random() * enemyInfo.bulletInterval_max) + enemyInfo.bulletInterval_min;
+				}
 			}
 		});
 		
-		game.physics.arcade.collide(playerShip.weaponMissile.bullets, groupTargets, function(obj1, obj2){obj1.kill(); obj2.kill(); combatState.spawnExplosion(obj1.x/scale - 16, obj1.y/scale - 16);}); //16 is half the width of the explosion sprite
+		game.physics.arcade.collide(playerShip.weaponMissile.bullets, groupTargets, function(obj1, obj2)
+		{
+			obj1.kill(); obj2.kill(); combatState.spawnExplosion(obj1.x/scale - 16, obj1.y/scale - 16);
+		}); //16 is half the width of the explosion sprite
 		
 		game.physics.arcade.collide(playerShip.weaponRail.bullets, groupEnemies, function(obj1, obj2){obj2.kill();});
 
@@ -123,7 +132,7 @@ var combatState = {
 		
 		if (game.input.activePointer.isDown)
 		{
-			if (this.fireEnabled) {
+			if (this.fireEnabled && playerShip.alive) {
 				
 				if (this.currentWeaponSlot === 1) {
 					var didFire = playerShip.weaponMissile.fireAtPointer();
@@ -213,6 +222,10 @@ var combatState = {
 		game.physics.arcade.enable(gib1);
 		game.physics.arcade.enable(gib2);
 
+        gib0.body.velocity = new Phaser.Point(-15, 0);;
+        gib1.body.velocity = new Phaser.Point(0, -5);;
+        gib2.body.velocity = new Phaser.Point(20, -6);;
+		
         gib0.body.angularVelocity = -5;
         gib1.body.angularVelocity = -2;
         gib2.body.angularVelocity = +8;
