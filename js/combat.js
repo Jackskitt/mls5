@@ -3,10 +3,16 @@
 var enemyInfo = {
     bulletSpeed: 60,
     bulletSpread: 15,
-    moveSpeed: 6,
+    moveSpeed: 62,
     bulletInterval_min: 4,
     bulletInterval_max: 8
 };
+
+var endZone;
+
+var states = ['incomplete', 'win', 'lose'];
+
+var battleStatus = states[0];
 
 var combatState = {
     
@@ -59,6 +65,11 @@ var combatState = {
 		groupExplosions.scale.set(scale);
 		
 		
+		//THIS DOESN'T WORK
+        endZone = game.add.sprite(0, 0, null);
+		game.physics.arcade.enable(endZone);
+		endZone.body.setSize(100, 100, 512 * scale, 100);
+		
 		//UI
 		
         var weaponsPanel;
@@ -76,14 +87,14 @@ var combatState = {
 		//WEAPON SLOT 1
 		playerShip.weaponMissile = game.add.weapon(30, 'img_missile');
 		playerShip.weaponMissile.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-		playerShip.weaponMissile.bulletSpeed = 100;
-		playerShip.weaponMissile.fireRate = 800;
+		playerShip.weaponMissile.bulletSpeed = 400;
+		playerShip.weaponMissile.fireRate = 1200;
 		playerShip.weaponMissile.trackSprite(playerShip, 32, 16, false);
 		
 		//WEAPON SLOT 2
 		playerShip.weaponRail = game.add.weapon(30, 'img_rail');
 		playerShip.weaponRail.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-		playerShip.weaponRail.bulletSpeed = 1250;
+		playerShip.weaponRail.bulletSpeed = 1000;
 		playerShip.weaponRail.fireRate = 1200;
 		playerShip.weaponRail.trackSprite(playerShip, 32, 16, false);
 	},
@@ -103,6 +114,9 @@ var combatState = {
 				obj2.kill();
 				combatState.spawnExplosion(obj2.x/scale -16, obj2.y/scale - 8);
 				combatState.spawnGibs();
+				
+				battleStatus = states[2];	//2 is 'lose'
+				console.log("Battlestatus is " + battleStatus);
 			});
 			
 			game.physics.arcade.overlap(enemy.weapon.bullets, groupExplosions, function(obj1, obj2){
@@ -117,7 +131,21 @@ var combatState = {
 					enemy.fireTimer = Math.floor(Math.random() * enemyInfo.bulletInterval_max) + enemyInfo.bulletInterval_min;
 				}
 			}
+			
+			
+			
+			game.physics.arcade.overlap(enemy, this.endZone, function(obj1, obj2){
+				//Enemy enters endzone
+				obj1.kill();
+			});
 		});
+		
+		if (this.enemies.length < 1) {
+			if (battleStatus === 'incomplete') {
+				battleStatus = states[1];	//1 is 'win'
+				console.log("Battlestatus is " + battleStatus);
+			}
+		}
 		
 		game.physics.arcade.collide(playerShip.weaponMissile.bullets, groupTargets, function(obj1, obj2)
 		{
@@ -154,7 +182,7 @@ var combatState = {
 	},
 	
 	render: function() {
-		
+		game.debug.body(endZone);
 	},
 	
 	spawnEnemy: function() {
@@ -201,7 +229,7 @@ var combatState = {
         explosion.animations.play('anim_splode', 24, true, true);
 		game.physics.arcade.enable(explosion);
 		explosion.body.setSize(explosion.width * scale, explosion.height * scale)
-		explosion.lifespan = 1880;
+		explosion.lifespan = 600;
 		explosion.body.immovable = true;
 		explosion.body.setCircle();
 		
