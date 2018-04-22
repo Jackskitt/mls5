@@ -64,12 +64,6 @@ var combatState = {
 		groupTargets.scale.set(scale);
 		groupExplosions.scale.set(scale);
 		
-		
-		//THIS DOESN'T WORK
-        endZone = game.add.sprite(0, 0, null);
-		game.physics.arcade.enable(endZone);
-		endZone.body.setSize(100, 100, 512 * scale, 100);
-		
 		//UI
 		
         var weaponsPanel;
@@ -104,7 +98,7 @@ var combatState = {
 		
 		//ENEMY AI & COLLISION CODE
 		
-		this.enemies.forEach(function (enemy) {
+		this.enemies.forEach(function (enemy, i) {
 			
 			enemy.y += enemyInfo.moveSpeed * game.time.physicsElapsed;
 			
@@ -133,17 +127,16 @@ var combatState = {
 			}
 			
 			
+			if (enemy.y > 128) {
+				enemy.kill();
+				combatState.enemies.splice(i, 1); //this is so bugged - it removes the enemy but not their bullet pool but does stop collision checking on the bullets
+			}
 			
-			game.physics.arcade.overlap(enemy, this.endZone, function(obj1, obj2){
-				//Enemy enters endzone
-				obj1.kill();
-			});
 		});
 		
-		if (this.enemies.length < 1) {
+		if (combatState.enemies.length < 1) {
 			if (battleStatus === 'incomplete') {
-				battleStatus = states[1];	//1 is 'win'
-				console.log("Battlestatus is " + battleStatus);
+				battleStatus = states[1];	//1 is 'win' - this doesn't trigger
 			}
 		}
 		
@@ -182,7 +175,7 @@ var combatState = {
 	},
 	
 	render: function() {
-		game.debug.body(endZone);
+		
 	},
 	
 	spawnEnemy: function() {
