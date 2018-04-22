@@ -6,8 +6,8 @@ var messageActive = false;
 
 //Event testing
 
-var testing = false;
-var eventToTest = "story_spaceWalk";
+var testing = true;
+var eventToTest = "danger_battle";
 
 //Scenery & Objects
 var ship = {
@@ -502,23 +502,42 @@ var playState = {
 		
 		var relevantEvents = [];
 		var j = 0;
+		var eventToFire;
 		
-		for (var i = 0; i < data_eventsDanger.length; i++) {
-		
-			var encounter = data_eventsDanger[i];
+		if (testing) {
+			//This is for testing specific danger events. Saves time.
 			
-			if (encounter.dangerType == danger) {
-				relevantEvents[j] = encounter;
-				j++;
+			for (var i = 0; i < data_eventsDanger.length; i++) {
+				if (data_eventsDanger[i].name == eventToTest) {
+					eventToFire = data_eventsDanger[i];
+				}
 			}
 			
+			if (eventToFire == undefined) {
+				console.log("Couldn't find test subject " + eventToTest + " in story events list.");
+			} else {
+				console.log("Testing danger event: " + eventToFire.name);
+			}
+			
+		} else {
+			
+			for (var i = 0; i < data_eventsDanger.length; i++) {
+
+				var encounter = data_eventsDanger[i];
+
+				if (encounter.dangerType == danger) {
+					relevantEvents[j] = encounter;
+					j++;
+				}
+
+			}
+
+			var selector = Math.floor(Math.random() * relevantEvents.length);
+
+			eventToFire = relevantEvents[selector];
+
+			console.log("Firing danger event: " + eventToFire.name);
 		}
-		
-		var selector = Math.floor(Math.random() * relevantEvents.length);
-		
-		var eventToFire = relevantEvents[selector];
-		
-		console.log("Firing danger event: " + eventToFire.name);
 		
 		this.displayMessage(eventToFire.title, eventToFire.content, eventToFire.options);
         
@@ -610,7 +629,6 @@ var playState = {
         sound_select.play();
 		
 		game.state.start('combat');
-		
 	},
     
 	manageCrew: function() {
