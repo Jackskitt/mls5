@@ -627,20 +627,14 @@ var playState = {
 	engineer: function() {
         
         sound_select.play();
-		
-		game.state.start('combat');
 	},
     
 	manageCrew: function() {
         
         sound_select.play();
 		
-		var crewPanelX = 32;
-		var crewPanelY = 32 + 8;
-		var crewPanelWidth = 256 * 2;
-		var crewPanelHeight = 180;
-		
-		//slickUI.add(crewPanel = new SlickUI.Element.Panel(crewPanelX, crewPanelY, crewPanelWidth, crewPanelHeight));
+		game.add.tween(crewPanel).from( { y: -256 }, 500, Phaser.Easing.Cubic.In, true);
+		crewPanel.visible = true;
 		
 	},
     
@@ -676,37 +670,21 @@ var playState = {
 		warnings.sprite_driveCharge.visible = false;
 		warnings.sprite_driveReady.visible = false;
 
-        var jumpButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 2 * scale, 24 * scale, 10 * scale));
+        var jumpButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 2 * scale, 24 * scale, 20 * scale));
 		jumpButton.add(new SlickUI.Element.Text(0, 0, "JUMP")).center();
         jumpButton.events.onInputUp.add(this.jump);
         
-        var rechargeButton = statusPanel.add(new SlickUI.Element.Button(31 * scale, 13 * scale, 24 * scale, 10 * scale));
+        var rechargeButton = statusPanel.add(new SlickUI.Element.Button(58 * scale, 2 * scale, 24 * scale, 20 * scale));
 		rechargeButton.add(new SlickUI.Element.Text(0, 0, "CHRG")).center();
         rechargeButton.events.onInputUp.add(this.recharge);
         
-        var engineerButton = statusPanel.add(new SlickUI.Element.Button(58 * scale, 2 * scale, 24 * scale, 10 * scale));
+        var engineerButton = statusPanel.add(new SlickUI.Element.Button(85 * scale, 2 * scale, 24 * scale, 20 * scale));
 		engineerButton.add(new SlickUI.Element.Text(0, 0, "ENGI")).center();
         engineerButton.events.onInputUp.add(this.engineer);
         
-        var crewButton = statusPanel.add(new SlickUI.Element.Button(58 * scale, 13 * scale, 24 * scale, 10 * scale));
-		crewButton.add(new SlickUI.Element.Text(0, 0, "SOON")).center();
+        var crewButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 2 * scale, 24 * scale, 20 * scale));
+		crewButton.add(new SlickUI.Element.Text(0, 0, "CREW")).center();
         crewButton.events.onInputUp.add(this.manageCrew);
-        
-        var mineButton = statusPanel.add(new SlickUI.Element.Button(85 * scale, 2 * scale, 24 * scale, 10 * scale));
-		mineButton.add(new SlickUI.Element.Text(0, 0, "MORE")).center();
-        mineButton.events.onInputUp.add(this.engineer);
-        
-        var scanButon = statusPanel.add(new SlickUI.Element.Button(85 * scale, 13 * scale, 24 * scale, 10 * scale));
-		scanButon.add(new SlickUI.Element.Text(0, 0, "PLS")).center();
-        scanButon.events.onInputUp.add(this.manageCrew);
-        
-        var feckButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 2 * scale, 24 * scale, 10 * scale));
-		feckButton.add(new SlickUI.Element.Text(0, 0, "BITS")).center();
-        feckButton.events.onInputUp.add(this.engineer);
-        
-        var arseButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 13 * scale, 24 * scale, 10 * scale));
-		arseButton.add(new SlickUI.Element.Text(0, 0, "WAIT")).center();
-        arseButton.events.onInputUp.add(this.manageCrew);
 		
         label_STAT = statusPanel.add(new SlickUI.Element.Text(199 * scale, 0 * scale, "STAT"));
 		label_FUEL = statusPanel.add(new SlickUI.Element.Text(164 * scale, 8 * scale, "FUEL: " + ship.fuel + "KT"));
@@ -718,6 +696,16 @@ var playState = {
         slickUI.add(fullScreenButton = new SlickUI.Element.Button(0, 0, 32, 32));
         fullScreenButton.events.onInputUp.add(function () {playState.fullScreenToggle();});
         fullScreenButton.add(new SlickUI.Element.Text(0,0, "[]")).center();
+		
+		
+		
+		var crewPanelX = 32;
+		var crewPanelY = 32 + 8;
+		var crewPanelWidth = 256 * 2;
+		var crewPanelHeight = 180;
+		
+		slickUI.add(crewPanel = new SlickUI.Element.Panel(crewPanelX, crewPanelY, crewPanelWidth, crewPanelHeight));
+		crewPanel.visible = false;
     },
 	
 	win: function() {
