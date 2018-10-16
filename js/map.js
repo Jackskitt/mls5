@@ -102,7 +102,9 @@ var mapState = {
             }
             
             //Now add the icons.
-            mapBG.add(systemIcons[i] = new SlickUI.Element.DisplayObject(starSystem.x, starSystem.y, game.make.image(0, 0, 'icon_planet' + starSystem.spriteIndex)));
+			var img = game.make.image(0, 0, 'icon_planet' + starSystem.spriteIndex);
+			img.anchor.setTo(0.25, 0.25);	//the reason this is weird is that I didn't know about anchors when I wrote the map code, so the JSON positions are offset strangely. just ignore it
+            mapBG.add(systemIcons[i] = new SlickUI.Element.DisplayObject(starSystem.x, starSystem.y, img));
 			
 			//Add visual danger indicators
 			if (starSystem.danger != null) {
