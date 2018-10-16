@@ -114,7 +114,6 @@ var mapState = {
 			
 			//Allow us to select the icons by clicking (or tapping)
             systemIcons[i].inputEnabled = true;
-            
             systemIcons[i].events.onInputDown.add(mapState.selectIcon, {icon: systemIcons[i]});
 			
             groupIcons.add(systemIcons[i].sprite);

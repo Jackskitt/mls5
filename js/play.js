@@ -97,6 +97,7 @@ var statusBar = {
 };
 
 var crewPanel;
+var engiPanel;
 
 var warnings = {
 	sprite_driveCharge: null,
@@ -624,17 +625,31 @@ var playState = {
 		
 	},
     
-	engineer: function() {
-        
-        sound_select.play();
-	},
-    
-	manageCrew: function() {
+	toggleEngineering: function() {
         
         sound_select.play();
 		
-		game.add.tween(crewPanel).from( { y: -256 }, 500, Phaser.Easing.Cubic.In, true);
-		crewPanel.visible = true;
+		if (!engiPanel.visible) {
+			engiPanel.visible = true;
+			let tween = game.add.tween(engiPanel).to( { x: 560 }, 500, Phaser.Easing.Circular.Out, true);
+		} else {
+			let tween = game.add.tween(engiPanel).to( { x: 560 +256 }, 500, Phaser.Easing.Circular.In, true);
+			tween.onComplete.add(()=>{engiPanel.visible = false;}, this);
+		}
+	},
+    
+	toggleCrew: function() {
+        
+        sound_select.play();
+		
+		if (!crewPanel.visible) {
+			crewPanel.visible = true;
+			let tween = game.add.tween(crewPanel).to( { y: 40 }, 500, Phaser.Easing.Circular.Out, true);
+		} else {
+			let tween = game.add.tween(crewPanel).to( { y: 40 -256 }, 500, Phaser.Easing.Circular.In, true);
+			tween.onComplete.add(()=>{crewPanel.visible = false;}, this);
+		}
+		
 		
 	},
     
@@ -678,13 +693,13 @@ var playState = {
 		rechargeButton.add(new SlickUI.Element.Text(0, 0, "CHRG")).center();
         rechargeButton.events.onInputUp.add(this.recharge);
         
-        var engineerButton = statusPanel.add(new SlickUI.Element.Button(85 * scale, 2 * scale, 24 * scale, 20 * scale));
-		engineerButton.add(new SlickUI.Element.Text(0, 0, "ENGI")).center();
-        engineerButton.events.onInputUp.add(this.engineer);
+        var engineeringButton = statusPanel.add(new SlickUI.Element.Button(85 * scale, 2 * scale, 24 * scale, 20 * scale));
+		engineeringButton.add(new SlickUI.Element.Text(0, 0, "ENGI")).center();
+        engineeringButton.events.onInputUp.add(this.toggleEngineering);
         
         var crewButton = statusPanel.add(new SlickUI.Element.Button(112 * scale, 2 * scale, 24 * scale, 20 * scale));
 		crewButton.add(new SlickUI.Element.Text(0, 0, "CREW")).center();
-        crewButton.events.onInputUp.add(this.manageCrew);
+        crewButton.events.onInputUp.add(this.toggleCrew);
 		
         label_STAT = statusPanel.add(new SlickUI.Element.Text(199 * scale, 0 * scale, "STAT"));
 		label_FUEL = statusPanel.add(new SlickUI.Element.Text(164 * scale, 8 * scale, "FUEL: " + ship.fuel + "KT"));
@@ -697,15 +712,26 @@ var playState = {
         fullScreenButton.events.onInputUp.add(function () {playState.fullScreenToggle();});
         fullScreenButton.add(new SlickUI.Element.Text(0,0, "[]")).center();
 		
-		
-		
-		var crewPanelX = 32;
-		var crewPanelY = 32 + 8;
-		var crewPanelWidth = 256 * 2;
-		var crewPanelHeight = 180;
-		
-		slickUI.add(crewPanel = new SlickUI.Element.Panel(crewPanelX, crewPanelY, crewPanelWidth, crewPanelHeight));
+		slickUI.add(crewPanel = new SlickUI.Element.Panel(32, 40, 512, 220));
+		crewPanel.y -= 256;
 		crewPanel.visible = false;
+		crewPanel.add(new SlickUI.Element.Text(0, 0, "CREW MANAGEMENT")).centerHorizontally();
+		crewPanel.add(new SlickUI.Element.Text(4, 24, "Crew complement: "));
+		crewPanel.add(new SlickUI.Element.Text(4, 48, "Health warnings: "));
+		crewPanel.add(new SlickUI.Element.Text(4, 72, "Happiness index: "));
+		crewPanel.add(crewPanel.valueCrew = new SlickUI.Element.Text(200, 24, ""));
+		crewPanel.add(crewPanel.valueHealth = new SlickUI.Element.Text(200, 48, ""));
+		crewPanel.add(crewPanel.valueHappiness = new SlickUI.Element.Text(200, 72, ""));
+		
+		slickUI.add(engiPanel = new SlickUI.Element.Panel(560, 40, 200, 220));
+		engiPanel.x += 256;
+		engiPanel.visible = false;
+		engiPanel.add(new SlickUI.Element.Text(0, 0, "ENGINEERING")).centerHorizontally();
+		engiPanel.add(new SlickUI.Element.Text(4, 24, "Hull integrity: "));
+		engiPanel.add(new SlickUI.Element.Text(4, 48, "Fuel supply: "));
+		engiPanel.add(engiPanel.valueHull = new SlickUI.Element.Text(144, 24, ""));
+		engiPanel.add(engiPanel.valueFuel = new SlickUI.Element.Text(144, 48, ""));
+		this.refreshStatusPanel();
     },
 	
 	win: function() {
@@ -725,6 +751,13 @@ var playState = {
         label_CREW.text.text = "CREW: " + ship.crew;
         label_HAPP.text.text = "HAPP: " + ship.happiness + "%";
         label_HULL.text.text = "HULL: " + ship.hull + "%";
+		
+		crewPanel.valueCrew.text.text = "" + ship.crew + " humans";
+		crewPanel.valueHealth.text.text = "Starlight deficiency";
+		crewPanel.valueHappiness.text.text = "" + ship.happiness + " joybits";
+		
+		engiPanel.valueHull.text.text = "" + ship.hull + "%";
+		engiPanel.valueFuel.text.text = "" + ship.fuel + "kt";
 	},
     
     fullScreenToggle: function() {
