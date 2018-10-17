@@ -143,6 +143,7 @@ var mapState = {
         jumpButton.events.onInputUp.add(function () {sound_select.play(); mapState.jump();});
         jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
 		jumpButton.visible = false;
+		
     },
     
     update: function() {
@@ -163,11 +164,13 @@ var mapState = {
 		
 		if (mapState.canReachSystem(selectedIcon)) {
 			jumpButton.visible = true;
+			systemPanel_description.value = selectedIcon.data.description;
+		} else {
+			systemPanel_description.value = "OUTSIDE SCAN RANGE";
 		}
         
         systemPanel_name.value = selectedIcon.data.name.toUpperCase();
 		systemPanel_name.centerHorizontally();
-        systemPanel_description.value = selectedIcon.data.description;
 		
 		if (selectedIcon.data.danger != null) {
 			 systemPanel_description.value += "\n\n" + "DANGER: " + selectedIcon.data.danger;
