@@ -6,7 +6,7 @@ var messageActive = false;
 
 //Event testing
 
-var testing = true;
+var testing = false;
 var eventToTest = "danger_battle";
 
 //Scenery & Objects

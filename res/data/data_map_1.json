@@ -1,0 +1,122 @@
+[
+{
+	"name": "Home",
+	"description": "A lush green-blue world with no life remaining.",
+	"x" : 44,
+	"y" : 98,
+	"spriteIndex" : 1,
+	"visited": true,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [1],
+	"isDestination": false
+},
+{
+	"name": "Najwas",
+	"description": "One of humanity's first planned exoplanet colonies. It didn't go well.",
+	"x" : 89,
+	"y" : 75,
+	"spriteIndex" : 4,
+	"visited": false,
+	"danger": "ASTEROIDS",
+	"encounter": null,
+	"reachableSystems": [2],
+	"isDestination": false
+},
+{
+	"name": "Saltspray",
+	"description": "A long hoped-for source of extraterrestrial water, much fought-over.",
+	"x" : 150,
+	"y" : 24,
+	"spriteIndex" : 0,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [3, 4],
+	"isDestination": false
+},
+{
+	"name": "Oceanus",
+	"description": "A planet almost entirely covered in sulfur-rich oceans. Not viable.",
+	"x" : 209,
+	"y" : 144,
+	"spriteIndex" : 5,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [5],
+	"isDestination": false
+},
+{
+	"name": "Behr'q",
+	"description": "The asteroid belt here is rich in minerals, but not exactly friendly.",
+	"x" : 250,
+	"y" : 75,
+	"spriteIndex" : 4,
+	"visited": false,
+	"danger": "ASTEROIDS",
+	"encounter": null,
+	"reachableSystems": [5],
+	"isDestination": false
+},
+{
+	"name": "LV-426",
+	"description": "A cold rock, but it looks harmless enough.",
+	"x" : 380,
+	"y" : 20,
+	"spriteIndex" : 4,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [7],
+	"isDestination": false
+},
+{
+	"name": "Forthright",
+	"description": "Abandoned military station, might have some useful supplies?",
+	"x" : 290,
+	"y" : 140,
+	"spriteIndex" : 2,
+	"visited": false,
+	"danger": "MILITARY",
+	"encounter": null,
+	"reachableSystems": [8,9],
+	"isDestination": false
+},
+{
+	"name": "Reach",
+	"description": "A promising world with a rich nitrogen atmosphere, but plagued by ion storms.",
+	"x" : 345,
+	"y" : 75,
+	"spriteIndex" : 0,
+	"visited": false,
+	"danger": "ION",
+	"encounter": null,
+	"reachableSystems": [9],
+	"isDestination": false
+},
+{
+	"name": "Hardock",
+	"description": "One of the first human colonies. Now long-dead.",
+	"x" : 343,
+	"y" : 190,
+	"spriteIndex" : 3,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [9],
+	"isDestination": false
+},
+{
+	"name": "Earth 2.0",
+	"description": "This is a rocky world in the goldilocks zone. Fingers crossed.",
+	"x" : 420,
+	"y" : 95,
+	"spriteIndex" : 0,
+	"visited": false,
+	"danger": null,
+	"encounter": null,
+	"reachableSystems": [],
+	"isDestination": true
+}
+]
