@@ -133,6 +133,7 @@ var playState = {
 		
 		//Data
 		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");
+		game.load.json("data_eventsStory_submissions", "res/data/data_eventsStory_submissions.json");
 		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");
 		
 	},
@@ -546,7 +547,12 @@ var playState = {
     
     fireEvent_Story: function() {
 		
-		data_eventsStory = game.cache.getJSON('data_eventsStory');
+		if (Math.random() > 0.5) {
+			data_eventsStory = game.cache.getJSON('data_eventsStory');
+		} else {
+			console.log('Using submissions for story event');
+			data_eventsStory = game.cache.getJSON('data_eventsStory_submissions');
+		}
 		
 		var selector = Math.floor(Math.random() * data_eventsStory.length);
 		

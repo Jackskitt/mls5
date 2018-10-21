@@ -81,10 +81,10 @@ var loadState = {
 		
 		//Data
 		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");
+		game.load.json("data_eventsStory_submissions", "res/data/data_eventsStory_submissions.json");
 		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");
 		let numMaps = 3;
 		let mapSelector = Math.floor(Math.random() * numMaps);
-		mapSelector = 1;
 		game.load.json("data_map", "res/data/data_map_" + mapSelector + ".json");
         
         mapData = {

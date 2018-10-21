@@ -37,7 +37,7 @@ var menuState = {
 	},
 	
 	create: function() {
-		music.play("", 0, 0, true, false);
+		music.play("", 0, 1, true, false);
 		
         //Slick UI library
         slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
