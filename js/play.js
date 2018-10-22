@@ -520,7 +520,7 @@ var playState = {
     
     fireEvent_Story: function() {
 		
-		if (Math.random() > 10.5) {
+		if (Math.random() > 0.4) {
 			data_eventsStory = game.cache.getJSON('data_eventsStory');
 		} else {
 			console.log('Using submissions for story event');
