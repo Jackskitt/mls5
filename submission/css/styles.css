@@ -1,0 +1,52 @@
+body {
+	text-align: center;
+	background: #eee;
+	width: 70%;
+	border-radius: 4px;
+	padding: 2em;
+	font-family: sans-serif;
+	margin: auto;
+}
+
+.storyForm {
+	text-align: left;
+	font-size: 1.2em;
+	width: 90%;
+	margin: auto;
+	padding: 1.2em;
+	background: #fff;
+	box-shadow: 2px 2px 12px rgba(0,0,0,0.4);
+}
+
+.storyForm input {
+	border: 2px solid rgba(0,0,0,0.1);
+	padding: .5em;
+}
+
+.storyForm .submitButton {
+	
+}
+
+.optionsArea {
+	
+}
+
+.option {
+	border: 1px dotted rgba(0,0,0,0.1);
+	background: #fafafa;
+	border-radius: 4px;
+	padding: 1em;
+	margin: 4px;
+}
+
+.output {
+	margin: 1em;
+	padding: .5em;
+	text-align: left;
+	font-family: monospace;
+	line-height: 2em;
+	background: black;
+	color: #0f0;
+	width: 100%;
+	overflow: scroll;
+}

@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+	<head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="./css/styles.css">
+		<link rel="shortcut icon" href="./favicon.ico">
+		<script src="./js/submission.js"></script>
+		<title>MLS5 Story Creator</title>
+	</head>
+
+	<body>
+		<h1>MLS5 Story Creator</h1>
+		<p>A tool to build story data to use in MLS5. Exports to JSON format.</p>
+		
+		<div class="storyForm" >
+		
+			<p>Event name:</p>
+			<input type="text" placeholder="story_asteroid" id="nameSuffix" maxlength="25">
+			<p>Ingame title:</p>
+			<input type="text"  placeholder="ASTEROID DETECTED" id="title" maxlength="25">
+			<p>Text intro content (max 160 characters):</p>
+			<textarea type="text" id="content" placeholder="An asteroid appears! Yikes!" rows="6" cols="30" maxlength="160"></textarea>
+			<h3>Options</h3>
+			
+			<div id="optionsArea">
+				<div class="option">
+					<h2>Option 1</h2>
+					<p>Choice given to player:</p>
+					<input type="text" id="option_0" maxlength="25" placeholder="All power to shields">
+					<p>Is failure possible?</p>
+					<input type="checkbox" id="diceRoll_0">
+					<p>Chance for success</p>
+					0% <input type="range" id="winChance_0" min="0" max="1" step="0.05"> 100%
+					
+					<p>Win text</p>
+					<textarea type="text" id="winResponse_0" rows="6" cols="30"  placeholder="Hooray! The ship didn't explode!" maxlength="160"></textarea>
+					<p>Effects of victory</p>
+					<input type="number" id="winEffect_happ_0" placeholder="+50" step="1"> Happiness<br />
+					<input type="number" id="winEffect_crew_0" placeholder="+2" step="1"> Crew<br />
+					<input type="number" id="winEffect_fuel_0" placeholder="+23" step="1"> Fuel supply<br />
+					<input type="number" id="winEffect_hull_0" placeholder="+12" step="1"> Hull integrity
+					<p>Fail text</p>
+					<textarea type="text" id="failResponse_0" rows="6" cols="30" placeholder="Oh no! The ship exploded!" maxlength="160"></textarea>
+					<p>Effects of failure</p>
+					<input type="number" id="failEffect_happ_0" placeholder="-20" step="1"> Happiness<br />
+					<input type="number" id="failEffect_crew_0" placeholder="-9" step="1"> Crew<br />
+					<input type="number" id="failEffect_fuel_0" placeholder="-42" step="1"> Fuel supply<br />
+					<input type="number" id="failEffect_hull_0" placeholder="-55" step="1"> Hull integrity
+				</div>
+				
+				<div class="option">
+					<h2>Option 2</h2>
+					<p>Choice given to player:</p>
+					<input type="text" id="option_1" maxlength="25" placeholder="All power to shields">
+					<p>Is failure possible?</p>
+					<input type="checkbox" id="diceRoll_1">
+					<p>Chance for success</p>
+					0% <input type="range" id="winChance_1" min="0" max="1" step="0.05"> 100%
+					
+					<p>Win text</p>
+					<textarea type="text" id="winResponse_1" rows="6" cols="30"  placeholder="Hooray! The ship didn't explode!" maxlength="160"></textarea>
+					<p>Effects of victory</p>
+					<input type="number" id="winEffect_happ_1" placeholder="+50" step="1"> Happiness<br />
+					<input type="number" id="winEffect_crew_1" placeholder="+2" step="1"> Crew<br />
+					<input type="number" id="winEffect_fuel_1" placeholder="+23" step="1"> Fuel supply<br />
+					<input type="number" id="winEffect_hull_1" placeholder="+12" step="1"> Hull integrity
+					<p>Fail text</p>
+					<textarea type="text" id="failResponse_1" rows="6" cols="30" placeholder="Oh no! The ship exploded!" maxlength="160"></textarea>
+					<p>Effects of failure</p>
+					<input type="number" id="failEffect_happ_1" placeholder="-20" step="1"> Happiness<br />
+					<input type="number" id="failEffect_crew_1" placeholder="-9" step="1"> Crew<br />
+					<input type="number" id="failEffect_fuel_1" placeholder="-42" step="1"> Fuel supply<br />
+					<input type="number" id="failEffect_hull_1" placeholder="-55" step="1"> Hull integrity
+				</div>
+			</div>
+			
+			<br /> <br />
+			<button onClick="readForm()" class="submitButton">Submit</button>
+		
+		</div>
+	</body>
+	
+</html>

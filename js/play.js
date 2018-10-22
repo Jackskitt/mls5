@@ -37,9 +37,11 @@ var ship = {
         resource_hull +=
         */
 		
-        if (effect == null)
+        if (effect === null)
             return;
         
+		console.log(effect);
+		
         if (effect.resource_fuel != null) {
             ship.fuel += effect.resource_fuel;
 			
@@ -268,30 +270,6 @@ var playState = {
         
         this.createMessageBoxEndgame();
     },
-    
-	parseEffectText: function(text, effect) {
-		
-		//TODO: at the moment only supports two effects - increase to four
-		
-		var result = text;
-		
-		result = JSON.stringify(effect);
-		result = result.substr(result.indexOf('_')+1);
-		result = result.replace('":',": ");
-		result = result.replace('}',"");
-
-		if (result.includes(',')) {
-			var effectText2 = result.substr(result.indexOf(',')+1);
-			result = result.substr(0,result.indexOf(','));
-			effectText2 = effectText2.substr(effectText2.indexOf('_')+1);
-			effectText2 = effectText2.replace('":',": ");
-			effectText2 = effectText2.replace('}',"");
-
-			result += ", " + effectText2;
-		}
-		
-		return result;
-	},
 	
     createMessageBox: function() {
 		
@@ -302,6 +280,10 @@ var playState = {
         var y = 2 * scale;
         var panel;
         slickUI.add(panel = new SlickUI.Element.Panel(x, y, 168 * scale, 96 * scale));
+		
+		if (messageBox.content === undefined) {
+			messageBox.content = "messageBox.content undefined. Oops.";
+		}
 		
         messageBox.content = playState.swapNames(messageBox.content);
         
@@ -353,7 +335,7 @@ var playState = {
 						var effect = "Effect not set!";
 						var effectText = "";
 
-						if (Math.random() < selectedOption.winChance) {
+						if (Math.random() < parseFloat(selectedOption.winChance)) {
 							//win!
 							response = selectedOption.win.response;
 							effect = selectedOption.win.effect;
@@ -364,10 +346,6 @@ var playState = {
 							effect = selectedOption.fail.effect;
 						}
 
-						//Parse some JSON:
-						effectText = playState.parseEffectText(effectText, effect);
-
-						response += "\n\n" + effectText;
 						ship.effectChange(effect);
 
 						panel.destroy();					
@@ -403,11 +381,6 @@ var playState = {
 						effect = selectedOption.effect;
 						
 						if (effect != null) {
-							//Parse some JSON:
-							effectText = playState.parseEffectText(effectText, effect);
-
-							response += "\n\n" + effectText;
-
 							ship.effectChange(effect);
 						} else {
 							console.log("Effect is null.");
@@ -547,7 +520,7 @@ var playState = {
     
     fireEvent_Story: function() {
 		
-		if (Math.random() > 0.5) {
+		if (Math.random() > 10.5) {
 			data_eventsStory = game.cache.getJSON('data_eventsStory');
 		} else {
 			console.log('Using submissions for story event');
@@ -664,7 +637,7 @@ var playState = {
         //Swap out the nametags in a string with the player-set character names (or defaults)
         //Positions are in the format NAME_JOBTITLE
         //Jobtitles are PILOT, NAVIGATOR, ENGINEER, SECURITY
-        
+		
         var result = text;
         
         result = result.replace("[NAME_PILOT]", ship.name_Pilot);
