@@ -41,23 +41,43 @@ var ship = {
             return;
         
 		console.log(effect);
-		
-        if (effect.resource_fuel != null) {
+        if (effect.resource_fuel != null && effect.resource_fuel != 0) {
             ship.fuel += effect.resource_fuel;
+			
+			let effectColor = "0f0";
+			
+			if (parseInt(effect.resource_fuel) < 0)
+				effectColor = "f00";
+			
+			playState.popText(ship.posX - 20, ship.posY - 20, "FUEL: " + effect.resource_fuel, effectColor);
 			
 			if (ship.fuel <= 0) {
 				playState.lose();
 			}
         }
-        if (effect.resource_crew != null) {
+        if (effect.resource_crew != null && effect.resource_crew != 0) {
             ship.crew += effect.resource_crew;
+			
+			let effectColor = "0f0";
+			
+			if (parseInt(effect.resource_crew) < 0)
+				effectColor = "f00";
+			
+			playState.popText(ship.posX - 20, ship.posY-10, "CREW: " + effect.resource_crew, effectColor);
 			
 			if (ship.crew <= 0) {
 				playState.lose();
 			}
         }
-        if (effect.resource_happiness != null) {
+        if (effect.resource_happiness != null && effect.resource_happiness != 0) {
             ship.happiness += effect.resource_happiness;
+			
+			let effectColor = "0f0";
+			
+			if (parseInt(effect.resource_happiness) < 0)
+				effectColor = "f00";
+			
+			playState.popText(ship.posX - 20, ship.posY, "HAPPINESS: " + effect.resource_happiness, effectColor);
         
 			if (ship.happiness > 100) {
 				ship.happiness = 100;
@@ -67,8 +87,15 @@ var ship = {
 				playState.lose();
 			}
         }
-        if (effect.resource_hull != null) {
+        if (effect.resource_hull != null && effect.resource_hull != 0) {
             ship.hull += effect.resource_hull;
+			
+			let effectColor = "0f0";
+			
+			if (parseInt(effect.resource_hull) < 0)
+				effectColor = "f00";
+			
+			playState.popText(ship.posX - 20, ship.posY + 10, "HULL: " + effect.resource_hull, effectColor);
 			
 			if (ship.hull > 100) {
 				ship.hull = 100;
@@ -751,6 +778,44 @@ var playState = {
         {
             game.scale.startFullScreen(false);
         }
-    }
+    },
+	
+	popText: function(x, y, text, color) {
+		
+		let style = {font: "10px monospace", fill: ("#" + color)};
+		
+		let coolEffect = new FloatingNumber(game, x, y, text, style, 3);
+		console.log(coolEffect);
+		groupShip.add(coolEffect);
+		
+	}
 	
 };
+
+class FloatingNumber extends Phaser.Text {
+	
+    constructor(game, x, y, text, style, lifetime) {
+        super(game, x, y, text, style);
+		
+		this.lifeTime = lifetime;
+		
+		this.x = x; this.y = y;
+		this.fadeDistance = 24;
+		game.add.tween(this).to( {alpha: 0, y: this.y-this.fadeDistance}, this.lifeTime * 1000, Phaser.Easing.Exponential.In, true);
+
+		game.world.bringToTop(this);
+	}
+	
+	update() {
+		
+        this.x = Math.floor(this.x);
+        this.y = Math.floor(this.y);
+        
+		if (this.lifeTime > 0) {
+        	this.lifeTime -= game.time.physicsElapsed;
+		} else {
+			this.destroy();
+		}
+	}
+	
+}
