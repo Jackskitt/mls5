@@ -9,7 +9,7 @@
 
 //UI positioning values
 var mapOffsetX = 8;
-var mapOffsetY = 40;
+var mapOffsetY = 64;
 
 //UI elements
 var groupIcons;
@@ -27,6 +27,8 @@ var systemPanel;
 var systemPanel_name;
 var systemPanel_description;
 
+var mapProgressX = 0;
+
 var mapState = {
 	
 	preload: function() {
@@ -38,12 +40,16 @@ var mapState = {
 	
     create: function () {
         
-        slickUI.add(mapPanel = new SlickUI.Element.Panel(0, 0, game.width, game.height));
+        slickUI.add(mapPanel = new SlickUI.Element.Panel(0, 0, game.width, 56));
         mapPanel.add(new SlickUI.Element.Text(4, 0, "GALACTIC MAP", 24));
-        
-        mapPanel.add(mapBG = new SlickUI.Element.DisplayObject(mapOffsetX, mapOffsetY, game.make.sprite(0, 0, 'bg_map')));
-        
-        mapBG.add(icon_selector = new SlickUI.Element.DisplayObject(0, 0, game.make.sprite(0, 0, 'icon_planet_selector')));
+		
+		game.camera.x = mapProgressX;
+		game.world.setBounds(-1024, -1024, 2048, 2048);
+		game.add.tween(game.camera).from( { x: mapProgressX -64 }, 1000, Phaser.Easing.Sinusoidal.Out, true);
+		
+		mapBG = game.add.sprite(0, 0, 'bg_map');
+		
+        icon_selector = game.add.sprite(0, 0, 'icon_planet_selector');
         
         icon_selector.visible = false;
         
@@ -55,6 +61,8 @@ var mapState = {
         
         systemIcons = [];
         groupIcons = game.add.group();
+		groupIcons.x += mapOffsetX;
+		groupIcons.y += mapOffsetY;
         
         for (var i = 0; i < mapData.systems.length; i++) {
             
@@ -102,13 +110,13 @@ var mapState = {
             }
             
             //Now add the icons.
-			var img = game.make.image(0, 0, 'icon_planet' + starSystem.spriteIndex);
-			img.anchor.setTo(0.25, 0.25);	//the reason this is weird is that I didn't know about anchors when I wrote the map code, so the JSON positions are offset strangely. just ignore it
-            mapBG.add(systemIcons[i] = new SlickUI.Element.DisplayObject(starSystem.x, starSystem.y, img));
+            systemIcons[i] = game.add.sprite(starSystem.x, starSystem.y, 'icon_planet' + starSystem.spriteIndex);
+			systemIcons[i].anchor.setTo(0.1,0.1);
+				//i don't know why it has to be 0.1. don't question it
 			
 			//Add visual danger indicators
 			if (starSystem.danger != null) {
-				mapBG.add(new SlickUI.Element.DisplayObject(starSystem.x - 24, starSystem.y - 24, game.make.image(0, 0, 'icon_' + starSystem.danger.toLowerCase())));
+				game.add.sprite(mapOffsetX + starSystem.x - 20, mapOffsetY + starSystem.y - 20, 'icon_' + starSystem.danger.toLowerCase());
 			}
 			
 			//Give each icon a reference to the JSON information about that system
@@ -118,7 +126,7 @@ var mapState = {
             systemIcons[i].inputEnabled = true;
             systemIcons[i].events.onInputDown.add(mapState.selectIcon, {icon: systemIcons[i]});
 			
-            groupIcons.add(systemIcons[i].sprite);
+            groupIcons.add(systemIcons[i]);
         }
         
 		//Create the highlight to show the player's current system. (Using a 16px offset because the highlight has an extra bit on top)
@@ -126,10 +134,10 @@ var mapState = {
         var highlight;
         
         var highlightedSystem = mapData.systems[mapData.shipPosition];
-        mapBG.add(highlight = new SlickUI.Element.DisplayObject(highlightedSystem.x, highlightedSystem.y - 16, game.make.image(0, 0, 'icon_planet_highlight')));
+        highlight = game.add.sprite(highlightedSystem.x + mapOffsetX + 5, highlightedSystem.y + mapOffsetY - 16 + 5, 'icon_planet_highlight');
         
         //Create the panel which shows information about the selected system
-        mapPanel.add(systemPanel = new SlickUI.Element.Panel(mapPanel.width - 260, mapPanel.height-320, 220, 220));
+        slickUI.add(systemPanel = new SlickUI.Element.Panel(game.width - 260, game.height-320, 220, 220));
         
         systemPanel.alpha = 0.8;
         
@@ -139,7 +147,7 @@ var mapState = {
         
         //Create the button to jump to the selected system
 		
-        mapPanel.add(jumpButton = new SlickUI.Element.Button(game.width/2 - 60, game.height-82, 120, 60));
+        slickUI.add(jumpButton = new SlickUI.Element.Button(game.width/2 - 60, game.height-82, 120, 60));
         jumpButton.events.onInputUp.add(function () {sound_select.play(); mapState.jump();});
         jumpButton.add(new SlickUI.Element.Text(0, 0, "Jump", 24)).center();
 		jumpButton.visible = false;
@@ -149,6 +157,8 @@ var mapState = {
     update: function() {
         
         game.world.bringToTop(groupIcons);
+		
+		game.world.bringToTop(systemPanel.container.displayGroup.parent);
         
     },
 	
@@ -156,7 +166,9 @@ var mapState = {
 		sound_select.play();
 		selectedIcon = this.icon;
 		
-		icon_selector.x = selectedIcon.x + mapOffsetX + 5; //These 'magic numbers' (5 and 7) are half the width and height of the selector icon. (They won't change.)
+		icon_selector.x = selectedIcon.x + mapOffsetX + 5;
+			//These 'magic numbers' (5 and 7) are half the width and height of the selector icon. (They won't change.)
+			//hang on - if we double these we might be able to double the anchors commented above to .5 instead of .25
 		icon_selector.y = selectedIcon.y + mapOffsetY - 7;
 		icon_selector.visible = true;
 		
@@ -164,12 +176,13 @@ var mapState = {
 		
 		if (mapState.canReachSystem(selectedIcon)) {
 			jumpButton.visible = true;
+			systemPanel_name.value = selectedIcon.data.name.toUpperCase();
 			systemPanel_description.value = selectedIcon.data.description;
 		} else {
+			systemPanel_name.value = "UNKNOWN";
 			systemPanel_description.value = "OUTSIDE SCAN RANGE";
 		}
         
-        systemPanel_name.value = selectedIcon.data.name.toUpperCase();
 		systemPanel_name.centerHorizontally();
 		
 		if (selectedIcon.data.danger != null) {
@@ -192,8 +205,6 @@ var mapState = {
 		var canMakeJump = false;
 		
 		var currentSystem = mapData.systems[mapData.shipPosition];
-		
-        //TODO: do not allow jump if a messagebox is currently being displayed! Otherwise the sneaky jerks can just race right through.
         
 		if (mapState.canReachSystem(selectedIcon)) {
 			canMakeJump = true;
@@ -218,9 +229,12 @@ var mapState = {
 		
         systemPanel.visible = false;
 		
+		/* TODO: make different jumps cost different amounts of fuel */
+		
 		ship.day++;
 		ship.fuel--;
         ship.needsRecharge = true;
+		mapProgressX = selectedIcon.x - 64;
 		game.state.start('play');
 	},
 	

@@ -92,6 +92,7 @@ var loadState = {
 		
 		let numMaps = 3;
 		let mapSelector = Math.floor(Math.random() * numMaps);
+		mapSelector = 0;
 		game.load.json("data_map", "res/data/data_map_" + mapSelector + ".json");
         
         mapData = {
