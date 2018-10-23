@@ -104,14 +104,11 @@ var loadState = {
 	
 	create: function() {
 		
-		preload.itemLabel.setText('caching map data');
-		
         mapData.systems = game.cache.getJSON('data_map');
         
 		//shipPosition is an integer corresponding to the index of the current system in mapData.systems
 		mapData.shipPosition = 0;
 		
-		preload.itemLabel.setText('starting menu');
 		game.state.start('menu');
 	}
 	
