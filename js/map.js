@@ -48,6 +48,7 @@ var mapState = {
 		game.add.tween(game.camera).from( { x: mapProgressX -64 }, 1000, Phaser.Easing.Sinusoidal.Out, true);
 		
 		mapBG = game.add.sprite(0, 0, 'bg_map');
+		mapBG.fixedToCamera = true;
 		
         icon_selector = game.add.sprite(0, 0, 'icon_planet_selector');
         
