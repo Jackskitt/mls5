@@ -7,17 +7,28 @@ var encounterCounter;
 var loadState = {
 	
 	preload: function() {
+
+		this.loadingLabel = game.add.text(80, 150, "Loading...", {font: "30px Arial", fill: "#fff"});
+		this.itemLabel = game.add.text(80, 190, "", {font: "24px Arial", fill: "#ddd"});
 		
-		var loadingLabel = game.add.text(80, 150, "loading...", {font: "30px Arial", fill: "#fff"});
-		
+		game.load.onFileComplete.add(function (progress, cacheKey, success, totalLoaded, totalFiles) {
+			this.itemLabel.setText(cacheKey);
+		}, this);
+		game.load.onLoadComplete.add(function () {
+			this.itemLabel.setText("Complete!");
+		}, this);
         
 		/* SPRITES */
 		
 		//Scenery & Objects
 		game.load.image('bg_starField', 'res/scenery/bg_starField.png');
+        
+        for (var i = 0; i < 6; i++) {
+            game.load.image('img_scenery_' + i, 'res/scenery/img_scenery_' + i + '.png');
+        }
+		
 		game.load.image('img_ship', 'res/ships/img_ship.png');
 		game.load.image('img_enemy', 'res/ships/img_enemy.png');
-		
 		
 		game.load.image('img_ship_gib0', 'res/ships/gibs/img_ship_gib0.png');
 		game.load.image('img_ship_gib1', 'res/ships/gibs/img_ship_gib1.png');
@@ -31,11 +42,6 @@ var loadState = {
         game.load.image('hud_driveReady', 'res/ui/hud_driveReady.png');
         game.load.image('hud_driveCharge', 'res/ui/hud_driveCharge.png');
         game.load.image('hud_panel', 'res/ui/hud_panel.png');
-        
-        
-        for (var i = 0; i < 6; i++) {
-            game.load.image('img_scenery_' + i, 'res/scenery/img_scenery_' + i + '.png');
-        }
 		
         //Map screen
         game.load.image('bg_map', 'res/ui/bg_map.png');
@@ -83,6 +89,7 @@ var loadState = {
 		game.load.json("data_eventsStory", "res/data/data_eventsStory.json");
 		game.load.json("data_eventsStory_submissions", "res/data/data_eventsStory_submissions.json");
 		game.load.json("data_eventsDanger", "res/data/data_eventsDanger.json");
+		
 		let numMaps = 3;
 		let mapSelector = Math.floor(Math.random() * numMaps);
 		game.load.json("data_map", "res/data/data_map_" + mapSelector + ".json");
@@ -96,11 +103,15 @@ var loadState = {
 	},
 	
 	create: function() {
+		
+		preload.itemLabel.setText('caching map data');
+		
         mapData.systems = game.cache.getJSON('data_map');
         
 		//shipPosition is an integer corresponding to the index of the current system in mapData.systems
 		mapData.shipPosition = 0;
 		
+		preload.itemLabel.setText('starting menu');
 		game.state.start('menu');
 	}
 	
