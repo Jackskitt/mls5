@@ -27,6 +27,8 @@ var loadState = {
             game.load.image('img_scenery_' + i, 'res/scenery/img_scenery_' + i + '.png');
         }
 		
+		game.load.image('img_scenery_asteroids', 'res/scenery/img_asteroids.png');
+		
 		game.load.image('img_ship', 'res/ships/img_ship.png');
 		game.load.image('img_enemy', 'res/ships/img_enemy.png');
 		

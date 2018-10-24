@@ -40,7 +40,6 @@ var ship = {
         if (effect === null)
             return;
         
-		console.log(effect);
         if (effect.resource_fuel != null && effect.resource_fuel != 0) {
             ship.fuel += effect.resource_fuel;
 			
@@ -118,6 +117,7 @@ var bg = {
 
 var groupBackground;
 var groupPlanets;
+var groupDanger;
 var groupShip;
 
 //UI
@@ -154,6 +154,7 @@ var playState = {
 	preload: function() {
 		groupBackground = game.add.group();
 		groupPlanets = game.add.group();
+        groupDanger = game.add.group();
         groupShip = game.add.group();
 		
 		//Slick UI library
@@ -204,9 +205,13 @@ var playState = {
         var systemObject = mapData.systems[mapData.shipPosition];
 		
         groupPlanets.create(0, 0, 'img_scenery_' + systemObject.spriteIndex);
+		if (systemObject.danger == "ASTEROIDS") {
+			groupDanger.create(0, -32, 'img_scenery_asteroids');
+		}
         
         groupPlanets.scale.set(scale);
         groupBackground.scale.set(scale);
+        groupDanger.scale.set(scale);
         groupShip.scale.set(scale);
 		
         this.initUI();
@@ -259,10 +264,13 @@ var playState = {
 		bg.sprite0.x = bg.posX;
 		bg.sprite1.x = bg.posX + bg.sprite0.width;
 		
-		groupPlanets.x -= backgroundMovement * 6;
+		groupPlanets.x -= backgroundMovement * 3;
+		groupDanger.x -= backgroundMovement * 6;
 		
 		if (groupPlanets.x < - bg.sprite0.width * 3)	//The planet scenery image will always be the same width as the background starfield.
 			groupPlanets.x = bg.sprite0.width * 2;
+		if (groupDanger.x < - bg.sprite0.width * 3)	//The planet scenery image will always be the same width as the background starfield.
+			groupDanger.x = bg.sprite0.width * 2;
 	},
 	
 	/* UI MANAGEMENT */
@@ -410,7 +418,7 @@ var playState = {
 						if (effect != null) {
 							ship.effectChange(effect);
 						} else {
-							console.log("Effect is null.");
+							//console.log("Effect is null.");
 						}
 						
 						
@@ -538,7 +546,7 @@ var playState = {
 
 			eventToFire = relevantEvents[selector];
 
-			console.log("Firing danger event: " + eventToFire.name);
+			//console.log("Firing danger event: " + eventToFire.name);
 		}
 		
 		this.displayMessage(eventToFire.title, eventToFire.content, eventToFire.options);
@@ -550,7 +558,7 @@ var playState = {
 		if (Math.random() > 0.4) {
 			data_eventsStory = game.cache.getJSON('data_eventsStory');
 		} else {
-			console.log('Using submissions for story event');
+			//console.log('Using submissions for story event');
 			data_eventsStory = game.cache.getJSON('data_eventsStory_submissions');
 		}
 		
@@ -574,7 +582,7 @@ var playState = {
 			}
 			
 		} else {
-			console.log("Firing story event: " + encounter.name);
+			//console.log("Firing story event: " + encounter.name);
 		}
 		
 		this.displayMessage(encounter.title, encounter.content, encounter.options);
@@ -785,7 +793,6 @@ var playState = {
 		let style = {font: "10px monospace", fill: ("#" + color)};
 		
 		let coolEffect = new FloatingNumber(game, x, y, text, style, 3);
-		console.log(coolEffect);
 		groupShip.add(coolEffect);
 		
 	}
