@@ -18,7 +18,7 @@
 	"y" : 40,
 	"spriteIndex" : 3,
 	"visited": false,
-	"danger": null,
+	"danger": "ASTEROIDS",
 	"encounter": null,
 	"reachableSystems": [3],
 	"isDestination": false

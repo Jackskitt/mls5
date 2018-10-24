@@ -27,7 +27,10 @@ var loadState = {
             game.load.image('img_scenery_' + i, 'res/scenery/img_scenery_' + i + '.png');
         }
 		
-		game.load.image('img_scenery_asteroids', 'res/scenery/img_asteroids.png');
+		game.load.image('img_scenery_asteroids_0', 'res/scenery/img_asteroids_0.png');
+		game.load.image('img_scenery_asteroids_1', 'res/scenery/img_asteroids_1.png');
+		game.load.image('img_scenery_ions', 'res/scenery/img_ions.png');
+		game.load.image('img_scenery_military', 'res/scenery/img_military.png');
 		
 		game.load.image('img_ship', 'res/ships/img_ship.png');
 		game.load.image('img_enemy', 'res/ships/img_enemy.png');

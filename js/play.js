@@ -117,7 +117,8 @@ var bg = {
 
 var groupBackground;
 var groupPlanets;
-var groupDanger;
+var groupDangerBack;
+var groupDangerFront;
 var groupShip;
 
 //UI
@@ -154,8 +155,9 @@ var playState = {
 	preload: function() {
 		groupBackground = game.add.group();
 		groupPlanets = game.add.group();
-        groupDanger = game.add.group();
+        groupDangerBack = game.add.group();
         groupShip = game.add.group();
+        groupDangerFront = game.add.group();
 		
 		//Slick UI library
 		slickUI = game.plugins.add(Phaser.Plugin.SlickUI);
@@ -206,13 +208,19 @@ var playState = {
 		
         groupPlanets.create(0, 0, 'img_scenery_' + systemObject.spriteIndex);
 		if (systemObject.danger == "ASTEROIDS") {
-			groupDanger.create(0, -32, 'img_scenery_asteroids');
+			groupDangerBack.create(0, -32, 'img_scenery_asteroids_0');
+			groupDangerFront.create(0, 0, 'img_scenery_asteroids_1');
+		} else if (systemObject.danger == "ION") {
+			groupDangerFront.create(0, -32, 'img_scenery_ions');
+		} else if (systemObject.danger == "MILITARY") {
+			groupDangerBack.create(0, -32, 'img_scenery_military');
 		}
         
         groupPlanets.scale.set(scale);
         groupBackground.scale.set(scale);
-        groupDanger.scale.set(scale);
+        groupDangerBack.scale.set(scale);
         groupShip.scale.set(scale);
+        groupDangerFront.scale.set(scale);
 		
         this.initUI();
         
@@ -256,7 +264,7 @@ var playState = {
 		
 		var backgroundMovement = 0.001 * game.time.elapsed * scale;
 		
-		bg.posX -= backgroundMovement;
+		bg.posX -= backgroundMovement * 0;
         
 		if (bg.posX < 0 - bg.sprite0.width)
 			bg.posX = 0;
@@ -264,13 +272,16 @@ var playState = {
 		bg.sprite0.x = bg.posX;
 		bg.sprite1.x = bg.posX + bg.sprite0.width;
 		
-		groupPlanets.x -= backgroundMovement * 3;
-		groupDanger.x -= backgroundMovement * 6;
+		groupPlanets.x -= backgroundMovement * 2;
+		groupDangerBack.x -= backgroundMovement * 4;
+		groupDangerFront.x -= backgroundMovement * 6;
 		
 		if (groupPlanets.x < - bg.sprite0.width * 3)	//The planet scenery image will always be the same width as the background starfield.
 			groupPlanets.x = bg.sprite0.width * 2;
-		if (groupDanger.x < - bg.sprite0.width * 3)	//The planet scenery image will always be the same width as the background starfield.
-			groupDanger.x = bg.sprite0.width * 2;
+		if (groupDangerBack.x < - bg.sprite0.width * 3)
+			groupDangerBack.x = bg.sprite0.width * 2;
+		if (groupDangerFront.x < - bg.sprite0.width * 3)
+			groupDangerFront.x = bg.sprite0.width * 2;
 	},
 	
 	/* UI MANAGEMENT */
