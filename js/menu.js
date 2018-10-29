@@ -34,6 +34,8 @@ var menuState = {
 		sound_beam = game.add.audio('sound_beam');
 		sound_laserExplosion0 = game.add.audio('sound_laserExplosion0');
 		sound_laserExplosion1 = game.add.audio('sound_laserExplosion1');
+		
+		game.sound.volume = 0.05;
 	},
 	
 	create: function() {

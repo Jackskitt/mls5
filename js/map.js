@@ -44,7 +44,7 @@ var mapState = {
         mapPanel.add(new SlickUI.Element.Text(4, 0, "GALACTIC MAP", 24));
 		
 		game.camera.x = mapProgressX;
-		game.world.setBounds(-1024, -1024, 2048, 2048);
+		game.world.setBounds(-1024, -1024, 4048, 2048);
 		game.add.tween(game.camera).from( { x: mapProgressX -64 }, 1000, Phaser.Easing.Sinusoidal.Out, true);
 		
 		mapBG = game.add.sprite(0, 0, 'bg_map');

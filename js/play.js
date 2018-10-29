@@ -183,7 +183,11 @@ var playState = {
         var animCharge = ship.sprite.animations.add('anim_ship_charge', [12,13,14,15]);
         
         ship.sprite.animations.play('anim_ship_idle', 8, true);
-        
+		
+		let shipBobTween = game.add.tween(ship.sprite).to( { y: ship.sprite.y - 6}, 2500, Phaser.Easing.Linear.In, true);
+		shipBobTween.loop(true);
+		shipBobTween.yoyo(true);
+
         animJump.onComplete.add(function() {
 			game.state.start('map');
 		});
@@ -211,7 +215,7 @@ var playState = {
 			groupDangerBack.create(0, -32, 'img_scenery_asteroids_0');
 			groupDangerFront.create(0, 0, 'img_scenery_asteroids_1');
 		} else if (systemObject.danger == "ION") {
-			groupDangerFront.create(0, -32, 'img_scenery_ions');
+			groupDangerFront.create(0, -64, 'img_scenery_ions');
 		} else if (systemObject.danger == "MILITARY") {
 			groupDangerBack.create(0, -32, 'img_scenery_military');
 		}
