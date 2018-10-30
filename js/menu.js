@@ -50,7 +50,7 @@ var menuState = {
         slickUI.add(panel = new SlickUI.Element.Panel(48, 48, 320, 240));
 		
 		//Add title and content
-        panel.add(new SlickUI.Element.Text(12, 0, "Miserable Life, Space", 16));
+        panel.add(new SlickUI.Element.Text(12, 0, "Miserable Voyage", 16));
         panel.add(new SlickUI.Element.Text(12, 38, "A game about choices", 16));
 		
 		var startButton;
@@ -72,7 +72,7 @@ var menuState = {
         
         var welcomeText;
         
-        welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 4, "Welcome to MLS.", 24));
+        welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 4, "Welcome to MV.", 24));
         welcomePanel.add(welcomeText = new SlickUI.Element.Text(8, 44, "You're the captain of a generation ship carrying Earth's last humans. Can you find a new home?\n\nVery WIP. Bug reports to contact@niallslater.com.", 16));
         
         slickUI.add(creditsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 240));
@@ -82,6 +82,11 @@ var menuState = {
         closeCreditsButton.events.onInputUp.add(function () {menuState.closeCredits();});
         closeCreditsButton.add(new SlickUI.Element.Text(0,0, "x", 8)).center();
         
+		var creditsText;
+		
+        creditsPanel.add(creditsText = new SlickUI.Element.Text(8, 4, "Credits", 24));
+        creditsPanel.add(creditsText = new SlickUI.Element.Text(8, 44, "Excellent royalty-free music was courtesy of Kevin MacLeod, and the UI theme was designed by Kenney.nl.\n\nEverything else by Niall Slater.", 16));
+		
         creditsPanel.visible = false;
         
         slickUI.add(settingsPanel = new SlickUI.Element.Panel(48 + 320 + 40, 48, 320, 280));
