@@ -234,7 +234,6 @@ var mapState = {
 		
 		ship.day++;
 		ship.fuel--;
-		ship.hull = 0;
         ship.needsRecharge = true;
 		mapProgressX = selectedIcon.x - 64;
 		game.state.start('play');
