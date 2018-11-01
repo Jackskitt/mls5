@@ -26,6 +26,40 @@ var ship = {
     name_Security: "Milligan",
 	
 	reachedDestination: false,
+	
+	explode: function() {
+		
+		var gib0;
+		var gib1;
+		var gib2;
+		
+		game.time.events.add(150, () => {
+			ship.sprite.visible = false;
+		
+			gib0 = groupShip.create(ship.posX - 2, ship.posY, 'img_ship_gib0');
+			gib1 = groupShip.create(ship.posX + 2, ship.posY, 'img_ship_gib1');
+			gib2 = groupShip.create(ship.posX + 5, ship.posY, 'img_ship_gib2');
+
+			game.physics.arcade.enable(gib0);
+			game.physics.arcade.enable(gib1);
+			game.physics.arcade.enable(gib2);
+
+			gib0.body.velocity = new Phaser.Point(-5, 0);;
+			gib1.body.velocity = new Phaser.Point(0, -2);;
+			gib2.body.velocity = new Phaser.Point(10, -3);;
+			
+			gib0.body.angularVelocity = -5;
+			gib1.body.angularVelocity = -2;
+			gib2.body.angularVelocity = +8;
+		}, this);
+		
+						
+		var explosion = groupDangerFront.create(ship.posX+4, ship.posY-12, 'anim_explosion');
+		var explosionAnim = explosion.animations.add('anim_splode', [3, 4, 5, 6]);
+		explosion.animations.play('anim_splode', 32, true, true);
+		explosion.lifespan = 400;
+		sound_laserExplosion1.play();
+	},
     
     //Parse a JSON object to change some ship data.
     effectChange: function(effect) {
@@ -51,6 +85,7 @@ var ship = {
 			playState.popText(ship.posX - 20, ship.posY - 20, "FUEL: " + effect.resource_fuel, effectColor);
 			
 			if (ship.fuel <= 0) {
+				ship.shipBobTween.stop();
 				playState.lose();
 			}
         }
@@ -101,6 +136,7 @@ var ship = {
 			}
 			
 			if (ship.hull <= 0) {
+				game.time.events.add(Phaser.Timer.SECOND * 1, ship.explode, this);
 				playState.lose();
 			}
         }
@@ -184,9 +220,9 @@ var playState = {
         
         ship.sprite.animations.play('anim_ship_idle', 8, true);
 		
-		let shipBobTween = game.add.tween(ship.sprite).to( { y: ship.sprite.y - 6}, 2500, Phaser.Easing.Linear.In, true);
-		shipBobTween.loop(true);
-		shipBobTween.yoyo(true);
+		ship.shipBobTween = game.add.tween(ship.sprite).to( { y: ship.sprite.y - 6}, 2500, Phaser.Easing.Linear.In, true);
+		ship.shipBobTween.loop(true);
+		ship.shipBobTween.yoyo(true);
 
         animJump.onComplete.add(function() {
 			game.state.start('map');
@@ -252,6 +288,16 @@ var playState = {
 				sound_land.play();
             }
         }
+		
+		
+		if (ship.fuel <= 0) {
+			ship.shipBobTween.stop();
+			playState.lose();
+		}
+		if (ship.hull <= 0) {
+			game.time.events.add(Phaser.Timer.SECOND * 1, ship.explode, this);
+			playState.lose();
+		}
 	},
 	
 	update: function() {
