@@ -42,9 +42,10 @@ var combatState = {
     	game.physics.startSystem(Phaser.Physics.ARCADE);
 		
 		//Initialise scenery & objects
+		//add this to ship setup
         playerShip = game.add.sprite(108 * scale, 100 * scale, 'anim_ship');
 		game.physics.arcade.enable(playerShip);
-		
+	
         var animIdle = playerShip.animations.add('anim_ship_idle', [0,1,2,3,4,5,6,7]);
         var animJump = playerShip.animations.add('anim_ship_jump', [8,9,10,11]);
         var animLand = playerShip.animations.add('anim_ship_land', [11,10,9,8]);
@@ -77,7 +78,7 @@ var combatState = {
 		button2.add(new SlickUI.Element.Text(0, 0, "2")).center();
         button2.events.onInputUp.add(function(){combatState.currentWeaponSlot = 2; combatState.fireEnabled = false;});
 		
-		
+		//Load weapon configs from file, and then encapsulate into a "ship.addWeapon" function
 		//WEAPON SLOT 1
 		playerShip.weaponMissile = game.add.weapon(30, 'img_missile');
 		playerShip.weaponMissile.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -106,6 +107,7 @@ var combatState = {
 				//Enemy bullet collides with player ship
 				obj1.kill();
 				obj2.kill();
+				//Have this in the objects for say an "explode" function and just give it the coords
 				combatState.spawnExplosion(obj2.x/scale -16, obj2.y/scale - 8);
 				combatState.spawnGibs();
 				
@@ -192,7 +194,7 @@ var combatState = {
 		var posY = randomY;
 		
         var enemy = groupEnemies.create(posX, posY, 'img_enemy');
-		
+		//if these are loaded from a config file you could just do like EnemyHandler.Load("laserSquid")
 		enemy.fireTimer = Math.floor(Math.random() * 2) + 2;
 		
 		enemy.weapon = game.add.weapon(30, 'img_laser');
