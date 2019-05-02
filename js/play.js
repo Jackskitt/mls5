@@ -1,5 +1,5 @@
 /* GLOBALS */
-
+//A lot of stuff here could be encalsulated into a ship or enemy class
 var scale = 1;
 
 var messageActive = false;
