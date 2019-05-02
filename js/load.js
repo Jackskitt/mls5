@@ -26,7 +26,7 @@ var loadState = {
         for (var i = 0; i < 6; i++) {
             game.load.image('img_scenery_' + i, 'res/scenery/img_scenery_' + i + '.png');
         }
-		
+		//Could be in 
 		game.load.image('img_scenery_asteroids_0', 'res/scenery/img_asteroids_0.png');
 		game.load.image('img_scenery_asteroids_1', 'res/scenery/img_asteroids_1.png');
 		game.load.image('img_scenery_ions', 'res/scenery/img_ions.png');
